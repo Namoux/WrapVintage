@@ -2,7 +2,7 @@
   "tables": [
     {
       "id": "8UHAa_mezbETxpGDd4zlo",
-      "name": "Product",
+      "name": "product",
       "x": -599.68,
       "y": -440.1999999999999,
       "fields": [
@@ -21,7 +21,7 @@
         {
           "id": "H12oRejUKcXtHkdm_pzsO",
           "name": "name",
-          "type": "TEXT",
+          "type": "VARCHAR",
           "default": "",
           "check": "",
           "primary": false,
@@ -29,12 +29,12 @@
           "notNull": true,
           "increment": false,
           "comment": "",
-          "size": 255
+          "size": 100
         },
         {
           "id": "FvjdWSvb1bg4og9t36C7b",
           "name": "description",
-          "type": "TEXT",
+          "type": "VARCHAR",
           "default": "",
           "check": "",
           "primary": false,
@@ -42,24 +42,25 @@
           "notNull": false,
           "increment": false,
           "comment": "",
-          "size": 65535
+          "size": 255
         },
         {
           "id": "MrqaMCIJMqnkrx9UWtrZ-",
           "name": "price",
-          "type": "FLOAT",
+          "type": "DECIMAL",
           "default": "0",
           "check": "",
           "primary": false,
           "unique": false,
           "notNull": true,
           "increment": false,
-          "comment": ""
+          "comment": "",
+          "size": "10, 2"
         },
         {
           "id": "XAGvTkjLEX3ulFpZyOKzs",
           "name": "imageUrl",
-          "type": "TEXT",
+          "type": "VARCHAR",
           "default": "",
           "check": "",
           "primary": false,
@@ -104,9 +105,9 @@
     },
     {
       "id": "eF0WEK_unFlRqE-BfhiYL",
-      "name": "Users",
-      "x": 361.3200000000003,
-      "y": -57.880000000000024,
+      "name": "user",
+      "x": 404.63115819663074,
+      "y": -103.43799087825002,
       "fields": [
         {
           "name": "id",
@@ -123,7 +124,7 @@
         {
           "id": "mElz6_gKmcE6IUVZYe15p",
           "name": "username",
-          "type": "TEXT",
+          "type": "VARCHAR",
           "default": "",
           "check": "",
           "primary": false,
@@ -131,12 +132,12 @@
           "notNull": true,
           "increment": false,
           "comment": "",
-          "size": 255
+          "size": 100
         },
         {
           "id": "GusXeMcU_q7wG92Dwo8y7",
           "name": "password",
-          "type": "TEXT",
+          "type": "VARCHAR",
           "default": "",
           "check": "",
           "primary": false,
@@ -144,12 +145,12 @@
           "notNull": true,
           "increment": false,
           "comment": "",
-          "size": 255
+          "size": 100
         },
         {
           "id": "LLlSxwDno7pdqcyBc4i0_",
           "name": "email",
-          "type": "TEXT",
+          "type": "VARCHAR",
           "default": "",
           "check": "",
           "primary": false,
@@ -157,7 +158,7 @@
           "notNull": true,
           "increment": false,
           "comment": "",
-          "size": 255
+          "size": 100
         },
         {
           "id": "V6OPZgGH7_AkaB2gP9bRP",
@@ -176,8 +177,8 @@
         {
           "id": "oa0uQZ0S6bgE2i4Z1XmGB",
           "name": "createdAt",
-          "type": "DATE",
-          "default": "",
+          "type": "DATETIME",
+          "default": "CURRENT_TIMESTAMP",
           "check": "",
           "primary": false,
           "unique": false,
@@ -194,7 +195,7 @@
     },
     {
       "id": "CSnfER3cAOjmuKec84lrU",
-      "name": "Cart",
+      "name": "cart",
       "x": -7.0799999999997,
       "y": 114.19999999999987,
       "fields": [
@@ -212,7 +213,7 @@
         },
         {
           "id": "U2Xbaear_Tcc53C6yRH-X",
-          "name": "user.id",
+          "name": "user_id",
           "type": "INTEGER",
           "default": "",
           "check": "",
@@ -225,10 +226,10 @@
           "values": []
         },
         {
-          "id": "Bn3jOAmI1wgVCQc5a_hpV",
-          "name": "quantity",
-          "type": "INTEGER",
-          "default": "",
+          "id": "fEBfaUbtWHIPS4goBPtne",
+          "name": "createdAt",
+          "type": "DATETIME",
+          "default": "CURRENT_TIMESTAMP",
           "check": "",
           "primary": false,
           "unique": false,
@@ -236,19 +237,6 @@
           "increment": false,
           "comment": "",
           "size": "",
-          "values": []
-        },
-        {
-          "id": "g_kr5_fd5wHZTGI3OyXv8",
-          "name": "price",
-          "type": "FLOAT",
-          "default": "",
-          "check": "",
-          "primary": false,
-          "unique": false,
-          "notNull": true,
-          "increment": false,
-          "comment": "",
           "values": []
         }
       ],
@@ -258,7 +246,7 @@
     },
     {
       "id": "ZcJA5jhLBq8MI99W4zvS1",
-      "name": "Category",
+      "name": "category",
       "x": -776.664,
       "y": 126.84000000000003,
       "fields": [
@@ -277,8 +265,8 @@
           "values": []
         },
         {
-          "name": "Type",
-          "type": "TEXT",
+          "name": "name",
+          "type": "VARCHAR",
           "default": "",
           "check": "",
           "primary": false,
@@ -287,7 +275,7 @@
           "increment": false,
           "comment": "",
           "id": "3jQIGL-VChFqb6wTXpXr1",
-          "size": 255
+          "size": 100
         }
       ],
       "comment": "",
@@ -296,7 +284,7 @@
     },
     {
       "id": "BNdnpkPjp_tsSPQEaOSeL",
-      "name": "ProductCategory(join)",
+      "name": "productCategory(join)",
       "x": -722.0276000000001,
       "y": -102.22070000000002,
       "fields": [
@@ -333,9 +321,9 @@
     },
     {
       "id": "glZSG6xOVpWTyQ-lRQZ1I",
-      "name": "Order",
-      "x": -46.959999999999695,
-      "y": -209.80000000000015,
+      "name": "orders",
+      "x": -9.133401615891103,
+      "y": -55.583868126326564,
       "fields": [
         {
           "name": "id",
@@ -364,10 +352,10 @@
           "values": []
         },
         {
-          "id": "VnOXw5CkxINRjWn8MsF-G",
-          "name": "quantity",
-          "type": "INTEGER",
-          "default": "",
+          "id": "IpE9F_w1jBTfvz-83B8eV",
+          "name": "createdAt",
+          "type": "DATETIME",
+          "default": "CURRENT_TIMESTAMP",
           "check": "",
           "primary": false,
           "unique": false,
@@ -375,19 +363,6 @@
           "increment": false,
           "comment": "",
           "size": "",
-          "values": []
-        },
-        {
-          "id": "kRA-UToamopMWWZSs1qtM",
-          "name": "price",
-          "type": "FLOAT",
-          "default": "",
-          "check": "",
-          "primary": false,
-          "unique": false,
-          "notNull": true,
-          "increment": false,
-          "comment": "",
           "values": []
         }
       ],
@@ -397,9 +372,9 @@
     },
     {
       "id": "mbhQUiDrqAVulVZe_x2qO",
-      "name": "ProductOrder(join)",
-      "x": 11.318966000000273,
-      "y": -390.35152774999995,
+      "name": "productOrder(join)",
+      "x": 43.32608770963054,
+      "y": -324.8824151621196,
       "locked": false,
       "fields": [
         {
@@ -427,6 +402,33 @@
           "comment": "",
           "size": "",
           "values": []
+        },
+        {
+          "id": "6bwyGRMWnZ6y9nzwq1mN1",
+          "name": "quantity",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "gY4bjc0H5yPIH08Y67KLM",
+          "name": "price",
+          "type": "DECIMAL",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "10, 2"
         }
       ],
       "comment": "",
@@ -435,7 +437,7 @@
     },
     {
       "id": "ESXy9QazCFE-pe2wyOVkI",
-      "name": "ProductCart(join)",
+      "name": "productCart(join)",
       "x": -476.8410339999997,
       "y": 20.04847225000009,
       "locked": false,
@@ -465,6 +467,20 @@
           "comment": "",
           "size": "",
           "values": []
+        },
+        {
+          "id": "UED4WU6tUGpDSjctAejw2",
+          "name": "quantity",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
         }
       ],
       "comment": "",
@@ -482,7 +498,7 @@
       "updateConstraint": "No action",
       "deleteConstraint": "No action",
       "name": "fk_Users_id_Cart",
-      "id": 1
+      "id": 0
     },
     {
       "startTableId": "BNdnpkPjp_tsSPQEaOSeL",
@@ -493,7 +509,7 @@
       "updateConstraint": "No action",
       "deleteConstraint": "No action",
       "name": "fk_ProductCategory(join)_fk_category_Category",
-      "id": 3
+      "id": 1
     },
     {
       "startTableId": "BNdnpkPjp_tsSPQEaOSeL",
@@ -504,18 +520,7 @@
       "updateConstraint": "No action",
       "deleteConstraint": "No action",
       "name": "fk_ProductCategory(join)_fk_product_Product",
-      "id": 4
-    },
-    {
-      "startTableId": "eF0WEK_unFlRqE-BfhiYL",
-      "startFieldId": "mDkBxKE8YDM2SWlz6B5WL",
-      "endTableId": "glZSG6xOVpWTyQ-lRQZ1I",
-      "endFieldId": "Y4eBPBlx5wM_0TkaZajkS",
-      "cardinality": "one_to_many",
-      "updateConstraint": "No action",
-      "deleteConstraint": "No action",
-      "name": "fk_Users_id_Order",
-      "id": 5
+      "id": 2
     },
     {
       "startTableId": "mbhQUiDrqAVulVZe_x2qO",
@@ -526,18 +531,7 @@
       "updateConstraint": "No action",
       "deleteConstraint": "No action",
       "name": "fk_ProductOrder_fk_product_Product",
-      "id": 4
-    },
-    {
-      "startTableId": "mbhQUiDrqAVulVZe_x2qO",
-      "startFieldId": "jfC-XMEVU-Siql5PWpj3c",
-      "endTableId": "glZSG6xOVpWTyQ-lRQZ1I",
-      "endFieldId": "LPPUzj3Wyb9BD-i56Kinn",
-      "cardinality": "one_to_many",
-      "updateConstraint": "No action",
-      "deleteConstraint": "No action",
-      "name": "fk_ProductOrder_fk_order_Order",
-      "id": 5
+      "id": 3
     },
     {
       "startTableId": "ESXy9QazCFE-pe2wyOVkI",
@@ -548,7 +542,7 @@
       "updateConstraint": "No action",
       "deleteConstraint": "No action",
       "name": "fk_ProductCart_fk_product_Product",
-      "id": 6
+      "id": 4
     },
     {
       "startTableId": "ESXy9QazCFE-pe2wyOVkI",
@@ -559,6 +553,28 @@
       "updateConstraint": "No action",
       "deleteConstraint": "No action",
       "name": "fk_ProductCart_fk_cart_Cart",
+      "id": 5
+    },
+    {
+      "startTableId": "glZSG6xOVpWTyQ-lRQZ1I",
+      "startFieldId": "Y4eBPBlx5wM_0TkaZajkS",
+      "endTableId": "eF0WEK_unFlRqE-BfhiYL",
+      "endFieldId": "mDkBxKE8YDM2SWlz6B5WL",
+      "cardinality": "one_to_many",
+      "updateConstraint": "No action",
+      "deleteConstraint": "No action",
+      "name": "fk_Order_user.id_Users",
+      "id": 6
+    },
+    {
+      "startTableId": "mbhQUiDrqAVulVZe_x2qO",
+      "startFieldId": "jfC-XMEVU-Siql5PWpj3c",
+      "endTableId": "glZSG6xOVpWTyQ-lRQZ1I",
+      "endFieldId": "LPPUzj3Wyb9BD-i56Kinn",
+      "cardinality": "one_to_many",
+      "updateConstraint": "No action",
+      "deleteConstraint": "No action",
+      "name": "fk_productOrder(join)_fk_order_orders",
       "id": 7
     }
   ],

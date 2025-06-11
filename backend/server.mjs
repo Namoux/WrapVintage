@@ -10,36 +10,6 @@ const SECRETKEY = process.env.SECRETKEY ?? "12345";
 
 async function main() {
 
-    // // Je me connecte au serveur MariaDB
-    // const connection = await mariadb.createConnection({
-    //     host: "localhost",
-    //     port: 3306,
-    //     user: "root",
-    //     password: "root",
-    //     database: "my_back" // Je précise le nom de la bdd faites plus haut
-    // });
-
-
-    // await connection.execute(`
-    //     CREATE TABLE IF NOT EXISTS product (
-    //         id INT AUTO_INCREMENT PRIMARY KEY,
-    //         name VARCHAR(255) NOT NULL,
-    //         description VARCHAR(255) NOT NULL,
-    //         price FLOAT NOT NULL,
-    //         catgoryId INT NOT NULL
-    //     )
-    // `);
-    // console.log("Table product created");
-
-    // await connection.execute(`
-    //     CREATE TABLE IF NOT EXISTS user (
-    //         id INT AUTO_INCREMENT PRIMARY KEY,
-    //         username VARCHAR(255) UNIQUE,
-    //         password VARCHAR(255)
-    //     )
-    // `);
-    // console.log("Table user created");
-
     const Product = new ProductModel(connection);
 
     const app = express();
@@ -87,16 +57,29 @@ async function main() {
         }
     });
 
-    app.post("/new-product", checkTokenValid, async (req, res) => {
-
+    app.post("/add-product", checkTokenAdmin(connection), async (req, res) => {
         try {
             const newProducts = req.body;
 
             if (newProducts.length == undefined) {
-                connection.execute(`INSERT INTO product (name, description, price, categoryId) VALUES ('${newProducts.name}', '${newProducts.description}', '${newProducts.price}', '${newProducts.categoryId}')`);
+                if(newProducts.is_new == undefined) {
+                    connection.execute('INSERT INTO product (name, description, price, imageURL, quantity) VALUES (?,?,?,?,?)', [newProducts.name, newProducts.description, newProducts.price, newProducts.imageURL, newProducts.quantity]);
+                } else {
+                    connection.execute('INSERT INTO product (name, description, price, imageURL, quantity, is_new) VALUES (?,?,?,?,?,?)', [newProducts.name, newProducts.description, newProducts.price, newProducts.imageURL, newProducts.quantity, newProducts.is_new]);
+                }
+
+                const [productCreated] = await connection.execute('SELECT MAX(id) AS lastId FROM product');
+                connection.execute('INSERT INTO productCategory (fk_product, fk_category) VALUES (?,?)', [productCreated.lastId, newProducts.categoryId]);
             } else {
-                newProducts.forEach((newProduct) => {
-                    connection.execute(`INSERT INTO product (name, description, price, categoryId) VALUES ('${newProduct.name}', '${newProduct.description}', '${newProduct.price}', '${newProduct.categoryId}')`);
+                newProducts.forEach(async (newProduct) => {
+                    if(newProduct.is_new == undefined) {
+                        connection.execute('INSERT INTO product (name, description, price, imageURL, quantity) VALUES (?,?,?,?,?)', [newProduct.name, newProduct.description, newProduct.price, newProduct.imageURL, newProduct.quantity]);
+                    } else {
+                        connection.execute('INSERT INTO product (name, description, price, imageURL, quantity, is_new) VALUES (?,?,?,?,?,?)', [newProduct.name, newProduct.description, newProduct.price, newProduct.imageURL, newProduct.quantity, newProduct.is_new]);
+                    }
+                    
+                    const [productCreated] = await connection.execute('SELECT MAX(id) AS lastId FROM product');
+                    connection.execute('INSERT INTO productCategory (fk_product, fk_category) VALUES (?,?)', [productCreated.lastId, newProduct.categoryId]);
                 });
             }
 
@@ -110,13 +93,14 @@ async function main() {
         };
     });
 
-    app.put("/edit-product/:id", async (req, res) => {
+    app.put("/edit-product/:id", checkTokenAdmin(connection), async (req, res) => {
 
         const productId = parseInt(req.params.id);
         if (isNaN(productId)) {
             res.status(400).json({ msg: "Wrong request param" });
+            console.log("Wrong request param");
             return;
-        }
+        };
 
         const product = await Product.getProductById(productId);
 
@@ -127,20 +111,22 @@ async function main() {
                 console.log("editProduct :", editProduct);
 
                 for await (const [key, value] of Object.entries(editProduct)) {
-                    console.log(`${key}: ${value}`);
-                    connection.execute(`UPDATE product 
-                    SET ${key} = '${value}'  
-                    WHERE id = '${productId}'
-                    `);
+                    // console.log(key, ": ", value);
+                    if (`${key}` != "categoryId") {
+                        connection.execute(`UPDATE product SET ${key} = ? WHERE id = ?`, [value, productId]);
+                    } else {
+                        connection.execute('UPDATE productCategory SET fk_category = ? WHERE fk_product = ?', [value, productId]);
+                    }
                 };
 
                 // Je renvoi le produit au format JSON
-                res.status(200).json({ msg: "Product edited !", data: product });
-                console.log({ msg: "Product edited !", data: product });
+                res.status(200).json({ msg: "Product edited !", oldData: product, newData: editProduct });
+                console.log({ msg: "Product edited !", oldData: product, newData: editProduct });
             } else {
                 // Le produit n'existe pas !
                 res.statusCode = 404;
-                res.json("Unknow Product");
+                res.json("Unknown Product");
+                console.log("Unknown Product");
             }
         } catch (error) {
             res.status(400).json({ msg: "Wrong request" });
@@ -149,26 +135,121 @@ async function main() {
         };
     });
 
-    app.delete("/product/:id", async (req, res) => {
+    app.delete("/product/:id", checkTokenAdmin(connection), async (req, res) => {
+        try {
+            const productId = parseInt(req.params.id);
+            if (isNaN(productId)) {
+                res.status(400).json({ msg: "Wrong request param" });
+                console.log("Wrong request param");
+                return;
+            }
+    
+            const product = await Product.getProductById(productId);
+    
+            if (product.length !== 0) {
+                // Le produit existe !
+                await connection.execute('DELETE FROM productCategory WHERE fk_product = ?', [productId]);
+                await connection.execute('DELETE FROM product WHERE id = ?', [productId]);
+                // Je renvoi le produit au format JSON
+                res.json({ msg: "Product deleted", data: product });
+                console.log({ msg: "Product deleted", data: product });
+            } else {
+                // Le produit n'existe pas !
+                res.statusCode = 404;
+                res.json("Unknown Product");
+                console.log("Unknown Product");
+            };
+            
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            console.error("Error deleting product:", error);
+            return;
+        }
+    });
 
-        const productId = parseInt(req.params.id);
-        if (isNaN(productId)) {
-            res.status(400).json({ msg: "Wrong request param" });
+    app.post("/add-category", checkTokenAdmin(connection), async (req, res) => {
+        try {
+            const newCategory = req.body;
+            console.log(newCategory);
+
+            if (newCategory.length == undefined) {
+                connection.execute('INSERT INTO category (name) VALUES (?)', [newCategory.name]);
+            } else {
+                newCategory.forEach((oneCategory) => {
+                    connection.execute('INSERT INTO category (name) VALUES (?)', [oneCategory.name]);
+                })
+            }
+     
+            res.status(200).json({ msg: "Category created", data: newCategory });
+            console.log("Category created : ", newCategory);
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            return;
+        }
+    });
+
+    app.put("/edit-category/:id", checkTokenAdmin(connection), async (req, res) => {
+        const categoryId = parseInt(req.params.id);
+        if (isNaN(categoryId)) {
+            res.status(400).json({msg: "Wrong request param"});
+            console.log("Wrong request param");
+            return;
+        };
+
+        const category = await Product.getCategoryById(categoryId);
+
+        try {
+            if (category.length != 0) {
+                // la categorie existe
+                const editCategory = req.body;
+                console.log("editCategory : ", editCategory);
+
+                for await (const [key, value] of Object.entries(editCategory)) {
+                    // console.log(key, value);
+                    connection.execute(`UPDATE category SET ${key} = ? WHERE id = ?`, [value, categoryId]);
+                };
+
+                // Je renvoi le produit au format JSON
+                res.status(200).json({ msg: "Category edited !", oldData: category, newData: editCategory });
+                console.log({ msg: " Category edited !", oldData: category, newData: editCategory });
+            } else {
+                // Le produit n'existe pas !
+                res.statusCode = 404;
+                res.json("Unknown Category");
+                console.log("Unknown Category");
+            }
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
             return;
         }
 
-        const product = await Product.getProductById(productId);
+    });
 
-        if (product.length != 0) {
-            // Le produit existe !
-            // Je renvoi le produit au format JSON
-            await connection.execute(`DELETE FROM product WHERE id = ${productId}`);
-            res.json({ msg: "Product deleted", data: product });
-            console.log({ msg: "Product deleted", data: product });
+    app.delete("/category/:id", checkTokenAdmin(connection), async (req, res) => {
+        const categoryId = parseInt(req.params.id);
+        if (isNaN(categoryId)) {
+            res.status(400).json({msg: "Wrong request param"});
+            console.log("Wrong request param");
+            return;
+        };
+
+        const category = await Product.getCategoryById(categoryId);
+
+        if (category.length != 0) {
+            // Le produit existe et on le supprime!
+            await connection.execute('DELETE FROM productCategory WHERE fk_category = ?', [categoryId]);
+            await connection.execute('DELETE FROM category WHERE id = ?', [categoryId]);
+            // Je renvoi une reponse au format JSON
+            res.json({ msg: "Category deleted", data: category });
+            console.log({ msg: "Category deleted", data: category });
         } else {
             // Le produit n'existe pas !
             res.statusCode = 404;
-            res.json("Unknow Product");
+            res.json("Unknown Category");
+            console.log("Unknown Category");
         }
     });
 
@@ -212,17 +293,25 @@ async function main() {
     // Créer un nouvelle utilisateur
     app.post("/signup", async (req, res) => {
         try {
-            const { username, password } = req.body;
-            if (!username || !password) {
-                console.log('Username and password are required');
-                return res.status(400).json({ error: 'Username and password are required' });
+            const { username, password, email, is_admin } = req.body;
+            if (!username || !password || !email) {
+                console.log('Username, password and email are required');
+                return res.status(400).json({ error: 'Username, password and email are required' });
             };
 
             const hashPassword = await bcrypt.hash(password, 10);
-            const insertResult = await connection.execute(
-                'INSERT INTO user (username, password) VALUES (?, ?)',
-                [username, hashPassword]
-            );
+
+            if (is_admin === undefined) {
+                const insertResult = await connection.execute(
+                    'INSERT INTO user (username, password, email) VALUES (?, ?, ?)',
+                    [username, hashPassword, email]
+                );
+            } else {
+                const insertResult = await connection.execute(
+                    'INSERT INTO user (username, password, email, is_admin) VALUES (?, ?, ?, ?)',
+                    [username, hashPassword, email, is_admin]
+                );
+            }
 
             console.log('User created successfully');
             return res.status(201).json({ message: 'User created successfully' });
@@ -271,6 +360,42 @@ function checkTokenValid (req, res, next) {
             msg : "Wrong token"
         });
     };
+}
+
+/**
+ * @param {Request} req 
+ * @param {Response} res 
+ * @param {import("express").NextFunction} next 
+ * @returns 
+ */
+function checkTokenAdmin (connection) {
+    return async (req, res, next) => {
+        try {
+            const token = req.headers.authorization.split(" ")[1];
+        
+            const decodeToken = jwt.verify(token, SECRETKEY)
+        
+            const IdUser = decodeToken.id;
+    
+            const resultUser = await connection.execute('SELECT * FROM user WHERE id = ?', [IdUser]);
+
+            if (resultUser[0].is_admin === 1) {
+                console.log ("Token Admin valid");
+                next();
+            } else {
+                console.log("Acces denied, not Admin");
+                return res.status(403).json({
+                msg : "Acces denied, not Admin"
+            });
+            }
+
+        } catch (error) {
+            console.log("Wrong Token Admin");
+            return res.status(401).json({
+                msg : "Wrong token"
+            });
+        }
+    }
 }
 
 

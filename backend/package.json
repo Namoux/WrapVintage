@@ -10,7 +10,7 @@
   },
   "name": "serverexpress",
   "version": "1.0.0",
-  "description": "Mini Crud en express",
+  "description": "Full Shop en express",
   "main": "server.mjs",
   "type": "module",
   "scripts": {

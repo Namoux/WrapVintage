@@ -6,7 +6,7 @@ import { ProductModel } from "./product.model.js";
 import { connection } from "./database.mjs";
 
 const PORT = 4004;
-const SECRETKEY = process.env.SECRETKEY ?? "12345";
+const SECRETKEY = process.env.SECRETKEY;
 
 async function main() {
 
@@ -18,42 +18,80 @@ async function main() {
     app.use(cors());
 
     app.get("/all-products/:limit", async (req, res) => {
-
-        const productLimit = parseInt(req.params.limit);
-
-        if (isNaN(productLimit)) {
-            res.status(400).json({ msg: "Wrong request param" });
+        try {
+            const productLimit = parseInt(req.params.limit);
+    
+            if (isNaN(productLimit)) {
+                res.status(400).json({ msg: "Wrong request param" });
+                return;
+            }
+            const products = await Product.getAllProductsActive(productLimit);
+    
+            console.log("products : ", products);
+    
+            if (productLimit.length != 0) {
+                res.status(200).json(products);
+            } else {
+                // Les produits n'existent pas !
+                res.status(400).json("Unknown products");
+    
+            }
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            console.error("Error :", error);
             return;
         }
-        const products = await Product.getAllProducts(productLimit);
+    });
 
-        console.log("products : ", products);
-
-        if (productLimit.length != 0) {
-            res.status(200).json(products);
-        } else {
-            // Les produits n'existent pas !
-            res.status(400).json("Unknow Products");
-
+    app.get("/all-products-archived/:limit", checkTokenAdmin(connection), async (req, res) => {
+        try {
+            const productLimit = parseInt(req.params.limit);
+    
+            if (isNaN(productLimit)) {
+                res.status(400).json({ msg: "Wrong request param" });
+                return;
+            }
+            const products = await Product.getAllProductsArchived(productLimit);
+    
+            console.log("products : ", products);
+    
+            if (productLimit.length != 0) {
+                res.status(200).json(products);
+            } else {
+                // Les produits n'existent pas !
+                res.status(400).json("Unknown products");
+    
+            }
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            console.error("Error :", error);
+            return;
         }
     });
 
     app.get("/product/:id", async (req, res) => {
-
-        const productId = parseInt(req.params.id);
-        if (isNaN(productId)) {
-            res.status(400).json({ msg: "Wrong request param" });
+        try {
+            const productId = parseInt(req.params.id);
+            if (isNaN(productId)) {
+                res.status(400).json({ msg: "Wrong request param" });
+                return;
+            }
+            const product = await Product.getProductById(productId);
+            console.log("product : ", product);
+    
+    
+            if (product.length != 0) {
+                res.status(200).json(product);
+            } else {
+                // Le produit n'existe pas !
+                res.status(400).json("Unknown product");
+            }
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
             return;
-        }
-        const product = await Product.getProductById(productId);
-        console.log("product : ", product);
-
-
-        if (product.length != 0) {
-            res.status(200).json(product);
-        } else {
-            // Le produit n'existe pas !
-            res.status(400).json("Unknow Product");
         }
     });
 
@@ -61,30 +99,47 @@ async function main() {
         try {
             const newProducts = req.body;
 
+            const categories = await connection.execute('SELECT * FROM category');
+            
             if (newProducts.length == undefined) {
-                if(newProducts.is_new == undefined) {
-                    connection.execute('INSERT INTO product (name, description, price, imageURL, quantity) VALUES (?,?,?,?,?)', [newProducts.name, newProducts.description, newProducts.price, newProducts.imageURL, newProducts.quantity]);
+                const categoryExists = categories.find(cat => cat.id === newProducts.categoryId);
+                if (!categoryExists) {
+                    console.log("Categorie doesn't exist");
+                    res.status(400).json({ msg: "Categorie doesn't exist" });
+                    return;
                 } else {
-                    connection.execute('INSERT INTO product (name, description, price, imageURL, quantity, is_new) VALUES (?,?,?,?,?,?)', [newProducts.name, newProducts.description, newProducts.price, newProducts.imageURL, newProducts.quantity, newProducts.is_new]);
-                }
-
-                const [productCreated] = await connection.execute('SELECT MAX(id) AS lastId FROM product');
-                connection.execute('INSERT INTO productCategory (fk_product, fk_category) VALUES (?,?)', [productCreated.lastId, newProducts.categoryId]);
+                    if (newProducts.is_new == undefined) {
+                        connection.execute('INSERT INTO product (name, description, price, imageURL, quantity) VALUES (?,?,?,?,?)', [newProducts.name, newProducts.description, newProducts.price, newProducts.imageURL, newProducts.quantity]);
+                    } else {
+                        connection.execute('INSERT INTO product (name, description, price, imageURL, quantity, is_new) VALUES (?,?,?,?,?,?)', [newProducts.name, newProducts.description, newProducts.price, newProducts.imageURL, newProducts.quantity, newProducts.is_new]);
+                    }
+                        
+                        const [productCreated] = await connection.execute('SELECT MAX(id) AS lastId FROM product');
+                        connection.execute('INSERT INTO productCategory (fk_product, fk_category) VALUES (?,?)', [productCreated.lastId, newProducts.categoryId]);
+                    }
             } else {
-                newProducts.forEach(async (newProduct) => {
+                for (const newProduct of newProducts) {
+                    const categoryExists = categories.find(cat => cat.id === newProduct.categoryId);
+                    if (!categoryExists) {
+                        console.log("Categorie doesn't exist");
+                        res.status(400).json({ msg: "Categorie doesn't exist" });
+                        return;
+                    }
+
                     if(newProduct.is_new == undefined) {
                         connection.execute('INSERT INTO product (name, description, price, imageURL, quantity) VALUES (?,?,?,?,?)', [newProduct.name, newProduct.description, newProduct.price, newProduct.imageURL, newProduct.quantity]);
                     } else {
                         connection.execute('INSERT INTO product (name, description, price, imageURL, quantity, is_new) VALUES (?,?,?,?,?,?)', [newProduct.name, newProduct.description, newProduct.price, newProduct.imageURL, newProduct.quantity, newProduct.is_new]);
                     }
-                    
+                        
                     const [productCreated] = await connection.execute('SELECT MAX(id) AS lastId FROM product');
                     connection.execute('INSERT INTO productCategory (fk_product, fk_category) VALUES (?,?)', [productCreated.lastId, newProduct.categoryId]);
-                });
+                }
             }
-
+                    
             res.status(200).json({ msg: "Product created", data: newProducts });
             console.log("Product created : ", newProducts);
+            
 
         } catch (error) {
             res.status(400).json({ msg: "Wrong request" });
@@ -102,7 +157,8 @@ async function main() {
             return;
         };
 
-        const product = await Product.getProductById(productId);
+        const [product] = await Product.getProductById(productId);
+        const categories = await Product.getAllCategory();
 
         try {
             if (product.length != 0) {
@@ -111,11 +167,16 @@ async function main() {
                 console.log("editProduct :", editProduct);
 
                 for await (const [key, value] of Object.entries(editProduct)) {
-                    // console.log(key, ": ", value);
-                    if (`${key}` != "categoryId") {
+                    if (key in product) {
                         connection.execute(`UPDATE product SET ${key} = ? WHERE id = ?`, [value, productId]);
-                    } else {
+                        // some renvoi true si la value existe dans category id
+                    } else if (key === "categoryId" && categories.some(cat => cat.id === Number(value))){
                         connection.execute('UPDATE productCategory SET fk_category = ? WHERE fk_product = ?', [value, productId]);
+                    } else {
+                        console.log("key", key);
+                        res.status(400).json({ msg: "Wrong params" });
+                        console.log("Wrong params of client");
+                        return;
                     }
                 };
 
@@ -148,11 +209,10 @@ async function main() {
     
             if (product.length !== 0) {
                 // Le produit existe !
-                await connection.execute('DELETE FROM productCategory WHERE fk_product = ?', [productId]);
-                await connection.execute('DELETE FROM product WHERE id = ?', [productId]);
+                await connection.execute('UPDATE product SET is_archived = TRUE WHERE id = ?', [productId]);
                 // Je renvoi le produit au format JSON
-                res.json({ msg: "Product deleted", data: product });
-                console.log({ msg: "Product deleted", data: product });
+                res.json({ msg: "Product archived", data: product });
+                console.log({ msg: "Product archived", data: product });
             } else {
                 // Le produit n'existe pas !
                 res.statusCode = 404;
@@ -198,7 +258,7 @@ async function main() {
             return;
         };
 
-        const category = await Product.getCategoryById(categoryId);
+        const [category] = await Product.getCategoryById(categoryId);
 
         try {
             if (category.length != 0) {
@@ -207,8 +267,15 @@ async function main() {
                 console.log("editCategory : ", editCategory);
 
                 for await (const [key, value] of Object.entries(editCategory)) {
-                    // console.log(key, value);
-                    connection.execute(`UPDATE category SET ${key} = ? WHERE id = ?`, [value, categoryId]);
+                    if (key in category) {
+                        // console.log(key, value);
+                        connection.execute(`UPDATE category SET ${key} = ? WHERE id = ?`, [value, categoryId]);
+                    } else {
+                        console.log("key", key);
+                        res.status(400).json({ msg: "Wrong params" });
+                        console.log("Wrong params of client");
+                        return;
+                    }
                 };
 
                 // Je renvoi le produit au format JSON
@@ -239,8 +306,8 @@ async function main() {
         const category = await Product.getCategoryById(categoryId);
 
         if (category.length != 0) {
-            // Le produit existe et on le supprime!
-            await connection.execute('DELETE FROM productCategory WHERE fk_category = ?', [categoryId]);
+            // La categorie existe et on le supprime!
+            // await connection.execute('DELETE FROM productCategory WHERE fk_category = ?', [categoryId]);
             await connection.execute('DELETE FROM category WHERE id = ?', [categoryId]);
             // Je renvoi une reponse au format JSON
             res.json({ msg: "Category deleted", data: category });
@@ -250,6 +317,136 @@ async function main() {
             res.statusCode = 404;
             res.json("Unknown Category");
             console.log("Unknown Category");
+        }
+    });
+
+    app.get("/all-users/:limit", checkTokenAdmin(connection), async (req, res) => {
+        try {
+            const userLimit = parseInt(req.params.limit);
+    
+            if (isNaN(userLimit)) {
+                res.status(400).json({ msg: "Wrong request param" });
+                return;
+            }
+            const users = await Product.getAllUsersActive(userLimit);
+    
+            console.log("users : ", users);
+    
+            if (userLimit.length != 0) {
+                res.status(200).json(users);
+            } else {
+                // Les produits n'existent pas !
+                res.status(400).json("Unknown users");
+    
+            }
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            return;
+        }
+    });
+
+    app.get("/all-users-deleted/:limit", checkTokenAdmin(connection), async (req, res) => {
+        try {
+            const userLimit = parseInt(req.params.limit);
+    
+            if (isNaN(userLimit)) {
+                res.status(400).json({ msg: "Wrong request param" });
+                return;
+            }
+            const users = await Product.getAllUsersDeleted(userLimit);
+    
+            console.log("users : ", users);
+    
+            if (userLimit.length != 0) {
+                res.status(200).json(users);
+            } else {
+                // Les produits n'existent pas !
+                res.status(400).json("Unknown users");
+    
+            }
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            return;
+        }
+    });
+
+    app.delete("/user/:id", checkTokenAdmin(connection), async (req, res) => {
+        try {
+            const userId = parseInt(req.params.id);
+            if (isNaN(userId)) {
+                res.status(400).json({msg: "Wrong request param"});
+                console.log("Wrong request param");
+                return;
+            };
+    
+            const user = await Product.getUserById(userId);
+    
+            if (user.length != 0) {
+                // l'user existe et on le supprime!
+                await connection.execute('UPDATE user SET deleted_at = now(), username = NULL, password = NULL, email = NULL WHERE id = ?', [userId]);
+                res.json({ msg: "Suspended account", data: user });
+                console.log({ msg: "Suspended account", data: user });
+            } else {
+                    // Le produit n'existe pas !
+                    res.statusCode = 404;
+                    res.json("Unknown User");
+                    console.log("Unknown User");
+            };
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            console.error("Error deleting user:", error);
+            return;
+        }
+    });
+
+    app.put("/edit-user/:id", checkTokenValid, async (req, res) => {
+        const userId = parseInt(req.params.id);
+        if (isNaN(userId)) {
+            res.status(400).json({msg: "Wrong request param"});
+            console.log("Wrong request param");
+            return;
+        };
+
+        const [user] = await Product.getUserById(userId);
+
+        try {
+            if (user.length != 0) {
+                //  le user existe 
+                const editUser = req.body;
+                console.log("editUser : ", editUser);
+
+                for await (const [key, value] of Object.entries(editUser)) {
+                    if (key in user) {
+                        if(key === "password") {
+                            const hashPassword = await bcrypt.hash(value, 10);
+                            connection.execute(`UPDATE user SET ${key} = ? WHERE id = ?`, [hashPassword, userId]);
+                        } else {
+                            connection.execute(`UPDATE user SET ${key} = ? WHERE id = ?`, [value, userId]);
+                        }
+                    } else {
+                        console.log("key", key);
+                        res.status(400).json({ msg: "Wrong params" });
+                        console.log("Wrong params of client");
+                        return;
+                    }
+                };
+                
+                // Je renvoi le produit au format JSON
+                res.status(200).json({ msg: "user edited !", oldData: user, newData: editUser });
+                console.log({ msg: " Category edited !", oldData: user, newData: editUser });
+            } else {
+                // Le produit n'existe pas !
+                res.statusCode = 404;
+                res.json("Unknown User");
+                console.log("Unknown User");
+            }
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            return;
         }
     });
 
@@ -263,15 +460,18 @@ async function main() {
             };
 
             const users = await connection.execute(`SELECT * FROM user WHERE username=?`, [username]);
+            
             if (users.length < 0) {
+                console.log("Unknown client");
                 return res.status(400).json({ error: "Unauthorized" });
             };
-
+            
             const user = users[0];
             console.log("user", user);
 
             const isValidPassword = await bcrypt.compare(password, user.password);
             if (!isValidPassword) {
+                console.log("Unauthorized");
                 return res.status(400).json({ error: "Unauthorized" });
             }
 
@@ -286,7 +486,7 @@ async function main() {
             })
         } catch (error) {
             console.error('Error login user:', error);
-            return res.status(500).json({ error: 'Internal server error' });
+            return res.status(500).json({ error: 'Error login user' });
         }
     });
 

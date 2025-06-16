@@ -17,7 +17,8 @@ const product = await connection.execute(`
         price DECIMAL(10, 2) NOT NULL,
         imageURL VARCHAR(255),
         quantity INT NOT NULL,
-        is_new BOOLEAN NOT NULL DEFAULT FALSE
+        is_new BOOLEAN DEFAULT FALSE,
+        is_archived BOOLEAN DEFAULT FALSE
     )
 `);
 if (product.warningStatus === 0) console.log("Table product created");
@@ -25,11 +26,12 @@ if (product.warningStatus === 0) console.log("Table product created");
 const user = await connection.execute(`
     CREATE TABLE IF NOT EXISTS user (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        username VARCHAR(100) NOT NULL UNIQUE,
-        password VARCHAR(100) NOT NULL,
-        email VARCHAR(100) NOT NULL UNIQUE,
-        is_admin BOOLEAN NOT NULL DEFAULT FALSE, 
-        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+        username VARCHAR(100) NULL UNIQUE,
+        password VARCHAR(100) NULL,
+        email VARCHAR(100) NULL UNIQUE,
+        is_admin BOOLEAN DEFAULT FALSE, 
+        createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+        deleted_at DATETIME NULL
     )
 `);
 if (user.warningStatus === 0) console.log("Table user created");
@@ -48,7 +50,7 @@ const productCategory = await connection.execute(`
         fk_category INT,
         PRIMARY KEY (fk_product, fk_category),
         FOREIGN KEY (fk_product) REFERENCES product(id),
-        FOREIGN KEY (fk_category) REFERENCES category(id)
+        FOREIGN KEY (fk_category) REFERENCES category(id) ON DELETE CASCADE
         )
 `);
 if (productCategory.warningStatus === 0) console.log("Table productCategory created");
@@ -58,7 +60,7 @@ const cart = await connection.execute(`
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES user(id)
+        FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
     )
 `);
 if (cart.warningStatus === 0) console.log("Table cart created");
@@ -70,7 +72,7 @@ const productCart = await connection.execute (`
         quantity INT NOT NULL,
         PRIMARY KEY (fk_product, fk_cart),
         FOREIGN KEY (fk_product) REFERENCES product(id),
-        FOREIGN KEY (fk_cart) REFERENCES cart(id)
+        FOREIGN KEY (fk_cart) REFERENCES cart(id) ON DELETE CASCADE
     )
 `);
 if (productCart.warningStatus === 0) console.log("Table productCart created");

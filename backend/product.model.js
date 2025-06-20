@@ -1,8 +1,9 @@
 
 export class ProductModel {
 
-    constructor(connection) {
+    constructor(connection, baseUrl) {
         this.connection = connection;
+        this.baseUrl = baseUrl;
     };
 
     /**
@@ -16,7 +17,13 @@ export class ProductModel {
         const result = await this.connection.execute('SELECT * FROM product WHERE id = ?', [id]);
         console.log("result : ", result);
 
-        return result;
+        // Ajouter l'URL de l'image à chaque produit
+        const productsWithImageUrl = result.map(product => ({
+            ...product,
+            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+        }));
+
+        return productsWithImageUrl;
     };
 
     /**
@@ -27,10 +34,16 @@ export class ProductModel {
         console.log("limit :", limit);
         console.log("Client get All products active");
 
-        const result = this.connection.execute('SELECT * FROM product WHERE is_archived = FALSE LIMIT ?', [limit]);
+        const result = await this.connection.execute('SELECT * FROM product WHERE is_archived = FALSE LIMIT ?', [limit]);
         console.log("result : ", result);
 
-        return result;
+        // Ajouter l'URL de l'image à chaque produit
+        const productsWithImageUrl = result.map(product => ({
+            ...product,
+            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+        }));
+
+        return productsWithImageUrl;
     };
 
     /**
@@ -44,7 +57,51 @@ export class ProductModel {
         const result = this.connection.execute('SELECT * FROM product WHERE is_archived = TRUE LIMIT ?', [limit]);
         console.log("result : ", result);
 
-        return result;
+        // Ajouter l'URL de l'image à chaque produit
+        const productsWithImageUrl = result.map(product => ({
+            ...product,
+            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+        }));
+
+        return productsWithImageUrl;
+    };
+
+    /**
+     * Retourne un tableau contenant tout les produits.
+     * @returns {{id:number,name:string, description:string, price:number, imageURL:string, quantity:number, is_new:boolean, is_archived:boolean}[]}
+     */
+    async getProductHomme() {
+        console.log("Client get products Bracelet Homme");
+
+        const result = await this.connection.execute('SELECT p.name, p.description, p.price, p.imageURL, p.quantity FROM product AS p INNER JOIN productCategory AS pc ON p.id = pc.fk_product INNER JOIN category AS c ON c.id = pc.fk_category WHERE c.id = 1');
+        console.log("result : ", result);
+
+        // Ajouter l'URL de l'image à chaque produit
+        const productsWithImageUrl = result.map(product => ({
+            ...product,
+            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+        }));
+
+        return productsWithImageUrl;
+    };
+
+        /**
+     * Retourne un tableau contenant tout les produits.
+     * @returns {{id:number,name:string, description:string, price:number, imageURL:string, quantity:number, is_new:boolean, is_archived:boolean}[]}
+     */
+    async getAllnewProducts() {
+        console.log("Client get new products");
+
+        const result = this.connection.execute('SELECT * FROM product WHERE is_new = TRUE');
+        console.log("result : ", result);
+
+        // Ajouter l'URL de l'image à chaque produit
+        const productsWithImageUrl = result.map(product => ({
+            ...product,
+            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+        }));
+
+        return productsWithImageUrl;
     };
 
     /**

@@ -4,18 +4,27 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { ProductModel } from "./product.model.js";
 import { connection } from "./database.mjs";
+import dotenv from "dotenv";
 
 const PORT = 4004;
+
+// Définir l'URL de base
+const baseUrl = `http://0.0.0.0:${process.env.PORT || 4004}`; // Utiliser une variable d'environnement pour le port
+
+dotenv.config();
 const SECRETKEY = process.env.SECRETKEY;
 
 async function main() {
 
-    const Product = new ProductModel(connection);
+    const Product = new ProductModel(connection, baseUrl);
 
     const app = express();
 
     app.use(express.json());
     app.use(cors());
+
+    // Configuration pour servir des fichiers statiques
+    app.use(express.static('public')); // Assurez-vous que 'public' est le nom de votre dossier
 
     app.get("/all-products/:limit", async (req, res) => {
         try {
@@ -70,6 +79,59 @@ async function main() {
             return;
         }
     });
+
+    app.get("/all-newproducts/:limit", async (req, res) => {
+        try {
+            const productLimit = parseInt(req.params.limit);
+    
+            if (isNaN(productLimit)) {
+                res.status(400).json({ msg: "Wrong request param" });
+                return;
+            }
+            const products = await Product.getAllnewProducts(productLimit);
+    
+            console.log("products : ", products);
+    
+            if (productLimit.length != 0) {
+                res.status(200).json(products);
+            } else {
+                // Les produits n'existent pas !
+                res.status(400).json("Unknown products");
+    
+            }
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            console.error("Error :", error);
+            return;
+        }
+    });
+
+    app.get("/product-man", async (req, res) => {
+        try {
+            const products = await Product.getProductHomme();
+    
+            console.log("products : ", products);
+    
+            if (products.length != 0) {
+                res.status(200).json(products);
+            } else {
+                // Les produits n'existent pas !
+                res.status(400).json("Unknown products");
+    
+            }
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            console.error("Error :", error);
+            return;
+        }
+    });
+
+
+
+
+
 
     app.get("/product/:id", async (req, res) => {
         try {

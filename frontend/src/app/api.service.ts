@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Product } from './interfaces/Variables';
+import { Product } from './interfaces/models';
+import { baseURL } from './interfaces/constants';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -10,7 +11,19 @@ export class ApiService {
 
   public async getProducts(limit : number = 100) : Promise <Product[]> {
     // Ma fonction asyncrone renvoie une promesse de Product[]
-    return fetch("http://0.0.0.0:4004/all-products/"+limit)
+    return fetch(`${baseURL}/all-products/`+limit)
+    .then(res=>res.json());
+  }
+
+  public async getManProducts() : Promise <Product[]> {
+    // Ma fonction asyncrone renvoie une promesse de Product[]
+    return fetch(`${baseURL}/product-man/`)
+    .then(res=>res.json());
+  }
+
+    public async getWomanProducts() : Promise <Product[]> {
+    // Ma fonction asyncrone renvoie une promesse de Product[]
+    return fetch(`${baseURL}/product-woman/`)
     .then(res=>res.json());
   }
 }

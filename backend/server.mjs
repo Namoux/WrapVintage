@@ -128,10 +128,26 @@ async function main() {
         }
     });
 
-
-
-
-
+    app.get("/product-woman", async (req, res) => {
+        try {
+            const products = await Product.getProductFemme();
+    
+            console.log("products : ", products);
+    
+            if (products.length != 0) {
+                res.status(200).json(products);
+            } else {
+                // Les produits n'existent pas !
+                res.status(400).json("Unknown products");
+    
+            }
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            console.error("Error :", error);
+            return;
+        }
+    });
 
     app.get("/product/:id", async (req, res) => {
         try {

@@ -47,7 +47,7 @@ export class ProductModel {
     };
 
     /**
-     * Retourne un tableau contenant tout les produits.
+     * Retourne un tableau contenant tout les produits archivés.
      * @returns {{id:number,name:string, description:string, price:number, imageURL:string, quantity:number, is_new:boolean, is_archived:boolean}[]}
      */
     async getAllProductsArchived(limit) {
@@ -67,7 +67,7 @@ export class ProductModel {
     };
 
     /**
-     * Retourne un tableau contenant tout les produits.
+     * Retourne un tableau contenant tout les produits de la categorie homme.
      * @returns {{id:number,name:string, description:string, price:number, imageURL:string, quantity:number, is_new:boolean, is_archived:boolean}[]}
      */
     async getProductHomme() {
@@ -85,8 +85,27 @@ export class ProductModel {
         return productsWithImageUrl;
     };
 
+    /**
+     * Retourne un tableau contenant tout les produits de la categorie femme.
+     * @returns {{id:number,name:string, description:string, price:number, imageURL:string, quantity:number, is_new:boolean, is_archived:boolean}[]}
+     */
+    async getProductFemme() {
+        console.log("Client get products Bracelet Femme");
+
+        const result = await this.connection.execute('SELECT p.name, p.description, p.price, p.imageURL, p.quantity FROM product AS p INNER JOIN productCategory AS pc ON p.id = pc.fk_product INNER JOIN category AS c ON c.id = pc.fk_category WHERE c.id = 2');
+        console.log("result : ", result);
+
+        // Ajouter l'URL de l'image à chaque produit
+        const productsWithImageUrl = result.map(product => ({
+            ...product,
+            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+        }));
+
+        return productsWithImageUrl;
+    };
+
         /**
-     * Retourne un tableau contenant tout les produits.
+     * Retourne un tableau contenant tout les nouveaux produits.
      * @returns {{id:number,name:string, description:string, price:number, imageURL:string, quantity:number, is_new:boolean, is_archived:boolean}[]}
      */
     async getAllnewProducts() {

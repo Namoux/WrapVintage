@@ -1,0 +1,179 @@
+.section1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0rem 10rem;
+}
+
+.section1 h2{
+    color: #D4B369;
+    margin-top: 3rem;
+}
+
+.section1 img {
+    width: 100%;
+    border-radius: 14px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.274);
+}
+
+.section2 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4rem;
+    padding: 3rem 10rem;
+}
+
+.case {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    text-align: center;
+}
+
+.case img {
+    aspect-ratio: 1/1;
+    width: 7rem;
+    object-fit: contain;
+}
+
+.case h3 {
+    margin: 0.5rem 0 0;
+    /* font-size: 1.2rem; */
+    font-weight: bold;
+    color: #D4B369;
+}
+
+.case p {
+    margin: 0.5rem 0 0;
+    line-height: 1.5;
+    max-width: 300px;
+}
+
+.section3 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem;
+    padding: 0rem 10rem;
+}
+
+.section3 img {
+    aspect-ratio: 1/1;
+    width: 25rem;
+    object-fit: contain;
+    border-radius: 14px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.274);
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.text h3 {
+    margin: 0.5rem 0 0;
+    font-weight: bold;
+    color: #D4B369;
+}
+
+.section4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3rem 10rem;
+}
+
+.section4 h3 {
+    margin: 0.5rem 0 0;
+    font-weight: bold;
+    color: #D4B369;
+}
+
+
+/* Tablettes */
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .section1 h2{
+        margin-top: 1rem;
+    }
+
+    .section2 {
+        padding: 2rem 4rem;
+    }
+
+    .section3 {
+        padding: 2rem 4rem;
+    }
+
+    .section4, .section1 {
+        padding: 2rem 4rem;
+    }
+
+    .section3 img {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+}
+
+/* Smartphones */
+@media (max-width: 600px) {
+
+    .section1 h2{
+        margin-top: 1rem;
+        font-size: 1.5rem;
+    }
+
+    .section1, .section4 {
+        padding: 1rem;
+    }
+
+    .section2 {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 0.3rem;
+    }
+
+    .section3 {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 0.5rem;
+    }
+
+    .section3 img {
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .case {
+        margin-top: 1rem;
+    }
+    .case img {
+        width: 5rem;
+    }
+
+    .case p {
+        font-size: 0.95rem;
+        margin-top: 0;
+    }
+
+    .case h3 {
+        margin: 0;
+    }
+
+    .text p {
+        font-size: 0.95rem;
+    }
+
+    .section4 p {
+        font-size: 0.95rem;
+    }
+}
+

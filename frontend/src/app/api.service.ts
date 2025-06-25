@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Product } from './interfaces/models';
-import { baseURL } from './interfaces/constants';
-import { HttpClient } from '@angular/common/http';
+import { environment } from '../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -11,19 +10,26 @@ export class ApiService {
 
   public async getProducts(limit : number = 100) : Promise <Product[]> {
     // Ma fonction asyncrone renvoie une promesse de Product[]
-    return fetch(`${baseURL}/all-products/`+limit)
+    return fetch(`${environment.baseURL}/all-products/`+limit)
     .then(res=>res.json());
   }
 
   public async getManProducts() : Promise <Product[]> {
     // Ma fonction asyncrone renvoie une promesse de Product[]
-    return fetch(`${baseURL}/product-man/`)
+    return fetch(`${environment.baseURL}/product-man`)
     .then(res=>res.json());
   }
 
-    public async getWomanProducts() : Promise <Product[]> {
+  public async getWomanProducts() : Promise <Product[]> {
     // Ma fonction asyncrone renvoie une promesse de Product[]
-    return fetch(`${baseURL}/product-woman/`)
+    return fetch(`${environment.baseURL}/product-woman`)
     .then(res=>res.json());
   }
+
+  public async getProductsNews() : Promise <Product[]> {
+    // Ma fonction asyncrone renvoie une promesse de Product[]
+    return fetch(`${environment.baseURL}/all-newproducts`)
+    .then(res=>res.json());
+  }
+
 }

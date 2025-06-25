@@ -111,7 +111,7 @@ export class ProductModel {
     async getAllnewProducts() {
         console.log("Client get new products");
 
-        const result = this.connection.execute('SELECT * FROM product WHERE is_new = TRUE');
+        const result = await this.connection.execute('SELECT * FROM product WHERE is_new = TRUE');
         console.log("result : ", result);
 
         // Ajouter l'URL de l'image à chaque produit

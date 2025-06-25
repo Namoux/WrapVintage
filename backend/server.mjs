@@ -53,19 +53,14 @@ async function main() {
         }
     });
 
-    app.get("/all-products-archived/:limit", checkTokenAdmin(connection), async (req, res) => {
+    app.get("/all-products-archived", checkTokenAdmin(connection), async (req, res) => {
         try {
-            const productLimit = parseInt(req.params.limit);
-    
-            if (isNaN(productLimit)) {
-                res.status(400).json({ msg: "Wrong request param" });
-                return;
-            }
-            const products = await Product.getAllProductsArchived(productLimit);
+ 
+            const products = await Product.getAllProductsArchived();
     
             console.log("products : ", products);
     
-            if (productLimit.length != 0) {
+            if (products.length != 0) {
                 res.status(200).json(products);
             } else {
                 // Les produits n'existent pas !
@@ -80,19 +75,13 @@ async function main() {
         }
     });
 
-    app.get("/all-newproducts/:limit", async (req, res) => {
+    app.get("/all-newproducts", async (req, res) => {
         try {
-            const productLimit = parseInt(req.params.limit);
-    
-            if (isNaN(productLimit)) {
-                res.status(400).json({ msg: "Wrong request param" });
-                return;
-            }
-            const products = await Product.getAllnewProducts(productLimit);
+            const products = await Product.getAllnewProducts();
     
             console.log("products : ", products);
     
-            if (productLimit.length != 0) {
+            if (products.length != 0) {
                 res.status(200).json(products);
             } else {
                 // Les produits n'existent pas !

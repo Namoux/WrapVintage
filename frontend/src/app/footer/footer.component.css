@@ -10,12 +10,13 @@
     color: #D4B369;
 }
 
-.left {
+.left li {
     list-style-type: none;
 }
 
 .left a {
     text-decoration: none;
+    cursor: pointer;
     color: black;
 }
 
@@ -60,14 +61,14 @@
         text-align: center;
     }
 
-    .right {
-        justify-content: center;
-    }
-
     .left {
         align-items: center;
     }
 
+    .right {
+        justify-content: center;
+    }
+    
     .right img {
         width: 30px;
         height: 30px;

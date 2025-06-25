@@ -1,0 +1,13 @@
+
+<div class="menu" [class.open]="isOpen"> 
+  <nav>
+    <ul>
+      <li><a routerLink="/" (click)="closeMenu()">Accueil</a></li>
+      <li><a routerLink="/nouveautes" (click)="closeMenu()">Nouveautés</a></li>
+      <li><a routerLink="/bracelet-homme" (click)="closeMenu()" routerLinkActive="active">Bracelet Homme</a></li>
+      <li><a routerLink="/bracelet-femme" (click)="closeMenu()" routerLinkActive="active">Bracelet Femme</a></li>
+    </ul>
+  </nav>
+</div>
+
+

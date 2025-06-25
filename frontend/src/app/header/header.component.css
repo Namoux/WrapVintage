@@ -31,6 +31,10 @@
   object-fit: contain;                /* Évite la déformation du logo */
 }
 
+.logo.active img {
+  border-bottom: 2px solid #D4B369; /* Applique un trait si le lien est actif */
+}
+
 .icon {
   height: 24px;                       /* Taille des icônes */
   cursor: pointer;                    /* Curseur en forme de main au survol */

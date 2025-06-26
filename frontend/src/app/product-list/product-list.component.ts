@@ -20,6 +20,7 @@ export class ProductListComponent {
     this.api.getProducts().then(products=>{
       // Je fetch tout mes produits et les places dans l'état produits.
       this.products = products
+      console.log(this.products);
     });
   }
 

@@ -20,7 +20,7 @@ export class ProductModel {
         // Ajouter l'URL de l'image à chaque produit
         const productsWithImageUrl = result.map(product => ({
             ...product,
-            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+            imageURL: `${this.baseUrl}/produits/${product.imageURL}` //Construction du lien avec le nom de l'image
         }));
 
         return productsWithImageUrl;
@@ -40,7 +40,7 @@ export class ProductModel {
         // Ajouter l'URL de l'image à chaque produit
         const productsWithImageUrl = result.map(product => ({
             ...product,
-            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+            imageURL: `${this.baseUrl}/vignettes/${product.imageURL}` //Construction du lien avec le nom de l'image
         }));
 
         return productsWithImageUrl;
@@ -60,7 +60,7 @@ export class ProductModel {
         // Ajouter l'URL de l'image à chaque produit
         const productsWithImageUrl = result.map(product => ({
             ...product,
-            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+            imageURL: `${this.baseUrl}/vignettes/${product.imageURL}` //Construction du lien avec le nom de l'image
         }));
 
         return productsWithImageUrl;
@@ -73,13 +73,13 @@ export class ProductModel {
     async getProductHomme() {
         console.log("Client get products Bracelet Homme");
 
-        const result = await this.connection.execute('SELECT p.name, p.description, p.price, p.imageURL, p.quantity FROM product AS p INNER JOIN productCategory AS pc ON p.id = pc.fk_product INNER JOIN category AS c ON c.id = pc.fk_category WHERE c.id = 1');
+        const result = await this.connection.execute('SELECT p.id, p.name, p.description, p.price, p.imageURL, p.quantity FROM product AS p INNER JOIN productCategory AS pc ON p.id = pc.fk_product INNER JOIN category AS c ON c.id = pc.fk_category WHERE c.id = 1');
         console.log("result : ", result);
 
         // Ajouter l'URL de l'image à chaque produit
         const productsWithImageUrl = result.map(product => ({
             ...product,
-            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+            imageURL: `${this.baseUrl}/vignettes/${product.imageURL}` //Construction du lien avec le nom de l'image
         }));
 
         return productsWithImageUrl;
@@ -92,13 +92,13 @@ export class ProductModel {
     async getProductFemme() {
         console.log("Client get products Bracelet Femme");
 
-        const result = await this.connection.execute('SELECT p.name, p.description, p.price, p.imageURL, p.quantity FROM product AS p INNER JOIN productCategory AS pc ON p.id = pc.fk_product INNER JOIN category AS c ON c.id = pc.fk_category WHERE c.id = 2');
+        const result = await this.connection.execute('SELECT p.id, p.name, p.description, p.price, p.imageURL, p.quantity FROM product AS p INNER JOIN productCategory AS pc ON p.id = pc.fk_product INNER JOIN category AS c ON c.id = pc.fk_category WHERE c.id = 2');
         console.log("result : ", result);
 
         // Ajouter l'URL de l'image à chaque produit
         const productsWithImageUrl = result.map(product => ({
             ...product,
-            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+            imageURL: `${this.baseUrl}/vignettes/${product.imageURL}` //Construction du lien avec le nom de l'image
         }));
 
         return productsWithImageUrl;
@@ -117,7 +117,7 @@ export class ProductModel {
         // Ajouter l'URL de l'image à chaque produit
         const productsWithImageUrl = result.map(product => ({
             ...product,
-            imageURL: `${this.baseUrl}/${product.imageURL}` //Construction du lien avec le nom de l'image
+            imageURL: `${this.baseUrl}/vignettes/${product.imageURL}` //Construction du lien avec le nom de l'image
         }));
 
         return productsWithImageUrl;

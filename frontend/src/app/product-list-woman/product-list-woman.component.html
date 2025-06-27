@@ -9,7 +9,7 @@
 
 <div class="container">
     @for (product of products; track product.id) {
-    <div class="card" (click)="test()">
+    <div class="card" [routerLink]="['/product', product.id]">
         <img [src]="product.imageURL" />
         <h3>{{product.name}}</h3>
         <p>{{product.price}} €</p>

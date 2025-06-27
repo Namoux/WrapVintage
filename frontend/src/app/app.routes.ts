@@ -5,6 +5,8 @@ import { ProductListManComponent } from './product-list-man/product-list-man.com
 import { ProductListWomanComponent } from './product-list-woman/product-list-woman.component';
 import { DeliveryComponent } from './delivery/delivery.component';
 import { PaymentConditionComponent } from './payment-condition/payment-condition.component';
+import { CGVComponent } from './cgv/cgv.component';
+import { ProductByIdComponent } from './product-by-id/product-by-id.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // page d'accueil
@@ -13,5 +15,6 @@ export const routes: Routes = [
   { path: 'bracelet-femme', component: ProductListWomanComponent }, // page bracelet-femme
   { path: 'livraison', component: DeliveryComponent }, // page livraison
   { path: 'payment-condition', component: PaymentConditionComponent }, // page paiement condition
-
+  { path: 'cgv', component: CGVComponent }, // page CGV
+  { path: 'product/:id', component: ProductByIdComponent } // page produit detail
 ];

@@ -20,6 +20,10 @@
     color: black;
 }
 
+a.active {
+  border-bottom: 2px solid #D4B369; /* Applique un trait si le lien est actif */
+}
+
 .right {
     display: flex;
     gap: 1rem;

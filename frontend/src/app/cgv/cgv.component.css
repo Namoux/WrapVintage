@@ -1,0 +1,30 @@
+.CGV-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0rem 10rem 3rem 10rem;
+}
+
+.CGV-section h2 {
+    color: #D4B369;
+}
+
+/* Pour les tablettes */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .CGV-section {
+    padding: 0rem 4rem 3rem 4rem;
+    }
+}
+
+/* Pour les smartphones */
+@media (max-width: 600px) {
+    .CGV-section {
+        padding: 0rem 1rem 3rem 1rem;
+    }
+    
+    .CGV-section p {
+        text-align: justify;
+    }
+}

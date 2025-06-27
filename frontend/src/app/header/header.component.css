@@ -1,7 +1,15 @@
 
 .navbar {
-  padding: 1rem 2rem;                  /* Espacement intérieur (haut/bas: 1rem, gauche/droite: 2rem) */
+  box-sizing: border-box; /* force le padding à l'intérieur du width */
+  padding: 1rem 2rem;                 /* Espacement intérieur (haut/bas: 1rem, gauche/droite: 2rem) */
   border-bottom: 1px solid #eee;       /* Ligne grise fine sous la barre */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000; /* s'assurer qu'il est au-dessus du contenu */
+  background-color: white; /* ou autre, pour éviter la transparence */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* optionnel : petite ombre */
 }
 
 .container {

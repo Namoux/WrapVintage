@@ -32,4 +32,11 @@ export class ApiService {
     .then(res=>res.json());
   }
 
+  public async getProductbyId(id : number) : Promise <Product> {
+    // Ma fonction asyncrone renvoie une promesse de Product
+    return fetch(`${environment.baseURL}/product/`+id)
+    .then(res=>res.json())
+    .then(data => data[0]); // ✅ renvoie directement l'objet
+  }
+
 }

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from '../interfaces/models';
 import { ApiService } from '../api.service';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
-  imports: [],
+  imports: [RouterModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })

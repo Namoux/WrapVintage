@@ -86,14 +86,6 @@
         padding: 0rem 1rem;
     }
 
-    .livraison-details h3 {
-        font-size: 1.3rem;
-    }
-
-    .livraison-details p {
-        margin: 0.3rem 0;
-    }
-
     .livraison-image img {
         margin: 2rem ;
         width: 12rem;
@@ -101,14 +93,6 @@
 
     .expedition-section {
         padding: 2rem 1rem;
-    }
-
-    .expedition-section h1 {
-        font-size: 1.3rem;
-    }
-
-    .expedition-section h3 {
-        font-size: 1.3rem;
     }
 }
 

@@ -36,7 +36,7 @@ export class ApiService {
     // Ma fonction asyncrone renvoie une promesse de Product
     return fetch(`${environment.baseURL}/product/`+id)
     .then(res=>res.json())
-    .then(data => data[0]); // ✅ renvoie directement l'objet
+    .then(data => data[0]); // renvoie directement l'objet
   }
 
 }

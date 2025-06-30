@@ -9,7 +9,8 @@ import dotenv from "dotenv";
 const PORT = 4004;
 
 // Définir l'URL de base
-const baseUrl = `http://0.0.0.0:${process.env.PORT || 4004}`; // Utiliser une variable d'environnement pour le port
+const baseUrl = `http://192.168.10.127:${process.env.PORT || 4004}`; // Utiliser une variable d'environnement pour le port
+// const baseUrl = `http://0.0.0.0:${process.env.PORT || 4004}`; // Utiliser une variable d'environnement pour le port
 
 dotenv.config();
 const SECRETKEY = process.env.SECRETKEY;

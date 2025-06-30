@@ -1,9 +1,9 @@
-
 .container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     padding: 0rem 2rem;
-    border-top: 1px solid #eee;       /* Ligne grise fine */
+    border-top: 1px solid #eee;
+    /* Ligne grise fine */
 }
 
 .left h3 {
@@ -21,14 +21,15 @@
 }
 
 a.active {
-  border-bottom: 2px solid #D4B369; /* Applique un trait si le lien est actif */
+    border-bottom: 2px solid #D4B369;
+    /* Applique un trait si le lien est actif */
 }
 
 .right {
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
-    align-items:flex-end;
+    align-items: flex-end;
 }
 
 .copyright {
@@ -66,13 +67,25 @@ a.active {
     }
 
     .left {
+        display: flex;
+        flex-direction: column;
         align-items: center;
+    }
+
+    .left ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    .left li {
+        text-align: center;
+        margin-bottom: 0.3rem;
     }
 
     .right {
         justify-content: center;
     }
-    
+
     .right img {
         width: 30px;
         height: 30px;

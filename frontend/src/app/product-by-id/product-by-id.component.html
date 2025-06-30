@@ -1,12 +1,17 @@
-<p>product-by-id works!</p>
-
 <p *ngIf="!product">Chargement du produit...</p>
 
 <div *ngIf="product" class="card">
-  <img [src]="product.imageURL" alt="{{ product.name }}" />
-  <h3>{{ product.name }}</h3>
-  <p>{{ product.price }} €</p>
-  <p>{{ product.description }}</p>
-  <!-- Ajoute ici d'autres infos si disponibles (taille, stock, etc.) -->
+
+  <div class="imageProduct">
+    <img [src]="product.imageURL" alt="{{ product.name }}" />
+  </div>
+
+  <div class="detailProduct">
+    <h3>{{ product.name }}</h3>
+    <p>{{ product.description }}</p>
+    <p class="price">{{ product.price }} €</p>
+    <a href="#"><button>Ajouter au panier</button></a>
+  </div>
+
 </div>
 

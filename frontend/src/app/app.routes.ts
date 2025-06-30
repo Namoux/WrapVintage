@@ -7,6 +7,7 @@ import { DeliveryComponent } from './delivery/delivery.component';
 import { PaymentConditionComponent } from './payment-condition/payment-condition.component';
 import { CGVComponent } from './cgv/cgv.component';
 import { ProductByIdComponent } from './product-by-id/product-by-id.component';
+import { SearchbarComponent } from './searchbar/searchbar.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // page d'accueil
@@ -16,5 +17,6 @@ export const routes: Routes = [
   { path: 'livraison', component: DeliveryComponent }, // page livraison
   { path: 'payment-condition', component: PaymentConditionComponent }, // page paiement condition
   { path: 'cgv', component: CGVComponent }, // page CGV
-  { path: 'product/:id', component: ProductByIdComponent } // page produit detail
+  { path: 'product/:id', component: ProductByIdComponent }, // page produit detail
+  { path: 'searchbar', component: SearchbarComponent } // barre de recherche
 ];

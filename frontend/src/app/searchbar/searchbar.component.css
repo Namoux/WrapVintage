@@ -1,0 +1,56 @@
+.searchbar {
+  position: fixed;
+  top: 10vh;
+  right: -100%; /* cachée */
+  width: 400px;
+  height: 45px;
+  background-color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 30px;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: right 0.3s;
+  z-index: 1000;
+}
+
+/* Ouvert */
+.searchbar.open {
+  right: 1rem;
+}
+
+/* Input */
+.searchbar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+}
+
+/* Icône loupe */
+.searchbar img {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* Tablettes */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .searchbar {
+    top: 6vh;
+  }
+}
+
+/* Smartphone */
+@media (max-width: 600px) {
+  .searchbar {
+    width: 80%;
+    top: 8vh;
+  }
+
+  .searchbar.open {
+    right: 5%;
+  }
+}

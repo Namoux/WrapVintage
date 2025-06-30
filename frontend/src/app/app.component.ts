@@ -10,6 +10,7 @@ import { FooterComponent } from './footer/footer.component';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+  
   // Injection du service Router dans le constructeur
   constructor(private router: Router) {
     // Abonnement aux événements du routeur
@@ -21,4 +22,5 @@ export class AppComponent {
       }
     });
   }
+
 }

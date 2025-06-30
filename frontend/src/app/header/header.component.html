@@ -10,7 +10,7 @@
 
     <div class="right_actions">
       <a href="#"><img src="/utilisateur.png" class="icon" alt="Compte" /></a>
-      <a href="#"><img src="/loupe.png" class="icon" alt="Recherche" /></a>
+      <a (click)="openSearchbar()"><img src="/loupe.png" class="icon" alt="Recherche" /></a>
       <a href="#"><img src="/shopping-bag.png" class="icon" alt="Panier" /></a>
     </div>
   </div>
@@ -18,4 +18,5 @@
 
 <!-- Composant MenuBurgerComponent avec liaison de données -->
 <app-menu-burger [isOpen]="isMenuOpen" (linkClicked)="isMenuOpen = false"></app-menu-burger>
+<app-searchbar [isSopen]="isSearchOpen" (linkClicked)="isSearchOpen = false"> </app-searchbar>
 

@@ -39,4 +39,9 @@ export class ApiService {
     .then(data => data[0]); // renvoie directement l'objet
   }
 
+  public async getSearchProduct(query : string) : Promise <Product[]> {
+    return fetch(`${environment.baseURL}/search-product/`+query)
+    .then(res=>res.json());
+  }
+
 }

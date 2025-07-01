@@ -1,5 +1,21 @@
 
 <div class="searchbar" [class.open]="isSopen"> 
-  <input type="text" autocomplete="off" placeholder="Recherche..." />
-  <img src="/loupe.png" alt="Recherche" />
+  <input type="text" placeholder="Recherche..." [(ngModel)]="query" (input)="onSearchChange()" />
+  <img src="/loupe.png" alt="Recherche">
+</div>
+
+<div class="listProductSearch" [class.open]="isSopen">
+    <!-- <ul *ngIf="products.length > 0" class="search-results">
+      <li *ngFor="let product of products">
+        {{ product.name }}
+      </li>
+    </ul> -->
+
+    @for (product of products; track product.id) {
+    <div class="card" [routerLink]="['/product', product.id]" (click)="onProductClick()">
+        <img [src]="product.imageURL" />
+        <p>{{product.name}}</p>
+    </div> 
+    }
+
 </div>

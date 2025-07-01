@@ -163,6 +163,32 @@ async function main() {
         }
     });
 
+    app.get("/search-product/:query", async (req, res) => {
+        try {
+            const query = req.params.query;
+
+            const product = await Product.getSearchProduct(query);
+            console.log("product : ", product);
+
+            if (product.length != 0) {
+                res.status(200).json(product);
+            } else {
+                // Le produit n'existe pas !
+                res.status(400).json("Unknown product");
+            }
+
+        } catch (error) {
+            res.status(400).json({ msg: "Wrong request" });
+            console.log("Wrong request of client");
+            return;
+        }
+    });
+
+
+
+
+
+
     app.post("/add-product", checkTokenAdmin(connection), async (req, res) => {
         try {
             const newProducts = req.body;

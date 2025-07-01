@@ -36,10 +36,58 @@
   cursor: pointer;
 }
 
+/* Résultats de recherche */
+.listProductSearch {
+  position: fixed;
+  top: calc(10vh + 50px); /* juste sous la searchbar */
+  right: -100%;
+  width: 350px;
+  background-color: white;
+  border-radius: 10px;
+  z-index: 999;
+  max-height: 300px;
+  overflow-y: auto;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+
+.listProductSearch.open{
+  right: 5rem;
+}
+
+.search-results {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-results li {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.search-results li:hover {
+  background-color: #f5f5f5;
+}
+
+.card {
+  display: flex;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.card img {
+  width: 60px;
+  object-fit: contain;
+}
+
+
 /* Tablettes */
 @media (min-width: 601px) and (max-width: 1024px) {
   .searchbar {
-    top: 6vh;
+    top: 9vh;
   }
 }
 
@@ -47,10 +95,11 @@
 @media (max-width: 600px) {
   .searchbar {
     width: 80%;
-    top: 8vh;
+    top: 9vh;
   }
 
-  .searchbar.open {
-    right: 5%;
-  }
+.listProductSearch.open{
+  right: 1rem;
+}
+
 }

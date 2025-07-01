@@ -113,11 +113,31 @@ export class ProductModel {
 
         const result = await this.connection.execute('SELECT * FROM product WHERE is_new = TRUE');
         console.log("result : ", result);
-
+        
         // Ajouter l'URL de l'image à chaque produit
         const productsWithImageUrl = result.map(product => ({
             ...product,
             imageURL: `${this.baseUrl}/vignettes/${product.imageURL}` //Construction du lien avec le nom de l'image
+        }));
+        
+        return productsWithImageUrl;
+    };
+
+    /**
+     * Renvoi un produit de la BDD en fonction de la lettre commençée
+     * @param {string} query 
+     * @returns {{id:number,name:string, description:string, price:number, imageURL:string, quantity:number, is_new:boolean, is_archived:boolean}[]}
+     */
+    async getSearchProduct(query) {
+        console.log("Client search a product");
+ 
+        const result = await this.connection.execute('SELECT * FROM product WHERE LOWER(name) LIKE LOWER(?)', [`${query}%`]);
+        // console.log("result : ", result);
+ 
+        // Ajouter l'URL de l'image à chaque produit
+        const productsWithImageUrl = result.map(product => ({
+            ...product,
+            imageURL: `${this.baseUrl}/produits/${product.imageURL}` //Construction du lien avec le nom de l'image
         }));
 
         return productsWithImageUrl;
@@ -127,22 +147,22 @@ export class ProductModel {
      * Renvoi une categorie de la BDD en fonction de son id
      * @param {number} id 
      * @returns {{id:number,name:string} | undefined} 
-     */
-    async getCategoryById(id) {
-        console.log("Client get category by Id");
-
-        const result = await this.connection.execute('SELECT * FROM category WHERE id = ?', [id] );
-        console.log("result : ", result);
-
-        return result;
+    */
+   async getCategoryById(id) {
+       console.log("Client get category by Id");
+       
+       const result = await this.connection.execute('SELECT * FROM category WHERE id = ?', [id] );
+       console.log("result : ", result);
+       
+       return result;
     };
-
-        /**
+    
+    /**
      * Renvoi les categories de la BDD
      * @returns {{id:number,name:string} | undefined} 
-     */
-    async getAllCategory() {
-        console.log("Client get All categories");
+    */
+   async getAllCategory() {
+       console.log("Client get All categories");
 
         const result = await this.connection.execute('SELECT * FROM category');
         console.log("result : ", result);
@@ -179,7 +199,7 @@ export class ProductModel {
         return result;
     };
     
-        /**
+    /**
      * Renvoi un user de la BDD en fonction de son id
      * @param {number} limit 
      * @returns {{id:number,username:string, password:number, email:string, is_admin:number, deleted_at: date} | undefined} 
@@ -192,5 +212,6 @@ export class ProductModel {
 
         return result;
     };
+
 }
 

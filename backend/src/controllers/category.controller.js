@@ -37,7 +37,7 @@ export const getCategoryById = (categoryModel) => async (req, res, next) => {
 
         const category = await categoryModel.getCategoryById(id);
 
-        if (!category.length !== 0) {
+        if (category.length !== 0) {
             // La catégorie existe
             console.log("Category was sent to client");
             return res.status(200).json(category);

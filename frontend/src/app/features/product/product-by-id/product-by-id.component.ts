@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Product } from '../interfaces/models';
-import { ApiService } from '../api.service'; // Service pour appeler l’API
+import { ApiService } from '../../../core/services/api.service';
+import { Product } from '../../../core/interfaces/models';
 import { ActivatedRoute } from '@angular/router'; // Pour accéder aux paramètres de l'URL
 import { CommonModule } from '@angular/common';
 

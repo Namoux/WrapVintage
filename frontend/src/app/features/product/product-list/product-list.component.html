@@ -1,0 +1,38 @@
+<div class="text">
+  <ng-container [ngSwitch]="category">
+    <ng-container *ngSwitchCase="'man'">
+      <h2>BRACELET HOMME</h2>
+      <h1>Wrap Vintage</h1>
+      <p>Découvrez les Bracelets Homme, des collections différentes et complémentaires.</p>
+    </ng-container>
+    <ng-container *ngSwitchCase="'woman'">
+      <h2>BRACELET FEMME</h2>
+      <h1>Wrap Vintage</h1>
+      <p>Retrouvez ici tous les Bracelets Wrap pour Femme, du plus classique au plus original.</p>
+    </ng-container>
+    <ng-container *ngSwitchCase="'new'">
+      <h2>LES NOUVEAUTÉS</h2>
+      <h1>Wrap Vintage</h1>
+      <p>Toutes les nouveautés sont là ! Nous élargissons notre gamme pour vous proposer toujours plus de choix.</p>
+    </ng-container>
+    <ng-container *ngSwitchDefault>
+      <h2>TOUS LES PRODUITS</h2>
+      <h1>Wrap Vintage</h1>
+      <p>Découvrez tous nos produits.</p>
+    </ng-container>
+  </ng-container>
+</div>
+
+<!-- <div class="container">
+    @for (product of products; track product.id) {
+    <div class="card" [routerLink]="['/product', product.id]">
+        <img [src]="product.imageURL" />
+        <h3>{{product.name}}</h3>
+        <p>{{product.price}} €</p>
+    </div> 
+    }
+</div> -->
+
+<div class="container">
+  <app-product-card *ngFor="let product of products" [product]="product"></app-product-card>
+</div>

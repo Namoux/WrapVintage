@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Product } from '../interfaces/models';
-import { ApiService } from '../api.service';
+import { ApiService } from '../../core/services/api.service';
+import { Product } from '../../core/interfaces/models';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // pour ngModel
 

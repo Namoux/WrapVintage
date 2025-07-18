@@ -30,31 +30,6 @@
     padding: 3rem; /* Ajoute un peu de padding autour du conteneur */
 }
 
-.card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Espace entre les éléments pour remplir la carte */
-    align-items: center;
-    border-radius: 15px;
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.274);
-    transition: 0.5s;
-    text-align: center;
-    width: 100%; /* 100% pour que la carte prenne toute la largeur de la colonne */
-    max-width: 18rem; /* Limite la largeur maximale de la carte */
-    height: 100%; /* la carte prend toute la hauteur disponible */
-}
-
-.card:hover {
-    transform: scale(1.06);
-    cursor: pointer;
-}
-
-img {
-    width: 100%; /* 100% pour que l'image prenne toute la largeur de la carte */
-    border-radius: 15px;
-}
-
-
 /* Pour les tablettes */
 @media (min-width: 601px) and (max-width: 1024px) {
 
@@ -73,7 +48,7 @@ img {
     .text {
         padding: 0rem 1rem;
     }
-    
+
     .container {
         grid-template-columns: repeat(2, 1fr); /* Deux colonnes pour les tablettes */
         gap: 1.25rem;

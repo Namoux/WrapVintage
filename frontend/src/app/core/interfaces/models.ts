@@ -6,4 +6,5 @@ export interface Product {
     price : number,
     imageURL : string,
     quantity : number,
+    is_new : number
 }

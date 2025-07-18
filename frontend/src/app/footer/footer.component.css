@@ -15,9 +15,15 @@
 }
 
 .left a {
+    display: inline-block;  /* Permet d'appliquer les transformations CSS comme scale() sur un lien <a>, qui est inline par défaut */
     text-decoration: none;
     cursor: pointer;
     color: black;
+    transition: transform 0.2s ease;    /* Animation douce lors du hover */
+}
+
+.left a:hover {
+    transform: scale(1.1);              /* Zoom léger au survol */
 }
 
 a.active {
@@ -27,9 +33,20 @@ a.active {
 
 .right {
     display: flex;
-    gap: 1rem;
+    gap: 1.3rem;
     justify-content: flex-end;
     align-items: flex-end;
+    padding: 1.4rem;
+}
+
+.right i {
+    font-size: 40px;
+    color: #D4B369;
+    transition: transform 0.2s ease;    /* Animation douce lors du hover */
+}
+
+.right i:hover {
+  transform: scale(1.1);              /* Zoom léger au survol */
 }
 
 .copyright {
@@ -84,11 +101,6 @@ a.active {
 
     .right {
         justify-content: center;
-    }
-
-    .right img {
-        width: 30px;
-        height: 30px;
     }
 
     .copyright {

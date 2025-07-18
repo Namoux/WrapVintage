@@ -61,11 +61,11 @@ export const getProductById = (productModel) => async (req, res, next) => {
         const product = await productModel.getProductById(id);
 
         if (product.length !== 0) {
-            console.log("¨Product was sent to client");
+            console.log("Product was sent to client");
             return res.status(200).json(product);
         } else {
             // Le produit n'existe pas
-            console.log("¨Product not found");
+            console.log("Product not found");
             return res.status(404).json({ msg: "Product not found" });
         }
     } catch (error) {

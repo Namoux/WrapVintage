@@ -15,10 +15,10 @@ import { FormsModule } from '@angular/forms'; // pour ngModel
 export class SearchbarComponent implements OnChanges {
 
   @Input() isSopen = false; // Reçoit l'état depuis le parent via Input (HeaderComponent)
-  @Output() linkClicked = new EventEmitter<void>(); // ✅ Ajout de l'événement
+  @Output() linkClicked = new EventEmitter<void>(); //  Ajout de l'événement
 
   onProductClick() {
-    this.linkClicked.emit(); // ✅ Notifie le parent pour fermer la searchbar
+    this.linkClicked.emit(); //  Notifie le parent pour fermer la searchbar
   }
 
   constructor(private api: ApiService) { }

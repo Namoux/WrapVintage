@@ -3,7 +3,9 @@
   <img [src]="product.imageURL" [alt]="product.name" />
   <h3>{{ product.name }}</h3>
   <p class="price">{{ product.price }} €</p>
-  <div class="badges" *ngIf="product.is_new">
-    <span class="badge new">Nouveau</span>
-  </div>
+  @if (product.is_new) {
+    <div class="badges">
+      <span class="badge new">Nouveau</span>
+    </div>
+  }
 </div>

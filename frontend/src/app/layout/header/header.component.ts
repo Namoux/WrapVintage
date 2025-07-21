@@ -2,10 +2,11 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuBurgerComponent } from '../menu-burger/menu-burger.component';
 import { SearchbarComponent } from "../searchbar/searchbar.component";
+import { LoginModalComponent } from '../login-modal/login-modal.component';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule, MenuBurgerComponent, SearchbarComponent],
+  imports: [RouterModule, MenuBurgerComponent, SearchbarComponent, LoginModalComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -36,5 +37,13 @@ export class HeaderComponent {
       }
     });
   }
+
+  isLoginOpen = false;
+
+  openLogin() { 
+    this.isLoginOpen = !this.isLoginOpen; 
+    console.log("user clicked - Etat:", this.isLoginOpen);
+  }
+
 
 }

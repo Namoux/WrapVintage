@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../core/services/api.service';
 import { Product } from '../../../core/interfaces/models';
 import { ActivatedRoute } from '@angular/router'; // Pour accéder aux paramètres de l'URL
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-by-id',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './product-by-id.component.html',
   styleUrls: ['./product-by-id.component.css']
 })

@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 })
 export class MenuBurgerComponent {
 
-  @Input() isOpen = false; // Reçoit l'état depuis le parent via Input (HeaderComponent)
+  @Input() isMopen = false; // Reçoit l'état depuis le parent via Input (HeaderComponent)
   @Output() linkClicked = new EventEmitter<void>();
 
   closeMenu() {

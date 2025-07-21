@@ -1,25 +1,31 @@
 .card {
-    /* position: relative; */
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* Espace entre les éléments pour remplir la carte */
     align-items: center;
     border-radius: 15px;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.274);
-    transition: 0.5s;
+    transition: 0.3s;
     text-align: center;
     width: 100%; /* 100% pour que la carte prenne toute la largeur de la colonne */
-    max-width: 18rem; /* Limite la largeur maximale de la carte */
-    height: 100%; /* la carte prend toute la hauteur disponible */
-}
+    max-width: 280px; /* Limite la largeur maximale de la carte */
+    height: 100%;
+    overflow: hidden;
+    background-color: white;
+  }
+
 
 .card:hover {
     transform: scale(1.06);
     cursor: pointer;
 }
 
-img {
+.card img {
     width: 100%; /* 100% pour que l'image prenne toute la largeur de la carte */
+    height: auto;
+    max-height: 180px;
+    object-fit: cover;  /* L'image remplit la carte */
     border-radius: 15px;
 }
 
@@ -45,11 +51,11 @@ img {
 /* Pour les tablettes */
 @media (min-width: 601px) and (max-width: 1024px) {
   .card {
-    max-width: 14rem; /* Réduit la largeur max sur tablette */
-    padding: 10px;
+    max-width: 100%;
   }
+
   .card img {
-    height: 120px;
+    max-height: 145px;
   }
 }
 
@@ -57,9 +63,9 @@ img {
 @media (max-width: 600px) {
   .card {
     max-width: 100%;
-    padding: 8px;
   }
+
   .card img {
-    height: 90px;
+    max-height: 115px;
   }
 }

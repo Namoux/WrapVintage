@@ -1,0 +1,14 @@
+
+<!-- Fond sombre derrière le modal -->
+<div class="modal-backdrop" [class.open]="isLopen"></div>
+
+<!-- Fenetre de connexion -->
+<div class="modal" [class.open]="isLopen">
+  <button class="close" (click)="onClose()">×</button>
+  <h2>Connexion</h2>
+  <form (ngSubmit)="onLogin()" autocomplete="off">
+    <input type="text" [(ngModel)]="username" name="username" placeholder="Nom d'utilisateur" required />
+    <input type="password" [(ngModel)]="password" name="password" placeholder="Mot de passe" required />
+    <button type="submit">Se connecter</button>
+  </form>
+</div>

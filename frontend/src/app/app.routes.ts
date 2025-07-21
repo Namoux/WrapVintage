@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
 // import { ProductListNewComponent } from './features/product/product-list-new/product-list-new.component';
 // import { ProductListManComponent } from './features/product/product-list-man/product-list-man.component';

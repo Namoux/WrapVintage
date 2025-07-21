@@ -1,0 +1,11 @@
+
+<div class="card" [routerLink]="['/product', product.id]">
+  <img [src]="product.imageURL" [alt]="product.name" />
+  <h3>{{ product.name }}</h3>
+  <p class="price">{{ product.price }} €</p>
+  @if (product.is_new) {
+    <div class="badges">
+      <span class="badge new">Nouveau</span>
+    </div>
+  }
+</div>

@@ -1,0 +1,17 @@
+@if (!product) {
+  <p>Chargement du produit...</p>
+}
+
+@if (product) {
+  <div class="card">
+    <div class="imageProduct">
+      <img [src]="product.imageURL" alt="{{ product.name }}" />
+    </div>
+    <div class="detailProduct">
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.description }}</p>
+      <p class="price">{{ product.price }} €</p>
+      <a href="#"><button>Ajouter au panier</button></a>
+    </div>
+  </div>
+}

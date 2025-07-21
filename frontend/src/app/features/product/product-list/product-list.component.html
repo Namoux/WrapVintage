@@ -1,0 +1,35 @@
+<div class="text">
+  @switch (category) {
+    @case ('man') {
+      <h2>BRACELET HOMME</h2>
+      <h1>Wrap Vintage</h1>
+      <p>Découvrez les Bracelets Homme, des collections différentes et complémentaires.</p>
+    }
+    @case ('woman') {
+      <h2>BRACELET FEMME</h2>
+      <h1>Wrap Vintage</h1>
+      <p>Retrouvez ici tous les Bracelets Wrap pour Femme, du plus classique au plus original.</p>
+    }
+    @case ('new') {
+      <h2>LES NOUVEAUTÉS</h2>
+      <h1>Wrap Vintage</h1>
+      <p>Toutes les nouveautés sont là ! Nous élargissons notre gamme pour vous proposer toujours plus de choix.</p>
+    }
+    @default {
+      <h2>TOUS LES PRODUITS</h2>
+      <h1>Wrap Vintage</h1>
+      <p>Découvrez tous nos produits.</p>
+    }
+  }
+</div>
+
+<!--
+Affiche une carte produit en utilisant le composant ProductCardComponent.
+Le produit à afficher est passé en entrée via la propriété [product].
+Cette ligne est utilisée à l'intérieur d'une boucle (@for) pour afficher chaque produit de la liste.
+-->
+<div class="container">
+  @for (product of products; track product.id) {
+    <app-product-card [product]="product"></app-product-card>
+  }
+</div>

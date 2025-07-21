@@ -1,0 +1,71 @@
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Espace entre les éléments pour remplir la carte */
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.274);
+    transition: 0.3s;
+    text-align: center;
+    width: 100%; /* 100% pour que la carte prenne toute la largeur de la colonne */
+    max-width: 280px; /* Limite la largeur maximale de la carte */
+    height: 100%;
+    overflow: hidden;
+    background-color: white;
+  }
+
+
+.card:hover {
+    transform: scale(1.06);
+    cursor: pointer;
+}
+
+.card img {
+    width: 100%; /* 100% pour que l'image prenne toute la largeur de la carte */
+    height: auto;
+    max-height: 180px;
+    object-fit: cover;  /* L'image remplit la carte */
+    border-radius: 15px;
+}
+
+/* Conteneur des badges ("Nouveau") */
+.badges {
+  position: absolute; /* Positionne le badge par rapport à la carte */
+  top: 8px;
+  right: 8px;
+}
+
+.badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  /* font-weight: bold; */
+}
+
+.badge.new {
+  background-color: #D4B369;
+  color: black;
+}
+
+/* Pour les tablettes */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .card {
+    max-width: 100%;
+  }
+
+  .card img {
+    max-height: 145px;
+  }
+}
+
+/* Pour les smartphones */
+@media (max-width: 600px) {
+  .card {
+    max-width: 100%;
+  }
+
+  .card img {
+    max-height: 115px;
+  }
+}

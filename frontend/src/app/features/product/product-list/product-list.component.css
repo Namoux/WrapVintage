@@ -1,0 +1,64 @@
+* {
+  box-sizing: border-box;
+  /* la largeur et la hauteur incluent aussi le padding et la bordure. Cela empêche les éléments de dépasser leur taille prévue 
+  et rend le dimensionnement plus prévisible. */
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0rem 10rem;
+}
+
+.text h2{
+    color: #D4B369;
+    margin-bottom: 0;
+}
+
+.text h1{
+    color: #D4B369;
+    margin-top: 0;
+    font-size: 1.5rem;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    justify-items: center; /* Centre les éléments dans chaque cellule de la grille */
+    align-items: stretch; /* Étire les éléments pour qu'ils aient la même hauteur */
+    width: 100%;
+    gap: 1.5rem;
+    padding: 2rem;
+    overflow-x: hidden; /* Empêche tout débordement */
+}
+
+/* Pour les tablettes */
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .text {
+        padding: 0rem 2rem;
+    }
+
+  .container {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+}
+
+/* Pour les smartphones */
+@media (max-width: 600px) {
+
+    .text {
+        padding: 0rem 1rem;
+    }
+
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+}

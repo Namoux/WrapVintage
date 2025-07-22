@@ -1,3 +1,27 @@
+
+/* Masquer par défaut */
+.modal-backdrop {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Affichage quand isLopen est true */
+.modal-backdrop.open {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Fond sombre semi-transparent */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
 .searchbar {
   position: fixed;
   top: 10vh;
@@ -12,7 +36,7 @@
   align-items: center;
   gap: 0.5rem;
   transition: right 0.3s;
-  z-index: 1000;
+  z-index: 1001;
 }
 
 /* Ouvert */
@@ -48,6 +72,7 @@
   max-height: 300px;
   overflow-y: auto;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
 }
 
 

@@ -11,7 +11,8 @@ import { RouterModule } from '@angular/router';
 export class LoginModalComponent {
   @Input() isLopen = false; // Reçoit l'état depuis le parent via Input (HeaderComponent)
   @Output() linkClicked = new EventEmitter<void>();
-
+  @Output() switchToRegister = new EventEmitter<void>();
+  
   username = '';
   password = '';
 
@@ -24,4 +25,9 @@ export class LoginModalComponent {
     alert(`Connexion avec ${this.username}`);
     this.onClose();
   }
+
+  onRegister() {
+  // Redirige vers la page d'inscription
+    this.switchToRegister.emit();
+}
 }

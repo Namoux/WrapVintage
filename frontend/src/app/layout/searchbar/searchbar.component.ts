@@ -17,7 +17,7 @@ export class SearchbarComponent implements OnChanges {
   @Input() isSopen = false; // Reçoit l'état depuis le parent via Input (HeaderComponent)
   @Output() linkClicked = new EventEmitter<void>(); //  Ajout de l'événement
 
-  onProductClick() {
+  onClose() {
     this.linkClicked.emit(); //  Notifie le parent pour fermer la searchbar
   }
 

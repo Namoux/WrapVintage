@@ -1,0 +1,29 @@
+<div class="modal-backdrop" [class.open]="isRopen" (click)="onClose()"></div>
+<div class="modal" [class.open]="isRopen">
+    <button class="close" (click)="onClose()">×</button>
+    <h2>Inscription</h2>
+    <form (ngSubmit)="onRegister()" autocomplete="off">
+        <input type="text" name="username" [(ngModel)]="username" placeholder="Nom d'utilisateur" required
+            #usernameRef="ngModel" />
+        @if (usernameRef.invalid && usernameRef.touched) {
+        <div class="error">Le nom d'utilisateur est requis.</div>
+        }
+
+        <input type="email" name="email" [(ngModel)]="email" placeholder="Email" required #emailRef="ngModel" />
+        @if (emailRef.invalid && emailRef.touched) {
+        <div class="error">L'email est requis.</div>
+        }
+
+        <input type="password" name="password" [(ngModel)]="password" placeholder="Mot de passe" required
+            #passwordRef="ngModel" />
+        @if (passwordRef.invalid && passwordRef.touched) {
+        <div class="error">Le mot de passe est requis.</div>
+        }
+        
+        <button type="submit">S'inscrire</button>
+    </form>
+    <p class="register-hint">
+        Déjà un compte ?
+        <a (click)="onSwitchToLogin()">Connectez-vous</a>
+    </p>
+</div>

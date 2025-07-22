@@ -3,17 +3,20 @@ import { RouterModule } from '@angular/router';
 import { MenuBurgerComponent } from '../menu-burger/menu-burger.component';
 import { SearchbarComponent } from "../searchbar/searchbar.component";
 import { LoginModalComponent } from '../login-modal/login-modal.component';
+import { RegisterModalComponent } from '../register-modal/register-modal.component';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterModule, MenuBurgerComponent, SearchbarComponent, LoginModalComponent],
+  imports: [RouterModule, MenuBurgerComponent, SearchbarComponent, LoginModalComponent, RegisterModalComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
 
   isMenuOpen = false; // État du menu
-  isSearchOpen = false; 
+  isSearchOpen = false;
+  isLoginOpen = false;
+  isRegisterOpen = false;
 
   /** Bascule l'état du menu */
   openMenu() {
@@ -21,29 +24,45 @@ export class HeaderComponent {
     console.log("Menu clicked - Etat:", this.isMenuOpen);
   }
 
-  openSearchbar(){
+  openSearchbar() {
     this.isSearchOpen = !this.isSearchOpen;
     console.log("Search clicked - Etat:", this.isSearchOpen);
   }
 
+
+  // openLogin() { 
+  //   this.isLoginOpen = !this.isLoginOpen; 
+  //   console.log("user clicked - Etat:", this.isLoginOpen);
+  // }
+
+  openLogin() {
+    this.isLoginOpen = true;
+    this.isRegisterOpen = false;
+    console.log("Login modal ouvert");
+  }
+
+  closeModals() {
+    this.isLoginOpen = false;
+    this.isRegisterOpen = false;
+  }
+
+  openRegister() {
+    this.isRegisterOpen = true;
+    this.isLoginOpen = false;
+    console.log("Register modal ouvert");
+  }
+
+
   // Au scroll, fermeture du menu
   constructor() {
     window.addEventListener('scroll', () => {
-      if (this.isMenuOpen) {
-        this.isMenuOpen = false;
-      }
-      if (this.isSearchOpen){
-        this.isSearchOpen = false;
-      }
+      this.isMenuOpen = false;
+      this.isSearchOpen = false;
+      this.isRegisterOpen = false;
+      this.isLoginOpen = false;
     });
   }
 
-  isLoginOpen = false;
-
-  openLogin() { 
-    this.isLoginOpen = !this.isLoginOpen; 
-    console.log("user clicked - Etat:", this.isLoginOpen);
-  }
 
 
 }

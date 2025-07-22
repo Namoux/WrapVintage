@@ -26,9 +26,9 @@
 /* Boîte modale */
 .modal {
   position: fixed;
-  top: 50%;  /* Positionne le bord supérieur de l'élément à 50% de la hauteur de la fenêtre  */
-  left: 50%; /* Positionne le bord gauche de l'élément à 50% de la largeur de la fenêtre. */
-  transform: translate(-50%, -50%);    /* Décale l'élément de 50% de sa propre largeur vers la gauche et 50% de sa propre hauteur vers le haut. */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: white;
   padding: 2rem;
   border-radius: 10px;
@@ -92,22 +92,29 @@ button[type="submit"] {
   text-decoration: underline;
 }
 
-
-/* Tablettes */
-@media (min-width: 601px) and (max-width: 1024px) {
-  .modal {
-    padding: 2rem;
-    top: 30%;
-
-  }
-}
-
-/* Smartphones */
 @media (max-width: 600px) {
   .modal {
     padding: 1.5rem;
-    top: 40%;
+    max-width: 70%;
+    border-radius: 12px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  input,
+  button[type="submit"] {
+    font-size: 0.95rem;
+    padding: 0.65rem;
   }
 }
 
+@media (min-width: 601px) and (max-width: 1024px) {
+  .modal {
+    padding: 2rem;
+    max-width: 85%;
+    border-radius: 14px;
+  }
+}
 

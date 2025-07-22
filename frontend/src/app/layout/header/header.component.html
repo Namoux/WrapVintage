@@ -27,4 +27,10 @@
 <app-searchbar [isSopen]="isSearchOpen" (linkClicked)="isSearchOpen = false"> </app-searchbar>
 
 <!-- Composant LoginModalComponent avec liaison de données -->
-<app-login-modal [isLopen]="isLoginOpen" (linkClicked)="isLoginOpen = false"></app-login-modal>
+<!-- <app-login-modal [isLopen]="isLoginOpen" (linkClicked)="isLoginOpen = false"></app-login-modal> -->
+
+<!-- Modal Connexion -->
+<app-login-modal [isLopen]="isLoginOpen" (linkClicked)="closeModals()" (switchToRegister)="openRegister()"></app-login-modal>
+
+<!-- Modal Inscription -->
+<app-register-modal [isRopen]="isRegisterOpen" (linkClicked)="closeModals()" (switchToLogin)="openLogin()"></app-register-modal>

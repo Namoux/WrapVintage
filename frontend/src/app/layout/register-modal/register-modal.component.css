@@ -4,6 +4,7 @@
   display: none;
   opacity: 0;
   pointer-events: none;
+  /* désactive les clics tant que le modal est fermé */
   transition: opacity 0.3s ease;
 }
 
@@ -13,12 +14,14 @@
   display: block;
   opacity: 1;
   pointer-events: auto;
+  /* réactive les clics quand le modal s'ouvre */
 }
 
 /* Fond sombre semi-transparent */
 .modal-backdrop {
   position: fixed;
   inset: 0;
+  /* cela le rend plein ecran */
   background: rgba(0, 0, 0, 0.3);
   z-index: 1000;
 }
@@ -27,24 +30,44 @@
 .modal {
   position: fixed;
   top: 50%;
+  /* Positionne le bord supérieur de l'élément à 50% de la hauteur de la fenêtre  */
   left: 50%;
+  /* Positionne le bord gauche de l'élément à 50% de la largeur de la fenêtre. */
   transform: translate(-50%, -50%);
+  /* Décale l'élément de 50% de sa propre largeur vers la gauche et 50% de sa propre hauteur vers le haut. */
   background: white;
   padding: 2rem;
-  border-radius: 10px;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   z-index: 1001;
   min-width: 300px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
 }
 
 /* Bouton fermer */
 .close {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 12px;
+  right: 16px;
   background: none;
   border: none;
+  /* Supprime la bordure visible */
   font-size: 1.5rem;
   cursor: pointer;
+  color: #666;
 }
 
 /* Formulaire */
@@ -58,14 +81,26 @@ input {
   padding: 0.5rem;
   border-radius: 5px;
   border: 1px solid #ccc;
+  outline: none;
+  /* supprime la bordure bleu au clic de l'input */
+}
+
+input:focus {
+  border-color: #D4B369;
 }
 
 button[type="submit"] {
   background: #D4B369;
   border: none;
+  /* Supprime la bordure visible */
   padding: 0.5rem;
   border-radius: 5px;
   cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: #c3a553;
 }
 
 .error {
@@ -92,29 +127,20 @@ button[type="submit"] {
   text-decoration: underline;
 }
 
-@media (max-width: 600px) {
-  .modal {
-    padding: 1.5rem;
-    max-width: 70%;
-    border-radius: 12px;
-  }
 
-  h2 {
-    font-size: 1.2rem;
-  }
-
-  input,
-  button[type="submit"] {
-    font-size: 0.95rem;
-    padding: 0.65rem;
-  }
-}
-
+/* Tablettes */
 @media (min-width: 601px) and (max-width: 1024px) {
   .modal {
     padding: 2rem;
-    max-width: 85%;
-    border-radius: 14px;
+    top: 40%;
+
   }
 }
 
+/* Smartphones */
+@media (max-width: 600px) {
+  .modal {
+    padding: 1.5rem;
+    top: 40%;
+  }
+}

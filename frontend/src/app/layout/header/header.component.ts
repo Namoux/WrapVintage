@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MenuBurgerComponent } from '../menu-burger/menu-burger.component';
 import { SearchbarComponent } from "../searchbar/searchbar.component";
 import { LoginModalComponent } from '../login-modal/login-modal.component';
 import { RegisterModalComponent } from '../register-modal/register-modal.component';
+import { ApiService } from '../../core/services/api.service';
+import { User } from '../../core/interfaces/models';
+
 
 @Component({
   selector: 'app-header',
@@ -17,6 +20,7 @@ export class HeaderComponent {
   isSearchOpen = false;
   isLoginOpen = false;
   isRegisterOpen = false;
+  userName: string | null = null;
 
   /** Bascule l'état du menu */
   openMenu() {
@@ -29,16 +33,14 @@ export class HeaderComponent {
     console.log("Search clicked - Etat:", this.isSearchOpen);
   }
 
-
-  // openLogin() { 
-  //   this.isLoginOpen = !this.isLoginOpen; 
-  //   console.log("user clicked - Etat:", this.isLoginOpen);
-  // }
-
   openLogin() {
-    this.isLoginOpen = true;
-    this.isRegisterOpen = false;
-    console.log("Login modal ouvert");
+    if (this.userName) {
+      this.router.navigate(['/mon-compte']);
+    } else {
+      this.isLoginOpen = true;
+      this.isRegisterOpen = false;
+      console.log("Login modal ouvert");
+    }
   }
 
   closeModals() {
@@ -52,17 +54,35 @@ export class HeaderComponent {
     console.log("Register modal ouvert");
   }
 
+  ngOnInit() {
+    this.loadUserName();
+  }
+
+  async loadUserName() {
+    try {
+      const user = await this.api.getMe();
+      this.userName = user.username;
+    } catch {
+      this.userName = null;
+    }
+  }
+
+  refreshUserName() {
+    this.loadUserName();
+  }
 
   // Au scroll, fermeture du menu
-  constructor() {
+  constructor(private router: Router, private api: ApiService) {
     window.addEventListener('scroll', () => {
       this.isMenuOpen = false;
       this.isSearchOpen = false;
       this.isRegisterOpen = false;
       this.isLoginOpen = false;
     });
+
+    // Écoute l'événement de rafraîchissement du username
+    window.addEventListener('refreshUserName', () => {
+      this.refreshUserName();
+    });
   }
-
-
-
 }

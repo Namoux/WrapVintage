@@ -127,6 +127,19 @@ button[type="submit"]:hover {
   text-decoration: underline;
 }
 
+.success {
+  color: green;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.errorConnection {
+  color: red;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+  text-align: center;
+}
 
 /* Tablettes */
 @media (min-width: 601px) and (max-width: 1024px) {

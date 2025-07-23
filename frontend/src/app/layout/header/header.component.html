@@ -6,11 +6,15 @@
     </div>
 
     <div class="center">
-      <a routerLink="/" routerLinkActive="active" class="logo" [routerLinkActiveOptions]="{ exact: true }" class="logo"><img src="/logo.png" alt="Logo WrapVintage" /></a>
+      <a routerLink="/" routerLinkActive="active" class="logo" [routerLinkActiveOptions]="{ exact: true }"
+        class="logo"><img src="/logo.png" alt="Logo WrapVintage" /></a>
     </div>
 
     <div class="right_actions">
-      <a (click)="openLogin()"><img src="/utilisateur.png" class="icon" alt="Compte" /></a>
+      <a (click)="openLogin()" class="user"><img src="/utilisateur.png" class="icon" alt="Compte" />
+        @if (userName) {
+        <span class="username-header">{{ userName }}</span>
+        }</a>
       <a (click)="openSearchbar()"><img src="/loupe.png" class="icon" alt="Recherche" /></a>
       <a href="#"><img src="/shopping-bag.png" class="icon" alt="Panier" /></a>
       <!-- <a href="#"><i class="fa-regular fa-user fa-lg"></i></a>
@@ -26,11 +30,10 @@
 <!-- Composant SearchBarComponent avec liaison de données -->
 <app-searchbar [isSopen]="isSearchOpen" (linkClicked)="isSearchOpen = false"> </app-searchbar>
 
-<!-- Composant LoginModalComponent avec liaison de données -->
-<!-- <app-login-modal [isLopen]="isLoginOpen" (linkClicked)="isLoginOpen = false"></app-login-modal> -->
-
 <!-- Modal Connexion -->
-<app-login-modal [isLopen]="isLoginOpen" (linkClicked)="closeModals()" (switchToRegister)="openRegister()"></app-login-modal>
+<app-login-modal [isLopen]="isLoginOpen" (linkClicked)="closeModals(); refreshUserName()"
+  (switchToRegister)="openRegister()"></app-login-modal>
 
 <!-- Modal Inscription -->
-<app-register-modal [isRopen]="isRegisterOpen" (linkClicked)="closeModals()" (switchToLogin)="openLogin()"></app-register-modal>
+<app-register-modal [isRopen]="isRegisterOpen" (linkClicked)="closeModals()"
+  (switchToLogin)="openLogin()"></app-register-modal>

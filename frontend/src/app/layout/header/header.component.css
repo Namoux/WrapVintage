@@ -63,6 +63,25 @@
   transform: scale(1.1);              /* Zoom léger au survol */
 }
 
+.username-header {
+  margin-left: 0.5rem;
+  font-weight: bold;
+  color: #D4B369;
+  font-size: 1rem;
+}
+
+.user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+}
+
+.user:hover {
+  cursor: pointer;
+}
+
 /* ----------- TABLETTE (601px à 1024px) ----------- */
 @media (min-width: 601px) and (max-width: 1024px) {
   .logo img {

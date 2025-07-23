@@ -10,6 +10,7 @@ import { PaymentConditionComponent } from './features/info/payment-condition/pay
 import { CGVComponent } from './features/info/cgv/cgv.component';
 import { ProductByIdComponent } from './features/product/product-by-id/product-by-id.component';
 import { SearchbarComponent } from './layout/searchbar/searchbar.component';
+import { CompteComponent } from './layout/compte/compte.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // page d'accueil
@@ -20,5 +21,6 @@ export const routes: Routes = [
   { path: 'payment-condition', component: PaymentConditionComponent }, // page paiement condition
   { path: 'cgv', component: CGVComponent }, // page CGV
   { path: 'product/:id', component: ProductByIdComponent }, // page produit detail
-  { path: 'searchbar', component: SearchbarComponent } // barre de recherche
+  { path: 'searchbar', component: SearchbarComponent }, // barre de recherche
+  { path: 'mon-compte', component: CompteComponent }, // Compte
 ];

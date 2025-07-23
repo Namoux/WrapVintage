@@ -25,4 +25,12 @@
         Pas de compte ?
         <a (click)="onRegister()">Inscrivez-vous</a>
     </p>
+
+    @if (errorMsg) {
+      <div class="errorConnection">{{ errorMsg }}</div>
+    }
+    
+    @if (successMsg) {
+      <div class="success">{{ successMsg }}</div>
+    }
 </div>

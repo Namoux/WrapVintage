@@ -47,6 +47,7 @@ export class SearchbarComponent implements OnChanges {
       .then(data => {
         if (Array.isArray(data)) {
           this.products = data.filter(p => p && p.id != null);
+          console.log(this.products);
           this.errorMessage = '';
         } else {
           this.products = [];

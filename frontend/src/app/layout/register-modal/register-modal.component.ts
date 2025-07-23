@@ -35,7 +35,7 @@ export class RegisterModalComponent {
 
     this.submitted = true;
 
-    if (!this.username || !this.password) {
+    if (!this.username || !this.password || this.email) {
       return; // Ne continue pas si les champs sont invalides
     }
     alert(`Inscription : ${this.username} (${this.email})`);

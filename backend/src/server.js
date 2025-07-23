@@ -7,6 +7,8 @@ import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import cookieParser from 'cookie-parser';
+
 
 
 const baseUrl = `${HOST}:${PORT}`; // Utiliser une variable d'environnement pour l'Url
@@ -14,7 +16,11 @@ const baseUrl = `${HOST}:${PORT}`; // Utiliser une variable d'environnement pour
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:4200', // ton frontend Angular
+    credentials: true                // autorise les cookies
+}));
+app.use(cookieParser());
 app.use(express.static('public')); // Dossier pour les fichiers statiques
 
 // Routes

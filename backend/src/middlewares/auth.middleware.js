@@ -10,10 +10,12 @@ import { SECRETKEY } from '../config.js';
  */
 export function checkTokenValid(req, res, next) {
     try {
-        const authHeader = req.headers.authorization;
-        if (!authHeader) throw new Error();
+        // const authHeader = req.headers.authorization;
+        // if (!authHeader) throw new Error();
+        
+        // const token = authHeader.split(" ")[1];
 
-        const token = authHeader.split(" ")[1];
+        const token = req.cookies.token;
         const decodeToken = jwt.verify(token, SECRETKEY);
         
         // Ajoute l'id et le rôle dans req.user
@@ -25,7 +27,9 @@ export function checkTokenValid(req, res, next) {
         console.log("Token authorized");
         next();
     } catch (error) {
-        console.log("Wrong Token");
+        const authHeader = req.cookies.token;
+        console.log("Wrong Token", authHeader);
+
         return res.status(401).json({ msg: "Wrong token" });
     }
 }

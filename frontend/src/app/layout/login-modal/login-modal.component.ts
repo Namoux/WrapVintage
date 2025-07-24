@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, Input } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; // Pour ngModel
 import { RouterModule } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { ViewChild } from '@angular/core';
@@ -25,6 +25,11 @@ export class LoginModalComponent {
   errorMsg = '';
   successMsg = '';
 
+  /**
+ * Ferme la modale de connexion et réinitialise tous les champs et messages.
+ * Réinitialise le formulaire Angular pour effacer l’état touched/dirty.
+ * Émet un événement pour informer le parent que le lien a été cliqué.
+ */
   onClose() {
     this.username = '';
     this.password = '';
@@ -36,6 +41,12 @@ export class LoginModalComponent {
     this.linkClicked.emit();
   }
 
+  /**
+ * Tente de connecter l'utilisateur avec les identifiants saisis.
+ * Affiche un message de succès ou d'erreur selon le résultat.
+ * Ferme la modale automatiquement après une connexion réussie.
+ * @param {NgForm} form - Formulaire Angular de connexion
+ */
   async onLogin(form: NgForm) {
     this.submitted = true;
     this.errorMsg = '';
@@ -63,7 +74,10 @@ export class LoginModalComponent {
 
   }
 
-
+  /**
+ * Passe à la modale d'inscription (switch).
+ * Émet un événement pour informer le parent.
+ */
   onRegister() {
     // Redirige vers la page d'inscription
     this.switchToRegister.emit();

@@ -21,6 +21,11 @@ export class CompteComponent {
     is_admin: 0,
   };
 
+  /**
+ * Objet temporaire pour l'édition du profil utilisateur.
+ * Il est utilisé pour stocker les modifications avant de les enregistrer.
+ * Les champs sont optionnels grâce à l'interface EditUser (Partial<User>).
+ */
   editUser: EditUser = {};
   editMode = false;
   successMsg = '';
@@ -42,7 +47,7 @@ export class CompteComponent {
   cancelEdit() {
     this.editMode = false;
     this.editUser = {};
-    // Optionnel : recharger les infos utilisateur pour annuler les modifications
+    // recharger les infos utilisateur pour annuler les modifications
     this.ngOnInit();
   }
 
@@ -71,6 +76,7 @@ export class CompteComponent {
     try {
       await this.api.logout();
       // Rafraîchir le username dans le header
+      // Envoie un événement personnalisé au window pour demander au composant header de rafraîchir l'affichage du username.
       window.dispatchEvent(new CustomEvent('refreshUserName'));
       // redirige a la page d'acceuil
       this.router.navigate(['/']);
@@ -97,6 +103,5 @@ export class CompteComponent {
   closeDeleteModal() {
     this.showDeleteModal = false;
   }
-
-
+  
 }

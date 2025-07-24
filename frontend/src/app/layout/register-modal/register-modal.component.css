@@ -127,6 +127,12 @@ button[type="submit"]:hover {
   text-decoration: underline;
 }
 
+.success {
+  color: #388e3c;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
 
 /* Tablettes */
 @media (min-width: 601px) and (max-width: 1024px) {

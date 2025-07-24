@@ -15,6 +15,10 @@
       @if (!editMode) {
       <div>{{ user.username }}</div>
       } @else {
+
+      <!-- Champ de saisie lié à editUser.username via ngModel.
+       [(ngModel)] permet de faire la liaison bidirectionnelle entre le champ et la variable du composant.
+       [ngModelOptions]="{standalone: true}" indique que ce champ n'est pas géré par le formulaire parent Angular. -->
       <input id="username" name="username" [(ngModel)]="editUser.username" maxlength="20" required
         [ngModelOptions]="{standalone: true}" />
       }
@@ -38,7 +42,6 @@
       <textarea id="address" name="adresse" [(ngModel)]="editUser.adresse" rows="3"
         [ngModelOptions]="{standalone: true}"></textarea>
       }
-
 
       @if(editMode) {
       <!-- Changement de mot de passe -->
@@ -107,7 +110,6 @@
     </p>
 
     <button type="button" class="btn-delete" (click)="openDeleteModal()">Supprimer mon compte</button>
-    <!-- <button class="btn-delete" (click)="onDeleteAccount()">Supprimer mon compte</button> -->
 
     <!-- Fenêtre modale personnalisée -->
     @if (showDeleteModal) {
@@ -120,7 +122,6 @@
       </div>
     </div>
     }
-
 
   </div>
 

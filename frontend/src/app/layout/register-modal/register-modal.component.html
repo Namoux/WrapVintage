@@ -27,4 +27,12 @@
         Déjà un compte ?
         <a (click)="onSwitchToLogin()">Connectez-vous</a>
     </p>
+
+    @if (errorMsg) {
+    <div class="error">{{ errorMsg }}</div>
+    }
+    @if (successMsg) {
+    <div class="success">{{ successMsg }}</div>
+    }
+
 </div>

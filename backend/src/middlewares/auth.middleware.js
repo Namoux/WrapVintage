@@ -42,10 +42,12 @@ export function checkTokenValid(req, res, next) {
 export function checkTokenAdmin(connection) {
     return async (req, res, next) => {
         try {
-            const authHeader = req.headers.authorization;
-            if (!authHeader) throw new Error();
+            // const authHeader = req.headers.authorization;
+            // if (!authHeader) throw new Error();
 
-            const token = authHeader.split(" ")[1];
+            // const token = authHeader.split(" ")[1];
+
+            const token = req.cookies.token;
             const decodeToken = jwt.verify(token, SECRETKEY);
 
             const IdUser = decodeToken.id;

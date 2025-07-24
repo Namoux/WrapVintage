@@ -11,8 +11,16 @@ import { RouterModule } from '@angular/router';
 export class MenuBurgerComponent {
 
   @Input() isMopen = false; // Reçoit l'état depuis le parent via Input (HeaderComponent)
+
+  /**
+ * Événement émis lorsque l'utilisateur clique sur un lien du menu ou ferme le menu.
+ * Permet au parent de réagir (ex : fermer le menu burger).
+ */
   @Output() linkClicked = new EventEmitter<void>();
 
+  /**
+ * Ferme le menu burger en émettant l'événement linkClicked.
+ */
   closeMenu() {
     this.linkClicked.emit();
   }

@@ -18,6 +18,13 @@ export interface User {
     is_admin: number
 }
 
+/**
+ * Interface pour la modification d'un utilisateur.
+ * Hérite de tous les champs de User (optionnels grâce à Partial).
+ * Ajoute les champs pour la gestion du changement de mot de passe.
+ * - currentPassword : mot de passe actuel (pour vérification)
+ * - newPassword : nouveau mot de passe (à enregistrer)
+ */
 export interface EditUser extends Partial<User> {
   currentPassword?: string;
   newPassword?: string;

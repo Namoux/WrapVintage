@@ -28,36 +28,58 @@ export class HeaderComponent {
     console.log("Menu clicked - Etat:", this.isMenuOpen);
   }
 
-  openSearchbar() {
-    this.isSearchOpen = !this.isSearchOpen;
-    console.log("Search clicked - Etat:", this.isSearchOpen);
-  }
+/**
+ * Ouvre ou ferme la barre de recherche.
+ */
+openSearchbar() {
+  this.isSearchOpen = !this.isSearchOpen;
+  console.log("Search clicked - Etat:", this.isSearchOpen);
+}
 
-  openLogin() {
-    if (this.userName) {
-      this.router.navigate(['/mon-compte']);
-    } else {
-      this.isLoginOpen = true;
-      this.isRegisterOpen = false;
-      console.log("Login modal ouvert");
-    }
-  }
-
-  closeModals() {
-    this.isLoginOpen = false;
+/**
+ * Ouvre la modale de connexion si l'utilisateur n'est pas connecté,
+ * sinon redirige vers la page "mon compte".
+ */
+openLogin() {
+  if (this.userName) {
+    this.router.navigate(['/mon-compte']);
+  } else {
+    this.isLoginOpen = true;
     this.isRegisterOpen = false;
+    console.log("Login modal ouvert");
   }
+}
 
-  openRegister() {
-    this.isRegisterOpen = true;
-    this.isLoginOpen = false;
-    console.log("Register modal ouvert");
-  }
+/**
+ * Ferme les modales de connexion et d'inscription.
+ */
+closeModals() {
+  this.isLoginOpen = false;
+  this.isRegisterOpen = false;
+}
 
+/**
+ * Ouvre la modale d'inscription et ferme la modale de connexion.
+ */
+openRegister() {
+  this.isRegisterOpen = true;
+  this.isLoginOpen = false;
+  console.log("Register modal ouvert");
+}
+
+  /**
+   * Méthode du cycle de vie Angular appelée à l'initialisation du composant.
+   * Charge le nom d'utilisateur pour l'afficher dans le header.
+   */
   ngOnInit() {
     this.loadUserName();
   }
 
+  /**
+   * Charge le nom d'utilisateur depuis l'API.
+   * Si l'utilisateur est connecté, met à jour userName avec son nom.
+   * Si non connecté ou erreur, met userName à null pour masquer l'affichage.
+   */
   async loadUserName() {
     try {
       const user = await this.api.getMe();
@@ -67,11 +89,15 @@ export class HeaderComponent {
     }
   }
 
+  /**
+   * Rafraîchit le nom d'utilisateur affiché dans le header.
+   * Appelée lors de l'événement personnalisé 'refreshUserName' (ex : après déconnexion ou suppression de compte).
+   */
   refreshUserName() {
     this.loadUserName();
   }
 
-  // Au scroll, fermeture du menu
+  // Au scroll, fermeture des fenetres appelés
   constructor(private router: Router, private api: ApiService) {
     window.addEventListener('scroll', () => {
       this.isMenuOpen = false;
@@ -81,6 +107,9 @@ export class HeaderComponent {
     });
 
     // Écoute l'événement de rafraîchissement du username
+    // Ajoute un écouteur d'événement global sur la fenêtre pour le type 'refreshUserName'.
+    // Lorsque cet événement est déclenché (ex : après déconnexion ou suppression de compte),
+    // la méthode refreshUserName() est appelée pour mettre à jour l'affichage du nom d'utilisateur dans le header.
     window.addEventListener('refreshUserName', () => {
       this.refreshUserName();
     });

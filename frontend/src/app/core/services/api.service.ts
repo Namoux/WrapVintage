@@ -8,43 +8,81 @@ import { environment } from '../../../environments/environment.development';
 export class ApiService {
   constructor() { }
 
+  /**
+   * Fonction utilitaire pour parser la réponse et gérer les erreurs HTTP
+   * @param response - Réponse HTTP de fetch
+   * @returns Données parsées ou lève une erreur avec le message du backend
+   */
+  private async handleResponse(response: Response): Promise<any> {
+    // Tente de parser la réponse en JSON, retourne un objet vide si erreur
+    const data = await response.json().catch(() => ({}));
+    // Si le code HTTP n'est pas OK (200-299), lève une erreur avec le message du backend (json)
+    if (!response.ok) throw data;
+    // Sinon, retourne les données parsées
+    return data;
+  }
+
+  /**
+   * Récupère tous les produits (limite par défaut à 100)
+   */
   public async getProducts(limit: number = 100): Promise<Product[]> {
-    // Ma fonction asyncrone renvoie une promesse de Product[]
-    return fetch(`${environment.baseURL}/products/all` + limit)
-      .then(res => res.json());
-  };
+    // Envoie une requête pour récupérer les produits
+    const response = await fetch(`${environment.baseURL}/products/all` + limit);
+    // Utilise la fonction utilitaire pour parser la réponse et gérer les erreurs
+    return this.handleResponse(response);
+  }
 
+  /**
+   * Récupère les produits hommes
+   */
   public async getManProducts(): Promise<Product[]> {
-    // Ma fonction asyncrone renvoie une promesse de Product[]
-    return fetch(`${environment.baseURL}/products/hommes`)
-      .then(res => res.json());
+    // Envoie une requête pour récupérer les produits hommes
+    const response = await fetch(`${environment.baseURL}/products/hommes`)
+    return this.handleResponse(response);
   };
 
+  /**
+   * Récupère les produits femmes
+   */
   public async getWomanProducts(): Promise<Product[]> {
-    // Ma fonction asyncrone renvoie une promesse de Product[]
-    return fetch(`${environment.baseURL}/products/femmes`)
-      .then(res => res.json());
+    // Envoie une requête pour récupérer les produits femmes
+    const response = await fetch(`${environment.baseURL}/products/femmes`)
+    return this.handleResponse(response);
   };
 
+  /**
+   * Récupère les nouveautés produits
+   */
   public async getProductsNews(): Promise<Product[]> {
-    // Ma fonction asyncrone renvoie une promesse de Product[]
-    return fetch(`${environment.baseURL}/products/news`)
-      .then(res => res.json());
+    // Envoie une requête pour récupérer les nouveautés
+    const response = await fetch(`${environment.baseURL}/products/news`);
+    return this.handleResponse(response);
   };
 
+  /**
+   * Récupère un produit par son id
+   */
   public async getProductbyId(id: number): Promise<Product> {
-    // Ma fonction asyncrone renvoie une promesse de Product
-    return fetch(`${environment.baseURL}/products/` + id)
-      .then(res => res.json())
-      .then(data => data[0]); // renvoie directement l'objet
+    // Envoie une requête pour récupérer un produit spécifique
+    const response = await fetch(`${environment.baseURL}/products/` + id)
+    const data = await this.handleResponse(response);
+    return data[0]; // renvoie directement l'objet
   };
 
+  /**
+   * Recherche des produits par requête
+   */
   public async getSearchProduct(query: string): Promise<Product[]> {
-    return fetch(`${environment.baseURL}/products/search/` + query)
-      .then(res => res.json());
+    // Envoie une requête pour rechercher des produits
+    const response = await fetch(`${environment.baseURL}/products/search/` + query)
+    return this.handleResponse(response);
   };
 
+  /**
+   * Connexion utilisateur
+   */
   public async login(username: string, password: string): Promise<User> {
+    // Envoie une requête de connexion
     const response = await fetch(`${environment.baseURL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -52,41 +90,40 @@ export class ApiService {
       credentials: 'include' // Permet d'envoyer et de recevoir les cookies
     });
 
-    if (!response.ok) {
-      // On tente de lire le message d'erreur du backend
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || 'Erreur lors de la connexion');
-    }
-
-    // On récupère le user + token
-    return response.json();
+    return this.handleResponse(response);
   };
 
+  /**
+   * Récupère les infos de l'utilisateur connecté
+   */
   public async getMe(): Promise<User> {
+    // Envoie une requête pour récupérer l'utilisateur courant
     const response = await fetch(`${environment.baseURL}/auth/me`, {
       method: 'GET',
       credentials: 'include' // envoyer le cookie
     });
 
-    if (!response.ok) {
-      throw new Error("Non authentifié");
-    }
-
-    return response.json();
+    return this.handleResponse(response);
   };
 
+  /**
+   * Déconnexion utilisateur
+   */
   public async logout(): Promise<void> {
+    // Envoie une requête de déconnexion
     const response = await fetch(`${environment.baseURL}/auth/logout`, {
       method: 'POST',
       credentials: 'include' // Important pour supprimer le cookie
     });
 
-    if (!response.ok) {
-      throw new Error("Erreur lors de la déconnexion");
-    }
+    return this.handleResponse(response);
   };
 
+  /**
+   * Met à jour les infos utilisateur
+   */
   public async updateUser(id: number, user: EditUser): Promise<any> {
+    // Envoie une requête pour mettre à jour l'utilisateur
     const response = await fetch(`${environment.baseURL}/users/update/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
@@ -94,25 +131,33 @@ export class ApiService {
       credentials: 'include'
     });
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      // On lève une erreur avec le message du backend
-      throw data;
-    };
-
-    return data;
+    return this.handleResponse(response);
 
   };
 
+  /**
+   * Supprime (soft delete) un utilisateur
+   */
   public async deleteUser(id: number): Promise<any> {
+    // Envoie une requête pour supprimer l'utilisateur
     const response = await fetch(`${environment.baseURL}/users/delete/${id}`, {
       method: 'DELETE',
       credentials: 'include'
     });
-    const data = await response.json();
-    if (!response.ok) throw data;
-    return data;
+    return this.handleResponse(response);
   };
 
+  /**
+   * Inscription nouvel utilisateur
+   */
+  public async register(username: string, password: string, email: string): Promise<any> {
+    // Envoie une requête d'inscription
+    const response = await fetch(`${environment.baseURL}/auth/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password, email }),
+      credentials: 'include'
+    });
+    return this.handleResponse(response);
+  }
 }

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { SECRETKEY } from '../config.js';
+import { SECRETKEY, NODE_ENV } from '../config.js';
 
 /**
  * Authentifie un utilisateur et retourne un token JWT
@@ -101,18 +101,28 @@ export const signupUser = (userModel) => async (req, res, next) => {
     }
 };
 
+/**
+ * Récupère l'utilisateur actuellement connecté à partir du token JWT présent dans les cookies.
+ * @param {UserModel} userModel - Modèle utilisateur pour accéder à la base de données
+ * @returns {Function} - Middleware Express qui renvoie les infos de l'utilisateur ou une erreur d'authentification
+ */
 export const getCurrentUser = (userModel) => async (req, res, next) => {
   try {
+    // Récupère le token JWT depuis les cookies
     const token = req.cookies.token;
 
+    // Si aucun token, l'utilisateur n'est pas authentifié
     if (!token) return res.status(401).json({ error: "Non authentifié" });
 
+    // Vérifie et décode le token avec la clé secrète
     const decoded = jwt.verify(token, SECRETKEY);
 
+    // Récupère l'utilisateur correspondant à l'id du token
     const users = await userModel.getUserById(decoded.id);
     if (!users || users.length === 0)
       return res.status(404).json({ error: "Utilisateur introuvable" });
 
+    // Renvoie les infos de l'utilisateur (sans le mot de passe)
     const user = users[0];
     res.json({
       id: user.id,
@@ -121,17 +131,24 @@ export const getCurrentUser = (userModel) => async (req, res, next) => {
       adresse: user.adresse
     });
   } catch (err) {
+    // Si le token est invalide ou expiré
     res.status(401).json({ error: "Token invalide" });
   }
 };
 
+/**
+ * Déconnecte l'utilisateur en supprimant le cookie du token JWT.
+ * @returns {Function} - Middleware Express qui renvoie un message de succès
+ */
 export const logoutUser = () => (req, res) => {
+  // Supprime le cookie 'token' côté client
   res.clearCookie('token', {
-    httpOnly: true,
-    sameSite: 'Lax', // ou 'None' si tu utilises des sous-domaines (et HTTPS)
-    secure: process.env.NODE_ENV === 'production' // uniquement si HTTPS
+    httpOnly: true, // Le cookie n'est pas accessible en JS côté client
+    sameSite: 'Lax', // Protection CSRF, ou 'None' si sous-domaines/HTTPS
+    secure: NODE_ENV === 'production' // Cookie envoyé uniquement en HTTPS
   });
 
   console.log("logged out successfully");
+  // Renvoie un message de succès
   return res.status(200).json({ message: "Déconnecté avec succès" });
 };

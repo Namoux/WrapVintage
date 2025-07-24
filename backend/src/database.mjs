@@ -1,12 +1,13 @@
 import mariadb from "mariadb";
+import { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME } from "./config.js";
 
-// Je me connecte au serveur MariaDB
+// Je me connecte au serveur MariaDB avec les infos du fichier .env
 export const connection = await mariadb.createConnection({
-    host: "localhost",
-    port: 3306,
-    user: "root",
-    password: "root",
-    database: "shop" // Je précise le nom de la bdd 
+    host: DB_HOST,
+    port: DB_PORT ? parseInt(DB_PORT) : 3306,
+    user: DB_USER,
+    password: DB_PASSWORD,
+    database: DB_NAME // Nom de la base de données
 });
 
 const product = await connection.execute(`
@@ -29,6 +30,7 @@ const user = await connection.execute(`
         username VARCHAR(100) NULL UNIQUE,
         password VARCHAR(100) NULL,
         email VARCHAR(100) NULL UNIQUE,
+        adresse VARCHAR(255) NULL,
         is_admin BOOLEAN DEFAULT FALSE, 
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
         deleted_at DATETIME NULL

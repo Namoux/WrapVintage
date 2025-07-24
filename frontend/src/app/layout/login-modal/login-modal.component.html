@@ -1,14 +1,36 @@
-
 <!-- Fond sombre derrière le modal -->
-<div class="modal-backdrop" [class.open]="isLopen"></div>
+<div class="modal-backdrop" [class.open]="isLopen" (click)="onClose()"></div>
 
 <!-- Fenetre de connexion -->
 <div class="modal" [class.open]="isLopen">
-  <button class="close" (click)="onClose()">×</button>
-  <h2>Connexion</h2>
-  <form (ngSubmit)="onLogin()" autocomplete="off">
-    <input type="text" [(ngModel)]="username" name="username" placeholder="Nom d'utilisateur" required />
-    <input type="password" [(ngModel)]="password" name="password" placeholder="Mot de passe" required />
-    <button type="submit">Se connecter</button>
-  </form>
+    <button class="close" (click)="onClose()">×</button>
+    <h2>Connexion</h2>
+    <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)" autocomplete="off">
+        <input type="text" [(ngModel)]="username" name="username" maxlength="20" placeholder="Nom d'utilisateur"
+            required #usernameRef="ngModel" />
+        @if (usernameRef.invalid && (usernameRef.touched || submitted)) {
+        <div class="error">Le nom d'utilisateur est requis.</div>
+        }
+
+        <input type="password" [(ngModel)]="password" name="password" maxlength="10" placeholder="Mot de passe" required
+            #passwordRef="ngModel" />
+        @if (passwordRef.invalid && (passwordRef.touched || submitted)) {
+        <div class="error">Le mot de passe est requis.</div>
+        }
+
+        <button type="submit">Se connecter</button>
+    </form>
+
+    <p class="register-hint">
+        Pas de compte ?
+        <a (click)="onRegister()">Inscrivez-vous</a>
+    </p>
+
+    @if (errorMsg) {
+      <div class="errorConnection">{{ errorMsg }}</div>
+    }
+    
+    @if (successMsg) {
+      <div class="success">{{ successMsg }}</div>
+    }
 </div>

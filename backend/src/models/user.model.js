@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt";
 
 export class UserModel {
 
@@ -38,7 +37,7 @@ export class UserModel {
      * @returns {Promise<Array<Object>>}
      */
     async getUserById(id) {
-        const result = await this.connection.execute('SELECT * FROM user WHERE id = ?', [id]);
+        const result = await this.connection.execute('SELECT * FROM user WHERE id = ? AND deleted_at IS NULL', [id]);
         // console.log("result : ", result);
         return result;
     }
@@ -90,12 +89,12 @@ export class UserModel {
     async updateUser(id, user, editUser) {
         for await (const [key, value] of Object.entries(editUser)) {
             if (key in user) {
-                if (key === "password") {
-                    const hashPassword = await bcrypt.hash(value, 10);
-                    this.connection.execute(`UPDATE user SET ${key} = ? WHERE id = ?`, [hashPassword, id]);
-                } else {
-                    this.connection.execute(`UPDATE user SET ${key} = ? WHERE id = ?`, [value, id]);
-                }
+                // if (key === "password") {
+                //     const hashPassword = await bcrypt.hash(value, 10);
+                //     this.connection.execute(`UPDATE user SET ${key} = ? WHERE id = ?`, [hashPassword, id]);
+                // } else {
+                    await this.connection.execute(`UPDATE user SET ${key} = ? WHERE id = ?`, [value, id]);
+                
             } else {
                 // On lève une erreur pour que le controller la gère
                 const error = new Error(`Wrong param: ${key}`);
@@ -111,6 +110,6 @@ export class UserModel {
      * @returns {Promise<void>}
      */
     async deleteUser(id) {
-        await this.connection.execute('UPDATE user SET deleted_at = NOW() WHERE id = ?', [id]);
+        await this.connection.execute(`UPDATE user SET deleted_at = NOW(), username = CONCAT('deleted_user_', ?), email = NULL, adresse = NULL, password = NULL WHERE id = ?`, [id, id]);
     }
 }

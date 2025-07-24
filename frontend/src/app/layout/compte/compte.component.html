@@ -1,0 +1,128 @@
+<div class="account-container">
+  <h2>Mon compte</h2>
+
+  <!-- Infos utilisateur -->
+  <form autocomplete="off">
+    <div class="form-section">
+      <h3>Informations personnelles</h3>
+
+      @if(editMode) {
+      <p class="account-info">Que voulez-vous modifier ? Vous pouvez mettre à jour vos informations personnelles
+        ci-dessous.</p>
+      }
+
+      <label for="username">Nom d'utilisateur</label>
+      @if (!editMode) {
+      <div>{{ user.username }}</div>
+      } @else {
+
+      <!-- Champ de saisie lié à editUser.username via ngModel.
+       [(ngModel)] permet de faire la liaison bidirectionnelle entre le champ et la variable du composant.
+       [ngModelOptions]="{standalone: true}" indique que ce champ n'est pas géré par le formulaire parent Angular. -->
+      <input id="username" name="username" [(ngModel)]="editUser.username" maxlength="20" required
+        [ngModelOptions]="{standalone: true}" />
+      }
+
+      <label for="email">Adresse e-mail</label>
+      @if (!editMode) {
+      <div>{{ user.email }}</div>
+      } @else {
+      <input id="email" name="email" [(ngModel)]="editUser.email" type="email" required
+        [ngModelOptions]="{standalone: true}" />
+      }
+
+      <label for="address">Adresse complète</label>
+      @if (!editMode) {
+      @if (!user.adresse) {
+      <div>Pas d'adresse fournie</div>
+      } @else {
+      <div>{{ user.adresse }}</div>
+      }
+      } @else {
+      <textarea id="address" name="adresse" [(ngModel)]="editUser.adresse" rows="3"
+        [ngModelOptions]="{standalone: true}"></textarea>
+      }
+
+      @if(editMode) {
+      <!-- Changement de mot de passe -->
+      <div class="form-section">
+        <h4>Changer le mot de passe</h4>
+
+        <label for="currentPassword">Mot de passe actuel</label>
+        <input id="currentPassword" name="currentPassword" type="password" [(ngModel)]="editUser.currentPassword"
+          [ngModelOptions]="{standalone: true}" />
+
+        <label for="newPassword">Nouveau mot de passe</label>
+        <input id="newPassword" name="newPassword" type="password" [(ngModel)]="editUser.newPassword"
+          [ngModelOptions]="{standalone: true}" />
+      </div>
+      }
+
+      @if (errorMsg) {
+      <div class="error">{{ errorMsg }}</div>
+      }
+
+      @if (!editMode) {
+      <button type="button" (click)="enableEdit()">Modifier</button>
+      } @else {
+      <button type="button" type="submit" class="btn-save" (click)="save()">Enregistrer</button>
+      <button type="button" class="btn-cancel" (click)="cancelEdit()">Annuler</button>
+      }
+
+      @if (successMsg) {
+      <div class="success">{{ successMsg }}</div>
+      }
+    </div>
+
+  </form>
+
+  <!-- Déconnexion -->
+  <div class="account-actions">
+    <button class="btn-logout" (click)="onLogout()">Se déconnecter</button>
+  </div>
+
+  <!-- Historique de commandes -->
+  <div class="order-history">
+    <h3>Historique de commandes</h3>
+    <p>Aucune commande pour le moment.</p>
+
+    <!-- @if (orders.length === 0) {
+        <p>Aucune commande pour le moment.</p>
+    } @else {
+      <ul>
+        @for (let order of orders; track order.id) {
+          <li>
+            <strong>Commande #{{ order.id }}</strong> -
+            {{ order.date | date: 'mediumDate' }} -
+            {{ order.total | currency: 'EUR' }}
+          </li>
+        }
+      </ul>
+    } -->
+  </div>
+
+  <!-- Suppression de compte -->
+  <div class="account-deletion">
+    <h3>Supprimer mon compte</h3>
+    <p>
+      En supprimant votre compte, toutes vos données seront définitivement effacées
+      conformément au RGPD.
+    </p>
+
+    <button type="button" class="btn-delete" (click)="openDeleteModal()">Supprimer mon compte</button>
+
+    <!-- Fenêtre modale personnalisée -->
+    @if (showDeleteModal) {
+    <div class="modal-overlay">
+      <div class="modal">
+        <h3>Confirmation</h3>
+        <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
+        <button class="btn-confirm" (click)="onDeleteAccount()">Oui, supprimer</button>
+        <button class="btn-cancel" (click)="closeDeleteModal()">Annuler</button>
+      </div>
+    </div>
+    }
+
+  </div>
+
+</div>

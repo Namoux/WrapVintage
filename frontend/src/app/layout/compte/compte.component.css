@@ -1,0 +1,257 @@
+/* Container principal */
+.account-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem 1.5rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+/* Titres */
+h2, h3, h4 {
+  color: #D4B369;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+/* Sections de formulaire */
+.form-section {
+  margin-bottom: 2rem;
+}
+
+/* Labels et inputs */
+label {
+  display: block;
+  margin-top: 1.5rem;
+  font-weight: 800;
+  color: #555;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  margin-top: 0.4rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  background: #fcfaf5;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #D4B369;
+  box-shadow: 0 0 0 3px rgba(212, 179, 105, 0.2);
+  outline: none;
+}
+
+/* Boutons */
+button {
+  margin-top: 1.5rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  font-weight: 500;
+}
+
+/* Effet subtil au clic */
+button:active {
+  transform: scale(0.97);
+}
+
+.btn-save {
+  background-color: #4caf50;
+  color: white;
+}
+.btn-save:hover {
+  background-color: #388e3c;
+}
+
+.btn-cancel {
+  background-color: #e0e0e0;
+  color: #333;
+}
+.btn-cancel:hover {
+  background-color: #ccc;
+}
+
+/* Nouveau style pour le bouton "Se déconnecter" */
+.btn-logout {
+  background-color: #8C6239; /* brun doux */
+  color: white;
+}
+.btn-logout:hover {
+  background-color: #6e4e2f;
+}
+
+/* Supprimer mon compte */
+.btn-delete {
+  background-color: #f44336;
+  color: white;
+}
+.btn-delete:hover {
+  background-color: #c62828;
+}
+
+/* Messages */
+.error {
+  color: #d32f2f;
+  font-size: 1rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.success {
+  color: #388e3c;
+  font-size: 1rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* Modale de suppression */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  padding: 2.5rem 2rem;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  min-width: 320px;
+  max-width: 90vw;
+  text-align: center;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal h3 {
+  color: #D4B369;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.modal p {
+  margin-bottom: 2rem;
+  color: #444;
+  font-size: 1rem;
+}
+
+.btn-confirm,
+.btn-cancel {
+  padding: 0.6rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  border: none;
+}
+
+.btn-confirm {
+  background: #D4B369;
+  color: #fff;
+}
+.btn-confirm:hover {
+  background: #c3a553;
+}
+
+.btn-cancel {
+  background: #eee;
+  color: #444;
+}
+.btn-cancel:hover {
+  background: #ddd;
+}
+
+/* Tablette */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .account-container {
+    padding: 2rem;
+    margin: 1.5rem auto;
+    max-width: 85%;
+  }
+
+  .modal {
+    padding: 2rem 1.5rem;
+    min-width: 280px;
+  }
+
+  .modal h3 {
+    font-size: 1.2rem;
+  }
+
+  .modal p {
+    font-size: 1rem;
+  }
+
+  .btn-confirm,
+  .btn-cancel {
+    font-size: 1rem;
+    padding: 0.6rem 1.3rem;
+  }
+
+  label {
+    font-size: 1rem;
+  }
+
+  input,
+  textarea {
+    font-size: 1rem;
+  }
+
+  h2, h3, h4 {
+    font-size: 1.4rem;
+  }
+}
+
+/* Smrtphone */
+@media (max-width: 600px) {
+  .account-container {
+    padding: 1.2rem 0.8rem;
+  }
+
+  .modal {
+    padding: 1.5rem 1rem;
+    min-width: 240px;
+  }
+
+  .modal h3 {
+    font-size: 1.1rem;
+  }
+
+  .modal p {
+    font-size: 0.95rem;
+  }
+
+  .btn-confirm,
+  .btn-cancel {
+    font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+  }
+}

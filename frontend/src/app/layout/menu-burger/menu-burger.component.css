@@ -1,3 +1,27 @@
+
+/* Masquer par défaut */
+.modal-backdrop {
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Affichage quand isLopen est true */
+.modal-backdrop.open {
+  display: block;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Fond sombre semi-transparent */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
 .menu {
   position: fixed;
   top: 15vh;
@@ -10,7 +34,7 @@
   transition: left 0.3s;
   padding: 2rem 1rem;
   border-radius: 20px;
-  z-index: 2;
+  z-index: 1001;
 }
 
 /* Menu ouvert */

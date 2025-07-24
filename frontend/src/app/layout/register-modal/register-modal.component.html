@@ -1,0 +1,38 @@
+<div class="modal-backdrop" [class.open]="isRopen" (click)="onClose()"></div>
+<div class="modal" [class.open]="isRopen">
+    <button class="close" (click)="onClose()">×</button>
+    <h2>Inscription</h2>
+    <form #registerForm="ngForm" (ngSubmit)="onRegister(registerForm)" autocomplete="off">
+        <input type="text" name="username" [(ngModel)]="username" maxlength="20" placeholder="Nom d'utilisateur"
+            required #usernameRef="ngModel" />
+        @if (usernameRef.invalid && (usernameRef.touched || submitted)) {
+        <div class="error">Le nom d'utilisateur est requis.</div>
+        }
+
+        <input type="email" name="email" [(ngModel)]="email" maxlength="50" placeholder="Email" required
+            #emailRef="ngModel" />
+        @if (emailRef.invalid && (emailRef.touched || submitted)) {
+        <div class="error">L'email est requis.</div>
+        }
+
+        <input type="password" name="password" [(ngModel)]="password" maxlength="10" placeholder="Mot de passe" required
+            #passwordRef="ngModel" />
+        @if (passwordRef.invalid && (passwordRef.touched || submitted)) {
+        <div class="error">Le mot de passe est requis.</div>
+        }
+
+        <button type="submit">S'inscrire</button>
+    </form>
+    <p class="register-hint">
+        Déjà un compte ?
+        <a (click)="onSwitchToLogin()">Connectez-vous</a>
+    </p>
+
+    @if (errorMsg) {
+    <div class="error">{{ errorMsg }}</div>
+    }
+    @if (successMsg) {
+    <div class="success">{{ successMsg }}</div>
+    }
+
+</div>

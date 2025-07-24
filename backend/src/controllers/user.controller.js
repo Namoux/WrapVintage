@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 
 /**
  * Récupère tous les utilisateurs actifs
@@ -11,7 +12,7 @@ export const getAllUsersActive = (userModel) => async (req, res, next) => {
         const limit = parseInt(req.query.limit);
 
         const users = await userModel.getAllUsersActive(limit);
-        
+
         console.log("Users was sent to client");
         return res.status(200).json(users);
 
@@ -33,10 +34,10 @@ export const getAllUsersArchived = (userModel) => async (req, res, next) => {
         const limit = parseInt(req.query.limit);
 
         const users = await userModel.getAllUsersArchived(limit);
-        
+
         console.log("Users archived was sent to client");
         return res.status(200).json(users);
-    
+
     } catch (error) {
         console.log("Error fetching deleted users");
         next(error);
@@ -59,7 +60,7 @@ export const getUserById = (userModel) => async (req, res, next) => {
         }
 
         const user = await userModel.getUserById(id);
-        
+
         if (user.length !== 0) {
             console.log("User was sent to client");
             return res.status(200).json(user);
@@ -89,25 +90,41 @@ export const updateUser = (userModel) => async (req, res, next) => {
         }
 
         const [user] = await userModel.getUserById(id);
-        
+
         if (!user) {
             // L'utilisateur n'existe pas !
             console.log("Unknown user");
             return res.status(404).json("Unknown user");
         }
 
-        
+
         // L'utilisateur existe
-        const editUser  = req.body;
-        
+        const editUser = req.body;
+        console.log("editUser reçu :", editUser);
+
         // Vérification de l'autorisation
         const authUser = req.user;
         if (authUser.id !== id && !authUser.is_admin) {
             console.log("Forbidden: Client can't edit this profile");
             return res.status(403).json({ msg: "Forbidden: You can't edit this profile" });
         }
+        
+        if (editUser.newPassword && editUser.currentPassword) {
+            // Vérifie que le mot de passe actuel est correct
+            const isValid = await bcrypt.compare(editUser.currentPassword, user.password);
+            if (!isValid) {
+                console.log("Forbidden: currentPassword is not valid");
+                return res.status(400).json({ error: "Mot de passe actuel incorrect" });
+            }
+            // Hash le nouveau mot de passe et prépare l'objet à mettre à jour
+            editUser.password = await bcrypt.hash(editUser.newPassword, 10);
+        }
 
-        await userModel.updateUser (id, user, editUser);
+        // Après avoir hashé le nouveau mot de passe
+        delete editUser.currentPassword;
+        delete editUser.newPassword;
+
+        await userModel.updateUser(id, user, editUser);
 
         console.log({ msg: "User edited !", oldData: user, newData: editUser });
         return res.status(200).json({ msg: "User edited !", oldData: user, newData: editUser });
@@ -133,13 +150,13 @@ export const deleteUser = (userModel) => async (req, res, next) => {
         }
 
         const [user] = await userModel.getUserById(id);
-        
+
         if (!user) {
             // L'utilisateur n'existe pas !
             console.log("Unknown user");
             return res.status(404).json("Unknown user");
         }
-        
+
         // Vérification de l'autorisation
         const authUser = req.user;
         if (authUser.id !== id && !authUser.is_admin) {

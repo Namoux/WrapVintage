@@ -128,16 +128,9 @@ button[type="submit"]:hover {
 }
 
 .success {
-  color: green;
-  font-size: 1.1rem;
-  margin-top: 0.5rem;
-  text-align: center;
-}
-
-.errorConnection {
-  color: red;
-  font-size: 1.1rem;
-  margin-top: 0.5rem;
+  color: #388e3c;
+  font-size: 1rem;
+  margin-bottom: 1rem;
   text-align: center;
 }
 

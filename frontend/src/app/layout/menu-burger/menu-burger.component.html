@@ -1,5 +1,9 @@
 
-<div class="menu" [class.open]="isMopen"> 
+<!-- Fond sombre derrière le modal -->
+<div class="modal-backdrop" [class.open]="isMopen" (click)="closeMenu()"></div>
+
+<!-- Div principale du menu burger, la classe 'open' est ajoutée si isMopen est vrai (menu ouvert) -->
+<div class="menu" [class.open]="isMopen">
   <nav>
     <ul>
       <li><a routerLink="/" (click)="closeMenu()">Accueil</a></li>

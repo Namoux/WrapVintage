@@ -33,3 +33,10 @@ export class ProductByIdComponent implements OnInit {
     });
   }
 }
+
+// subscribe sert à écouter les changements des paramètres de la route (ici, l’id du produit dans l’URL).
+// this.route.paramMap est un Observable qui émet un nouvel objet paramMap à chaque fois que les paramètres de l’URL changent (par exemple, si tu navigues de /product/1 à /product/2 sans recharger la page).
+// subscribe(...) permet d’exécuter la fonction à chaque changement :
+// Tu récupères l’id dans l’URL.
+// Tu appelles l’API pour charger le bon produit.
+// Tu mets à jour la propriété product du composant.

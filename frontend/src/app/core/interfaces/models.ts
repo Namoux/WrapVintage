@@ -29,3 +29,12 @@ export interface EditUser extends Partial<User> {
   currentPassword?: string;
   newPassword?: string;
 }
+
+
+export interface CartItem {
+  product_id: number;
+  name: string;
+  price: number;
+  imageURL: string;
+  quantity: number;
+}

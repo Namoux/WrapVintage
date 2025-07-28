@@ -52,9 +52,9 @@ export class RegisterModalComponent {
         this.onClose();
       }, 2000);
     } catch (error: any) {
-    this.errorMsg = error?.error || "Erreur lors de l'inscription";
-    this.successMsg = '';
-    setTimeout(() => this.errorMsg = '', 2000);
+      this.errorMsg = error?.error || "Erreur lors de l'inscription";
+      this.successMsg = '';
+      setTimeout(() => this.errorMsg = '', 2000);
     }
 
   }

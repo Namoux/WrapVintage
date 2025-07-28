@@ -1,0 +1,54 @@
+<!-- Fond sombre derrière le modal -->
+<div class="modal-backdrop" [class.open]="isCopen" (click)="onClose()"></div>
+
+<div class="cart-container" [class.open]="isCopen">
+  <div class="cart-header-row">
+    <button class="close-cart-btn" (click)="onClose()">
+      <i class="fa-solid fa-arrow-left"></i>
+    </button>
+    <h2>Mon panier</h2>
+  </div>
+
+  @if (loading) {
+  <div>Chargement...</div>
+  } @else if (error) {
+  <div class="error">{{ error }}</div>
+  } @else if (cart && cart.length === 0) {
+  <div class="empty-cart">Votre panier est vide.</div>
+  @if (successMessage) {
+  <div class="success-message" [class.fade-out]="!showSuccess">{{ successMessage }}</div>
+  }
+  } @else {
+  <ul>
+    @for (item of cart; track item.product_id) {
+    <li class="cart-item">
+      <img [src]="item.imageURL" alt="{{ item.name }}" class="cart-img" />
+      <div class="cart-info">
+        <div class="cart-header">
+          <span class="cart-name">{{ item.name }}</span>
+          <button class="remove-btn" (click)="removeFromCart($index)">
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+        </div>
+        <div class="cart-details">
+          <span class="cart-initialPrice">{{ item.price }} €</span>
+          <span class="cart-qty">x{{ item.quantity }}</span>
+          <span class="cart-price">{{ item.price * item.quantity }} €</span>
+        </div>
+      </div>
+    </li>
+    }
+
+    @if (successMessage) {
+    <div class="success-message" [class.fade-out]="!showSuccess">{{ successMessage }}</div>
+    }
+  </ul>
+
+  <div class="cart-total">
+    Total : {{ totalPrice }} €
+  </div>
+
+  <button class="order-btn" (click)="onOrder()">Passez la commande</button>
+  <button class="clear-btn" (click)="clearCart()">Vider le panier</button>
+  }
+</div>

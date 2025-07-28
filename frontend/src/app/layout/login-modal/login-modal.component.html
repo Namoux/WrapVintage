@@ -5,7 +5,16 @@
 <div class="modal" [class.open]="isLopen">
     <button class="close" (click)="onClose()">×</button>
     <h2>Connexion</h2>
+
+    <!-- #loginForm="ngForm" : Crée une référence locale au formulaire Angular pour accéder à son état (valide, invalide, etc.) dans le template ou le composant.
+  ngForm : Directive Angular qui gère la validation et l'état du formulaire.
+  (ngSubmit)="onLogin(loginForm)" : Déclenche la méthode onLogin du composant lors de la soumission du formulaire, en lui passant la référence du formulaire.
+  autocomplete="off" : Désactive l'autocomplétion du navigateur pour ce formulaire.-->
     <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)" autocomplete="off">
+
+        <!-- Champ de saisie lié à username via ngModel.
+     [(ngModel)] permet de faire la liaison bidirectionnelle entre le champ et la variable du composant.
+     #usernameRef="ngModel" crée une référence locale pour accéder à l'état du champ (valide, invalide, touched, etc.) dans le template. -->
         <input type="text" [(ngModel)]="username" name="username" maxlength="20" placeholder="Nom d'utilisateur"
             required #usernameRef="ngModel" />
         @if (usernameRef.invalid && (usernameRef.touched || submitted)) {
@@ -27,10 +36,10 @@
     </p>
 
     @if (errorMsg) {
-      <div class="errorConnection">{{ errorMsg }}</div>
+    <div class="errorConnection">{{ errorMsg }}</div>
     }
-    
+
     @if (successMsg) {
-      <div class="success">{{ successMsg }}</div>
+    <div class="success">{{ successMsg }}</div>
     }
 </div>

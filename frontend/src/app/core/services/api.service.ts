@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { EditUser, Product, User } from '../interfaces/models';
+import { CartItem, EditUser, Product, User } from '../interfaces/models';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({
@@ -157,6 +157,63 @@ export class ApiService {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password, email }),
       credentials: 'include'
+    });
+    return this.handleResponse(response);
+  }
+
+  /**
+ * Récupère le panier d'un utilisateur
+ * @returns {Promise<CartItem[]>} - Liste des produits du panier
+ */
+  public async getCart(): Promise<CartItem[]> {
+    console.log("getCart service OK");
+    const response = await fetch(`${environment.baseURL}/cart/me`, {
+      credentials: 'include'
+    });
+    const data = await this.handleResponse(response);
+    console.log("getCart response", data);
+    return data;
+  }
+
+  /**
+   * Ajoute un produit au panier
+   * @param productId - Identifiant du produit
+   * @param quantity - Quantité à ajouter
+   * @returns {Promise<any>}
+   */
+  public async addProductToCart(productId: number, quantity: number = 1): Promise<any> {
+    const response = await fetch(`${environment.baseURL}/cart/add`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ productId, quantity })
+    });
+
+    return this.handleResponse(response);
+  }
+
+  /**
+   * Retire un produit du panier
+   */
+  public async removeProductFromCart( productId: number): Promise<any> {
+    const response = await fetch(`${environment.baseURL}/cart/remove`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ productId })
+    });
+
+    return this.handleResponse(response);
+  }
+
+  /**
+   * Vide le panier
+   */
+  public async clearCart(): Promise<any> {
+    const response = await fetch(`${environment.baseURL}/cart/clear`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
     });
     return this.handleResponse(response);
   }

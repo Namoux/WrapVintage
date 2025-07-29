@@ -108,23 +108,35 @@ export class HeaderComponent {
     }
   }
 
-  async loadCartQuantity() {
-    try {
+/**
+ * Met à jour la quantité totale de produits dans le panier à afficher dans le header.
+ * 
+ * - Si l'utilisateur est connecté, récupère le panier côté serveur via l'API et additionne les quantités.
+ * - Si l'utilisateur n'est pas connecté ou en cas d'erreur, récupère le panier local (stocké en cookie ou localStorage) et additionne les quantités.
+ * 
+ * Cette méthode est appelée à l'initialisation du header et à chaque événement 'loadCartQuantity'.
+ * 
+ * @returns Promise<void> Met à jour la propriété cartQuantity du composant.
+ */
+async loadCartQuantity(): Promise<void> {
+  try {
+    // On tente de récupérer l'utilisateur connecté
+    const user = await this.api.getMe();
+    if (user) {
+      // Utilisateur connecté : panier serveur
       const cart = await this.api.getCart();
-      const totalQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-      this.cartQuantity = totalQuantity;
-    } catch {
-      this.cartQuantity = 0;
+      this.cartQuantity = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+    } else {
+      // Visiteur : panier dans cookie
+      const localCart = this.api.getCookieCart();
+      this.cartQuantity = localCart.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0);
     }
+  } catch {
+    // En cas d'erreur (ex: non authentifié), fallback panier cookie
+    const localCart = this.api.getCookieCart();
+    this.cartQuantity = localCart.reduce((sum: number, item: any) => sum + (item.quantity || 1), 0);
   }
-
-  /**
-   * Rafraîchit le nom d'utilisateur affiché dans le header.
-   * Appelée lors de l'événement personnalisé 'refreshUserName' (ex : après déconnexion ou suppression de compte).
-   */
-  refreshUserName() {
-    this.loadUserName();
-  }
+}
 
   // Au scroll, fermeture des fenetres appelés
   constructor(private router: Router, private api: ApiService) {
@@ -136,15 +148,19 @@ export class HeaderComponent {
     });
 
     // Écoute l'événement de rafraîchissement du username
-    // Ajoute un écouteur d'événement global sur la fenêtre pour le type 'refreshUserName'.
+    // Ajoute un écouteur d'événement global sur la fenêtre pour le type 'loadUserName'.
     // Lorsque cet événement est déclenché (ex : après déconnexion ou suppression de compte),
-    // la méthode refreshUserName() est appelée pour mettre à jour l'affichage du nom d'utilisateur dans le header.
-    window.addEventListener('refreshUserName', () => {
-      this.refreshUserName();
+    // la méthode loadUserName() est appelée pour mettre à jour l'affichage du nom d'utilisateur dans le header.
+    window.addEventListener('loadUserName', () => {
+      this.loadUserName(); // recharge le nom utilisateur
     });
 
     window.addEventListener('cartUpdated', () => {
       this.cartComponent?.loadCart(); // recharge les données du panier
+    });
+
+    window.addEventListener('loadCartQuantity', () => {
+      this.loadCartQuantity(); // recharge les données du panier
     });
   }
 

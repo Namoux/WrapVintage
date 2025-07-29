@@ -52,19 +52,20 @@ export class UserModel {
      * @returns {Promise<Object>}
      */
     async createUser({ username, hashPassword, email, is_admin }) {
+        let result;
         if (is_admin === undefined) {
-            const result = await this.connection.execute(
+            result = await this.connection.execute(
                 'INSERT INTO user (username, password, email) VALUES (?, ?, ?)',
                 [username, hashPassword, email]
             );
-            return result;
         } else {
-            const result = await this.connection.execute(
+            result = await this.connection.execute(
                 'INSERT INTO user (username, password, email, is_admin) VALUES (?, ?, ?, ?)',
                 [username, hashPassword, email, is_admin]
             );
-            return result;
         }
+        // Retourne l'id du nouvel utilisateur
+        return result.insertId || (result[0] && result[0].insertId);
     }
 
     /**
@@ -93,8 +94,8 @@ export class UserModel {
                 //     const hashPassword = await bcrypt.hash(value, 10);
                 //     this.connection.execute(`UPDATE user SET ${key} = ? WHERE id = ?`, [hashPassword, id]);
                 // } else {
-                    await this.connection.execute(`UPDATE user SET ${key} = ? WHERE id = ?`, [value, id]);
-                
+                await this.connection.execute(`UPDATE user SET ${key} = ? WHERE id = ?`, [value, id]);
+
             } else {
                 // On lève une erreur pour que le controller la gère
                 const error = new Error(`Wrong param: ${key}`);

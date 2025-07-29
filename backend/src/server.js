@@ -28,7 +28,7 @@ app.use(express.static('public')); // Dossier pour les fichiers statiques
 app.use("/products", productRoutes(connection, baseUrl));
 app.use("/users", userRoutes(connection));
 app.use("/categories", categoryRoutes(connection));
-app.use("/auth", authRoutes(connection));
+app.use("/auth", authRoutes(connection, baseUrl));
 app.use("/cart", cartRoutes(connection, baseUrl));
 
 // Handle 404 as default route

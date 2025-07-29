@@ -39,7 +39,7 @@
 <app-searchbar [isSopen]="isSearchOpen" (linkClicked)="isSearchOpen = false"> </app-searchbar>
 
 <!-- Modal Connexion -->
-<app-login-modal [isLopen]="isLoginOpen" (linkClicked)="closeModals(); refreshUserName()"
+<app-login-modal [isLopen]="isLoginOpen" (linkClicked)="closeModals(); loadUserName(); loadCartQuantity()"
   (switchToRegister)="openRegister()"></app-login-modal>
 
 <!-- Modal Inscription -->

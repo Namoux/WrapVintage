@@ -38,7 +38,7 @@ export const addProductToCart = (cartModel) => async (req, res, next) => {
             return res.status(400).json({ error: "Paramètres manquants" });
         }
         
-        const cartId = await cartModel.createCart(userId);
+        const cartId = await cartModel.getOrCreateCart(userId);
         
         await cartModel.addToCart(cartId, productId, quantity || 1);
 

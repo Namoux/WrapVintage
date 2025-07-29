@@ -17,7 +17,12 @@ export class ApiService {
     // Tente de parser la réponse en JSON, retourne un objet vide si erreur
     const data = await response.json().catch(() => ({}));
     // Si le code HTTP n'est pas OK (200-299), lève une erreur avec le message du backend (json)
-    if (!response.ok) throw data;
+    if (!response.ok) {
+      const error = new Error(data?.error || response.statusText);
+      (error as any).status = response.status;
+      (error as any).body = data;
+      throw error;
+    }
     // Sinon, retourne les données parsées
     return data;
   }
@@ -195,7 +200,7 @@ export class ApiService {
   /**
    * Retire un produit du panier
    */
-  public async removeProductFromCart( productId: number): Promise<any> {
+  public async removeProductFromCart(productId: number): Promise<any> {
     const response = await fetch(`${environment.baseURL}/cart/remove`, {
       method: 'DELETE',
       headers: { 'Content-Type': 'application/json' },
@@ -217,4 +222,34 @@ export class ApiService {
     });
     return this.handleResponse(response);
   }
+
+  /**
+ * Récupère le panier local stocké dans le cookie "cart".
+ * 
+ * @returns {any[]} Tableau des produits du panier local.
+ */
+  public getCookieCart(): any[] {
+    const match = document.cookie.match(/(?:^|;\s*)cart=([^;]*)/);
+    if (!match) return [];
+
+    try {
+      return JSON.parse(decodeURIComponent(match[1]));
+    } catch {
+      // En cas de corruption ou format invalide, on repart de zéro
+      return [];
+    }
+  }
+
+  /**
+ * Met à jour le panier local dans le cookie "cart".
+ * 
+ * @param cart Tableau des produits à stocker dans le cookie.
+ */
+  public setCookieCart(cart: any[]): void {
+    // Sérialise et stocke à nouveau le panier dans le cookie (durée : 7 jours)
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7);
+    document.cookie = `cart=${encodeURIComponent(JSON.stringify(cart))}; path=/; expires=${expires.toUTCString()};  SameSite=Lax`;
+  }
+
 }

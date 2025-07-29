@@ -13,7 +13,7 @@ export class CartModel {
      * @param {number} userId - Identifiant de l'utilisateur
      * @returns {Promise<number>} - Identifiant du panier
      */
-    async createCart(userId) {
+    async getOrCreateCart(userId) {
         // Vérifie si le panier existe déjà
         const cart = await this.connection.execute(
             'SELECT id FROM cart WHERE user_id = ?',

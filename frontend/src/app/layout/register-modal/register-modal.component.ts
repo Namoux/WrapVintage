@@ -26,6 +26,10 @@ export class RegisterModalComponent {
   errorMsg = '';
   submitted = false;
 
+  /**
+ * Ferme la modale d'inscription, réinitialise le formulaire et les champs.
+ * Émet un événement pour informer le parent.
+ */
   onClose() {
     this.username = '';
     this.password = '';
@@ -36,6 +40,16 @@ export class RegisterModalComponent {
     this.linkClicked.emit();
   }
 
+  /**
+ * Soumet le formulaire d'inscription.
+ * 
+ * - Valide les champs.
+ * - Appelle l'API pour créer le compte utilisateur.
+ * - Affiche un message de succès ou d'erreur selon le résultat.
+ * - Ferme la modale après succès.
+ * 
+ * @param form Le formulaire Angular soumis.
+ */
   async onRegister(form: NgForm) {
     console.log("submit");
     this.submitted = true;
@@ -59,6 +73,10 @@ export class RegisterModalComponent {
 
   }
 
+  /**
+ * Passe à la modale de connexion.
+ * Émet un événement pour informer le parent.
+ */
   onSwitchToLogin() {
     this.switchToLogin.emit();
   }

@@ -20,6 +20,13 @@
     justify-content: center;
 }
 
+.btn-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* Centre le bouton horizontalement */
+}
+
 .detailProduct button {
     border-radius: 30px;
     background-color: #D4B369;
@@ -27,7 +34,7 @@
     cursor: pointer;
     transition: transform 0.3s;
     border: none;
-
+    width: 200px;
 }
 
 .detailProduct button:hover {
@@ -40,6 +47,30 @@
     font-weight: bold;
     color: #1ab8e8;
     font-size: 1.5rem;
+}
+
+.message-placeholder {
+    min-height: 4rem;
+    /* Ajuste la hauteur des messages succes ou erreur*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-message {
+    color: #218838;
+    text-align: center;
+    transition: opacity 0.4s;
+}
+
+.error-message {
+    color: #a94442;
+    text-align: center;
+    transition: opacity 0.4s;
+}
+
+.fade-out {
+    opacity: 0;
 }
 
 /* Pour les tablettes */

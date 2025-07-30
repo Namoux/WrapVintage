@@ -1,17 +1,30 @@
 @if (!product) {
-  <p>Chargement du produit...</p>
+<p>Chargement du produit...</p>
 }
 
 @if (product) {
-  <div class="card">
-    <div class="imageProduct">
-      <img [src]="product.imageURL" alt="{{ product.name }}" />
-    </div>
-    <div class="detailProduct">
-      <h3>{{ product.name }}</h3>
-      <p>{{ product.description }}</p>
-      <p class="price">{{ product.price }} €</p>
-      <a href="#"><button>Ajouter au panier</button></a>
-    </div>
+<div class="card">
+  <div class="imageProduct">
+    <img [src]="product.imageURL" alt="{{ product.name }}" />
   </div>
+  <div class="detailProduct">
+    <h3>{{ product.name }}</h3>
+    <p>{{ product.description }}</p>
+    <p class="price">{{ product.price }} €</p>
+    <div class="btn-wrapper">
+      <button (click)="addToCart()">Ajouter au panier</button>
+    </div>
+
+    <div class="message-placeholder">
+      @if (successMessage) {
+      <div class="success-message" [class.fade-out]="!showSuccess">{{ successMessage }}</div>
+      }
+      @if (errorMessage) {
+      <div class="error-message" [class.fade-out]="!showError">{{ errorMessage }}</div>
+      }
+    </div>
+    
+  </div>
+
+</div>
 }

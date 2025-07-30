@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import userRoutes from "./routes/user.routes.js";
+import cartRoutes from "./routes/cart.routes.js";
 import cookieParser from 'cookie-parser';
 
 
@@ -27,7 +28,8 @@ app.use(express.static('public')); // Dossier pour les fichiers statiques
 app.use("/products", productRoutes(connection, baseUrl));
 app.use("/users", userRoutes(connection));
 app.use("/categories", categoryRoutes(connection));
-app.use("/auth", authRoutes(connection));
+app.use("/auth", authRoutes(connection, baseUrl));
+app.use("/cart", cartRoutes(connection, baseUrl));
 
 // Handle 404 as default route
 app.use((req, res) => {

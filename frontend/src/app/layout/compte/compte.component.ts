@@ -39,11 +39,17 @@ export class CompteComponent {
     console.log(this.user);
   }
 
+  /**
+ * Active le mode édition du profil utilisateur.
+ */
   enableEdit() {
     this.editMode = true;
     this.editUser = {};
   }
 
+  /**
+ * Annule l'édition du profil et recharge les informations utilisateur.
+ */
   cancelEdit() {
     this.editMode = false;
     this.editUser = {};
@@ -51,6 +57,10 @@ export class CompteComponent {
     this.ngOnInit();
   }
 
+  /**
+ * Enregistre les modifications du profil utilisateur.
+ * Affiche un message de succès ou d'erreur selon le résultat.
+ */
   async save() {
     try {
       await this.api.updateUser(this.user.id, this.editUser);
@@ -72,12 +82,16 @@ export class CompteComponent {
     }
   }
 
+  /**
+ * Déconnecte l'utilisateur, rafraîchit le header et redirige vers l'accueil.
+ */
   async onLogout() {
     try {
       await this.api.logout();
       // Rafraîchir le username dans le header
       // Envoie un événement personnalisé au window pour demander au composant header de rafraîchir l'affichage du username.
-      window.dispatchEvent(new CustomEvent('refreshUserName'));
+      window.dispatchEvent(new CustomEvent('loadUserName'));
+      window.dispatchEvent(new CustomEvent('loadCartQuantity'));
       // redirige a la page d'acceuil
       this.router.navigate(['/']);
     } catch (err) {
@@ -85,6 +99,9 @@ export class CompteComponent {
     }
   }
 
+  /**
+ * Supprime le compte utilisateur et déconnecte l'utilisateur.
+ */
   async onDeleteAccount() {
     try {
       await this.api.deleteUser(this.user.id);
@@ -96,12 +113,18 @@ export class CompteComponent {
     }
   }
 
+  /**
+ * Ouvre la modale de confirmation de suppression de compte.
+ */
   openDeleteModal() {
     this.showDeleteModal = true;
   }
 
+  /**
+ * Ferme la modale de confirmation de suppression de compte.
+ */
   closeDeleteModal() {
     this.showDeleteModal = false;
   }
-  
+
 }

@@ -58,17 +58,43 @@ export class LoginModalComponent {
     try {
       const response = await this.api.login(this.username, this.password);
 
-      // Stocke le token et le username dans le localStorage
-      // localStorage.setItem('token', response.token);
-      // localStorage.setItem('username', response.username);
-      // alert(`Connexion avec ${this.username}`);
-
       // → On va chercher à nouveau les infos utilisateur
       const user = await this.api.getMe();
+
+      // --- FUSION DU PANIER COOKIE AVEC LE PANIER SERVEUR ---
+      // Récupère le panier depuis le cookie (via méthode dans apiService)
+      const localCart = this.api.getCookieCart();
+
+      if (localCart.length > 0) {
+        // Récupère le panier serveur
+        let serverCart: any[] = [];
+        try {
+          serverCart = await this.api.getCart();
+        } catch {
+          serverCart = [];
+        }
+
+        // Pour chaque produit dans le panier cookie, on ajoute la quantité au panier serveur
+        for (const localItem of localCart) {
+          const serverItem = serverCart.find(item => item.product_id === localItem.id);
+          const quantityToAdd = localItem.quantity || 1;
+          // Ajoute la quantité locale au panier serveur (incrémente si déjà présent)
+          await this.api.addProductToCart(localItem.id, quantityToAdd);
+        }
+
+        // Vide le panier cookie côté client
+        this.api.setCookieCart([]);
+
+        // Émet un événement pour mettre à jour le header (quantité panier)
+        window.dispatchEvent(new CustomEvent('cartUpdated'));
+        window.dispatchEvent(new CustomEvent('loadCartQuantity'));
+      }
+      // --- FIN FUSION PANIER ---
 
       this.successMsg = `Connexion réussie, Bienvenue ${this.username}`;
       setTimeout(() => this.onClose(), 1200); // Ferme le modal après 1,2s
     } catch (error: any) {
+      console.log("Erreur lors de la connexion")
       this.errorMsg = error?.error?.error || "Erreur lors de la connexion";
     }
 

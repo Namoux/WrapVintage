@@ -73,7 +73,7 @@ export const loginUser = (userModel) => async (req, res, next) => {
  * @param {UserModel} userModel - Modèle utilisateur
  * @returns {Function} - Middleware Express
  */
-export const signupUser = (userModel) => async (req, res, next) => {
+export const signupUser = (userModel, cartModel) => async (req, res, next) => {
     try {
         const { username, password, email, is_admin } = req.body;
 
@@ -84,7 +84,11 @@ export const signupUser = (userModel) => async (req, res, next) => {
 
         const hashPassword = await bcrypt.hash(password, 10);
 
-        await userModel.createUser({ username, hashPassword, email, is_admin });
+        // Crée l'utilisateur et récupère son id
+        const userId = await userModel.createUser({ username, hashPassword, email, is_admin });
+
+        // Crée le panier pour ce nouvel utilisateur
+        await cartModel.getOrCreateCart(userId);
 
         console.log('User created successfully');
         return res.status(201).json({ message: 'User created successfully' });
@@ -107,33 +111,40 @@ export const signupUser = (userModel) => async (req, res, next) => {
  * @returns {Function} - Middleware Express qui renvoie les infos de l'utilisateur ou une erreur d'authentification
  */
 export const getCurrentUser = (userModel) => async (req, res, next) => {
-  try {
-    // Récupère le token JWT depuis les cookies
-    const token = req.cookies.token;
+    try {
+        console.log("Client get current User himself");
+        // Récupère le token JWT depuis les cookies
+        const token = req.cookies.token;
 
-    // Si aucun token, l'utilisateur n'est pas authentifié
-    if (!token) return res.status(401).json({ error: "Non authentifié" });
+        // Si aucun token, l'utilisateur n'est pas authentifié
+        if (!token) {
+            console.log("Non authentifié");
+            return res.status(401).json({ error: "Non authentifié" });
+        }
 
-    // Vérifie et décode le token avec la clé secrète
-    const decoded = jwt.verify(token, SECRETKEY);
+        // Vérifie et décode le token avec la clé secrète
+        const decoded = jwt.verify(token, SECRETKEY);
 
-    // Récupère l'utilisateur correspondant à l'id du token
-    const users = await userModel.getUserById(decoded.id);
-    if (!users || users.length === 0)
-      return res.status(404).json({ error: "Utilisateur introuvable" });
+        // Récupère l'utilisateur correspondant à l'id du token
+        const users = await userModel.getUserById(decoded.id);
+        if (!users || users.length === 0) {
+            console.log("Utilisateur introuvable");
+            return res.status(404).json({ error: "Utilisateur introuvable" });
+        }
 
-    // Renvoie les infos de l'utilisateur (sans le mot de passe)
-    const user = users[0];
-    res.json({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      adresse: user.adresse
-    });
-  } catch (err) {
-    // Si le token est invalide ou expiré
-    res.status(401).json({ error: "Token invalide" });
-  }
+        // Renvoie les infos de l'utilisateur (sans le mot de passe)
+        const user = users[0];
+        res.json({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            adresse: user.adresse
+        });
+    } catch (err) {
+        console.log("Error in get current User himself");
+        // Si le token est invalide ou expiré
+        res.status(401).json({ error: "Token invalide" });
+    }
 };
 
 /**
@@ -141,14 +152,14 @@ export const getCurrentUser = (userModel) => async (req, res, next) => {
  * @returns {Function} - Middleware Express qui renvoie un message de succès
  */
 export const logoutUser = () => (req, res) => {
-  // Supprime le cookie 'token' côté client
-  res.clearCookie('token', {
-    httpOnly: true, // Le cookie n'est pas accessible en JS côté client
-    sameSite: 'Lax', // Protection CSRF, ou 'None' si sous-domaines/HTTPS
-    secure: NODE_ENV === 'production' // Cookie envoyé uniquement en HTTPS
-  });
+    // Supprime le cookie 'token' côté client
+    res.clearCookie('token', {
+        httpOnly: true, // Le cookie n'est pas accessible en JS côté client
+        sameSite: 'Lax', // Protection CSRF, ou 'None' si sous-domaines/HTTPS
+        secure: NODE_ENV === 'production' // Cookie envoyé uniquement en HTTPS
+    });
 
-  console.log("logged out successfully");
-  // Renvoie un message de succès
-  return res.status(200).json({ message: "Déconnecté avec succès" });
+    console.log("logged out successfully");
+    // Renvoie un message de succès
+    return res.status(200).json({ message: "Déconnecté avec succès" });
 };

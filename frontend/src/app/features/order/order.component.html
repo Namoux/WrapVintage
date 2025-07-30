@@ -1,0 +1,52 @@
+<div class="order-container">
+  <h2>Récapitulatif de votre commande</h2>
+
+  <ul class="order-list">
+    @for (item of cart; track item.product_id) {
+      <li>
+        <img [src]="item.imageURL" alt="{{ item.name }}" class="order-img" />
+        <div class="order-info">
+          <span class="order-name">{{ item.name }}</span>
+          <span class="order-qty">x{{ item.quantity }}</span>
+          <span class="order-price">{{ item.price * item.quantity }} €</span>
+        </div>
+      </li>
+    }
+  </ul>
+
+  <div class="order-total">
+    <strong>Total :</strong> {{ totalPrice }} €
+  </div>
+
+  <!-- Infos utilisateur -->
+  <div class="order-user">
+    <h3>Informations de livraison</h3>
+    <div><strong>Nom d'utilisateur :</strong> {{ user.username }}</div>
+    <div><strong>Email :</strong> {{ user.email }}</div>
+    @if (!user.adresse) {
+      <div>
+        <label for="adresse">Adresse :</label>
+        <input id="adresse" [(ngModel)]="adresseInput" placeholder="Ajoutez votre adresse" />
+        <button (click)="saveAdresse()">Enregistrer</button>
+      </div>
+    } @else {
+      <div><strong>Adresse :</strong> {{ user.adresse }}</div>
+      @if (!editAdresse) {
+        <button (click)="editAdresse = true">Modifier l'adresse</button>
+      } @else {
+        <input [(ngModel)]="adresseInput" placeholder="Nouvelle adresse" />
+        <button (click)="saveAdresse()">Enregistrer</button>
+        <button (click)="editAdresse = false">Annuler</button>
+      }
+    }
+  </div>
+
+  <!-- Infos livraison/expédition -->
+  <div class="order-delivery">
+    <h3>Livraison</h3>
+    <p>Livraison via La Poste gratuite sous 1 à 3 jours en France métropolitaine, 3 à 5 jours en DOM-TOM.</p>
+    <p>Expédition sous 12h à 72h pour les commandes classiques.</p>
+  </div>
+
+  <button class="pay-btn" (click)="onPay()">Payer</button>
+</div>

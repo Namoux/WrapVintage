@@ -1,10 +1,12 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CartItem } from '../../core/interfaces/models';
 import { ApiService } from '../../core/services/api.service';
+import { Router } from '@angular/router';
+import { LoginModalComponent } from '../../layout/login-modal/login-modal.component';
 
 @Component({
   selector: 'app-cart',
-  imports: [],
+  imports: [LoginModalComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
@@ -20,8 +22,11 @@ export class CartComponent {
   showSuccess = false;
   error?: string;
   totalQuantity = 0;
+  showLoginModal = false;
+  loginInfoMsg = '';
+  showInfo = false;
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService, private router: Router) { }
 
   ngOnInit() {
     this.loadCart();
@@ -94,6 +99,8 @@ export class CartComponent {
         // Utilisateur connecté → suppression côté serveur
         await this.api.removeProductFromCart(item.product_id);
         await this.loadCart(); // recharge panier depuis serveur
+        // Met à jour le panier partagé pour synchroniser avec la page commande
+        this.api.updateCart(this.cart);
 
         // Message de succès
         this.successMessage = 'Produit supprimé avec succès !';
@@ -157,7 +164,9 @@ export class CartComponent {
       if (user) {
         // Utilisateur connecté → vider panier serveur
         await this.api.clearCart();
-        await this.loadCart();
+        await this.loadCart(); // recharge panier depuis serveur
+        // Met à jour le panier partagé pour synchroniser avec la page commande
+        this.api.updateCart(this.cart);
 
         // Message de succès
         this.successMessage = 'Panier vidé avec succès !';
@@ -199,14 +208,44 @@ export class CartComponent {
 
   /**
  * Calcule le prix total du panier.
- * 
+ * @param cart Tableau des produits du panier
  * @returns {number} Le montant total de tous les produits du panier.
  */
   get totalPrice(): number {
-    return this.cart.reduce((sum, item) => sum + item.price * (item.quantity ?? 1), 0);
+    return this.api.getTotalPrice(this.cart);
   }
 
-  onOrder() {
-
+  async onOrder() {
+    try {
+      const user = await this.api.getMe();
+      if (user) {
+        // Ferme le panier
+        this.linkClicked.emit();
+        // Utilisateur connecté → redirige vers la page commande
+        this.router.navigate(['/commande']); // ou utilise this.router.navigate(['/commande']) si tu as Router
+      } else {
+        // Non connecté → affiche la modale de login avec le message
+        this.loginInfoMsg = 'Vous devez vous connecter pour passer commande.';
+        this.showLoginModal = true;
+        this.showInfo = true;
+        setTimeout(() => {
+          this.showInfo = false;
+          setTimeout(() => {
+            this.loginInfoMsg = '';
+          }, 400); // correspond à la durée du fade-out CSS
+        }, 1600); // le message reste visible 1.6s avant le fade-out
+      }
+    } catch {
+      // Erreur technique → affiche la modale de login
+      this.loginInfoMsg = 'Vous devez vous connecter pour passer commande.';
+      this.showLoginModal = true;
+      this.showInfo = true;
+      setTimeout(() => {
+        this.showInfo = false;
+        setTimeout(() => {
+          this.loginInfoMsg = '';
+        }, 400); // correspond à la durée du fade-out CSS
+      }, 1600); // le message reste visible 1.6s avant le fade-out
+    }
   }
 }

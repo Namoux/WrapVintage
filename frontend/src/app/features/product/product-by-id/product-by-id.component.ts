@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../../core/services/api.service';
 import { Product } from '../../../core/interfaces/models';
 import { ActivatedRoute } from '@angular/router'; // Pour accéder aux paramètres de l'URL
+import { CartItem } from '../../../core/interfaces/models';
 
 @Component({
   selector: 'app-product-by-id',
@@ -12,6 +13,7 @@ import { ActivatedRoute } from '@angular/router'; // Pour accéder aux paramètr
 })
 export class ProductByIdComponent implements OnInit {
 
+  cart: CartItem[] = [];
   product!: Product; // Propriété pour stocker le produit à afficher
   successMessage?: string;
   showSuccess = false;
@@ -62,6 +64,9 @@ export class ProductByIdComponent implements OnInit {
       if (user && this.product) {
         await this.apiService.addProductToCart(this.product.id, 1);
 
+        // Met à jour le panier partagé pour synchroniser avec la page commande
+        this.apiService.updateCart(this.cart);
+
         this.successMessage = 'Produit ajouté au panier !';
         this.showSuccess = true;
         setTimeout(() => this.showSuccess = false, 600);
@@ -99,12 +104,18 @@ export class ProductByIdComponent implements OnInit {
     const cart = this.apiService.getCookieCart();
 
     // Cherche si le produit est déjà présent dans le panier
-    const existing = cart.find((item: any) => item.id === this.product.id);
+    const existing = cart.find((item: CartItem) => item.product_id === this.product.id);
 
     if (existing) {
       existing.quantity += 1;
     } else {
-      cart.push({ ...this.product, quantity: 1 });
+      cart.push({
+        product_id: this.product.id,
+        name: this.product.name,
+        price: this.product.price,
+        imageURL: this.product.imageURL,
+        quantity: 1
+      });
     }
 
     // Sérialise et stocke à nouveau le panier dans le cookie (durée : 7 jours)

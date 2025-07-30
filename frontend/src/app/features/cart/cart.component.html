@@ -48,7 +48,13 @@
     Total : {{ totalPrice }} €
   </div>
 
+  @if (loginInfoMsg) {
+  <div class="info-msg" [class.fade-out]="!showInfo">{{ loginInfoMsg }}</div>
+  }
+
   <button class="order-btn" (click)="onOrder()">Passez la commande</button>
   <button class="clear-btn" (click)="clearCart()">Vider le panier</button>
   }
 </div>
+
+<app-login-modal [isLopen]="showLoginModal" (linkClicked)="showLoginModal = false"></app-login-modal>

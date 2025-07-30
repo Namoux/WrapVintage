@@ -1,0 +1,241 @@
+.order-container {
+    max-width: 700px;
+    margin: 3rem auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    padding: 2rem 3rem;
+    text-align: center;
+}
+
+.order-container h2 {
+    color: #D4B369;
+    margin-bottom: 2rem;
+}
+
+.order-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem 0;
+}
+
+.order-list li {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.order-img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+}
+
+.order-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.order-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.order-qty {
+    color: #888;
+    margin-top: 0.2rem;
+}
+
+.order-price {
+    color: #1ab8e8;
+    font-weight: bold;
+    margin-top: 0.2rem;
+}
+
+.order-total {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #D4B369;
+    margin: 2rem 0 1rem 0;
+}
+
+.pay-btn {
+    border-radius: 30px;
+    background-color: #D4B369;
+    color: #fff;
+    padding: 0.8rem 2.5rem;
+    cursor: pointer;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background 0.2s, transform 0.2s;
+    margin-bottom: 1rem;
+}
+
+.pay-btn:hover {
+    background-color: #bfa05c;
+    transform: scale(1.05);
+}
+
+/* Infos utilisateur */
+.order-user {
+    background: #f8f6ef;
+    border-radius: 10px;
+    padding: 1.2rem 1rem;
+    margin: 2rem 0 1.5rem 0;
+    box-shadow: 0 2px 8px rgba(212, 179, 105, 0.07);
+    text-align: left;
+}
+
+.order-user h3 {
+    color: #bfa05c;
+    margin-bottom: 1rem;
+}
+
+.order-user>div,
+.order-user label,
+.order-user input,
+.order-user button {
+    margin-bottom: 0.8rem;
+    display: block;
+}
+
+.order-user label {
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.order-user input {
+    padding: 0.5rem 1rem;
+    border-radius: 14px;
+    border: 1px solid #d4b369;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    width: 70%;
+    max-width: 320px;
+}
+
+.order-user input:focus {
+    border-color: #bfa05c;
+    box-shadow: 0 0 0 3px rgba(212, 179, 105, 0.2);
+    outline: none;
+}
+
+.order-user button {
+    background: #1ab8e8;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 0.4rem 1.2rem;
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.order-user button:hover {
+    background: #1488b6;
+}
+
+/* Infos livraison */
+.order-delivery {
+    background: #f3f3f3;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(26, 184, 232, 0.07);
+    text-align: left;
+}
+
+.order-delivery h3 {
+    color: #1ab8e8;
+    margin-bottom: 0.7rem;
+}
+
+.order-delivery p {
+    margin: 0.3rem 0;
+    color: #555;
+    font-size: 1rem;
+    text-align: justify;
+}
+
+
+/* Tablettes */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .order-container {
+        padding: 2rem 1rem;
+    }
+
+    .order-list li {
+        gap: 1rem;
+    }
+
+    .order-img {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+/* Smartphones */
+@media (max-width: 600px) {
+    .order-container {
+        padding: 1rem 0.5rem;
+        margin: 1rem;
+    }
+
+    .order-list li {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.7rem 0;
+    }
+
+    .order-img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .order-info {
+        align-items: center;
+        text-align: center;
+    }
+
+    .order-total {
+        font-size: 1.1rem;
+        margin: 1.2rem 0 0.7rem 0;
+    }
+
+    .pay-btn {
+        width: 100%;
+        font-size: 1rem;
+        padding: 0.7rem 0;
+    }
+
+    .order-user,
+    .order-delivery {
+        padding: 0.7rem 0.5rem;
+        font-size: 0.97rem;
+    }
+
+    .order-user input {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .order-user button {
+        width: 100%;
+        margin-bottom: 0.7rem;
+    }
+
+    .order-delivery p {
+        text-align: center;
+    }
+}

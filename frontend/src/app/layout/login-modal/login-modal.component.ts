@@ -76,10 +76,10 @@ export class LoginModalComponent {
 
         // Pour chaque produit dans le panier cookie, on ajoute la quantité au panier serveur
         for (const localItem of localCart) {
-          const serverItem = serverCart.find(item => item.product_id === localItem.id);
+          const serverItem = serverCart.find(item => item.product_id === localItem.product_id);
           const quantityToAdd = localItem.quantity || 1;
           // Ajoute la quantité locale au panier serveur (incrémente si déjà présent)
-          await this.api.addProductToCart(localItem.id, quantityToAdd);
+          await this.api.addProductToCart(localItem.product_id, quantityToAdd);
         }
 
         // Vide le panier cookie côté client

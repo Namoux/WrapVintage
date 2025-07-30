@@ -224,6 +224,17 @@ ul {
   cursor: pointer;
 }
 
+.info-msg {
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.4s;
+}
+
+.info-msg.fade-out {
+  opacity: 0;
+}
+
+
 /* Tablettes */
 @media (min-width: 601px) and (max-width: 1024px) {
   .cart-container {

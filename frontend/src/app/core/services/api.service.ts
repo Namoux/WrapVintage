@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CartItem, EditUser, Product, User } from '../interfaces/models';
 import { environment } from '../../../environments/environment.development';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -251,5 +252,36 @@ export class ApiService {
     expires.setDate(expires.getDate() + 7);
     document.cookie = `cart=${encodeURIComponent(JSON.stringify(cart))}; path=/; expires=${expires.toUTCString()};  SameSite=Lax`;
   }
+
+  /**
+   * Calcule le prix total d'un panier.
+   * 
+   * @param cart Tableau des produits du panier
+   * @returns {number} Le montant total de tous les produits du panier.
+   */
+  public getTotalPrice(cart: CartItem[]): number {
+    return cart.reduce((sum, item) => sum + item.price * (item.quantity ?? 1), 0);
+  }
+
+/**
+ * Observable du panier partagé pour synchroniser le panier entre les composants.
+ * Utiliser `cart$` pour s'abonner aux changements du panier.
+ */
+private cartSubject = new BehaviorSubject<CartItem[]>([]);
+
+/**
+ * Observable du panier partagé.
+ */
+cart$ = this.cartSubject.asObservable();
+
+/**
+ * Met à jour le panier partagé et notifie tous les abonnés.
+ * À appeler après chaque modification du panier (ajout, suppression, vidage).
+ * @param cart Tableau des produits du panier à partager
+ */
+public updateCart(cart: CartItem[]) {
+  this.cartSubject.next(cart);
+}
+
 
 }

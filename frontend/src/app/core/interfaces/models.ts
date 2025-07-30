@@ -38,3 +38,18 @@ export interface CartItem {
   imageURL: string;
   quantity: number;
 }
+
+export interface Order {
+  id: number;
+  user_id: number;
+  createdAt: string;
+  items: OrderItem[]; // Liste des produits enrichis de la commande
+}
+
+export interface OrderItem {
+  product_id: number;
+  name: string;
+  price: number;
+  imageURL: string;
+  quantity: number;
+}

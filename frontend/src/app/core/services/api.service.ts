@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CartItem, EditUser, Product, User } from '../interfaces/models';
+import { CartItem, EditUser, Product, User, OrderItem } from '../interfaces/models';
 import { environment } from '../../../environments/environment.development';
 import { BehaviorSubject } from 'rxjs';
 
@@ -263,25 +263,49 @@ export class ApiService {
     return cart.reduce((sum, item) => sum + item.price * (item.quantity ?? 1), 0);
   }
 
-/**
- * Observable du panier partagé pour synchroniser le panier entre les composants.
- * Utiliser `cart$` pour s'abonner aux changements du panier.
- */
-private cartSubject = new BehaviorSubject<CartItem[]>([]);
+  /**
+   * Observable du panier partagé pour synchroniser le panier entre les composants.
+   * Utiliser `cart$` pour s'abonner aux changements du panier.
+   */
+  private cartSubject = new BehaviorSubject<CartItem[]>([]);
 
-/**
- * Observable du panier partagé.
- */
-cart$ = this.cartSubject.asObservable();
+  /**
+   * Observable du panier partagé.
+   */
+  cart$ = this.cartSubject.asObservable();
 
-/**
- * Met à jour le panier partagé et notifie tous les abonnés.
- * À appeler après chaque modification du panier (ajout, suppression, vidage).
- * @param cart Tableau des produits du panier à partager
- */
-public updateCart(cart: CartItem[]) {
-  this.cartSubject.next(cart);
-}
+  /**
+   * Met à jour le panier partagé et notifie tous les abonnés.
+   * À appeler après chaque modification du panier (ajout, suppression, vidage).
+   * @param cart Tableau des produits du panier à partager
+   */
+  public updateCart(cart: CartItem[]) {
+    this.cartSubject.next(cart);
+  }
 
+  /**
+   * Crée une session Stripe Checkout côté backend et retourne l'id de session.
+   * @param cart Le panier à payer
+   * @param user L'utilisateur qui paie
+   * @returns {Promise<any>} L'id de session Stripe
+   */
+  public async createStripeSession(cart: CartItem[], user: User): Promise<any> {
+    const response = await fetch(`${environment.baseURL}/api/stripe/create-checkout-session`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ cart, user })
+    });
+
+    return this.handleResponse(response); // Utilise la gestion d'erreur centralisée
+  }
+
+  public async getLastOrder(userId: number): Promise<any> {
+    const response = await fetch(`${environment.baseURL}/orders/last/${userId}`, {
+      method: 'GET',
+      credentials: 'include'
+    });
+    return this.handleResponse(response);
+  }
 
 }

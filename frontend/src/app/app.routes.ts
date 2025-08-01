@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
 import { ProductListComponent } from './features/product/product-list/product-list.component';
 import { DeliveryComponent } from './features/info/delivery/delivery.component';
@@ -10,6 +9,7 @@ import { SearchbarComponent } from './layout/searchbar/searchbar.component';
 import { CompteComponent } from './layout/compte/compte.component';
 import { CartComponent } from './features/cart/cart.component';
 import { OrderComponent } from './features/order/order.component';
+import { OrderConfirmationComponent } from './features/order-confirmation/order-confirmation.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // page d'accueil
@@ -24,4 +24,6 @@ export const routes: Routes = [
   { path: 'mon-compte', component: CompteComponent }, // Compte
   { path: 'panier', component: CartComponent }, // Panier
   { path: 'commande', component: OrderComponent }, // Commande 
+  { path: 'success', component: OrderConfirmationComponent }, // Confirmation de paiement réussi
+  { path: 'cancel', component: OrderConfirmationComponent } // Annulation de paiement
 ];

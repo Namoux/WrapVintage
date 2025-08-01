@@ -1,0 +1,67 @@
+.success-container {
+    max-width: 600px;
+    margin: 4rem auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+    padding: 2.5rem 2rem;
+    text-align: center;
+}
+
+.success-icon {
+    font-size: 4rem;
+    color: #1ab8e8;
+    margin-bottom: 1.5rem;
+}
+
+.success-title {
+    color: #D4B369;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.success-message {
+    color: #333;
+    font-size: 1.15rem;
+    margin-bottom: 2rem;
+}
+
+.order-id {
+    font-size: 1.2rem;
+    color: #1ab8e8;
+    font-weight: bold;
+    margin-bottom: 2rem;
+}
+
+.success-btn {
+    border-radius: 30px;
+    background-color: #D4B369;
+    color: #fff;
+    padding: 0.8rem 2.5rem;
+    cursor: pointer;
+    border: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background 0.2s, transform 0.2s;
+    margin-top: 1rem;
+}
+
+.success-btn:hover {
+    background-color: #bfa05c;
+    transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .success-container {
+        padding: 1.2rem 0.5rem;
+        margin: 1.5rem 0.5rem;
+    }
+    .success-title {
+        font-size: 1.3rem;
+    }
+    .success-icon {
+        font-size: 2.5rem;
+    }
+}

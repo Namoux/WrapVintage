@@ -48,6 +48,7 @@ export function checkTokenAdmin(connection) {
             // const token = authHeader.split(" ")[1];
 
             const token = req.cookies.token;
+            
             const decodeToken = jwt.verify(token, SECRETKEY);
 
             const IdUser = decodeToken.id;

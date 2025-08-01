@@ -1,0 +1,25 @@
+@if (isSuccess) {
+  <div class="success-container">
+    <div class="success-icon">
+      <i class="fa-solid fa-circle-check"></i>
+    </div>
+    <div class="success-title">Merci pour votre commande !</div>
+    <div class="success-message">
+      Votre paiement a été validé et votre commande enregistrée.<br>
+      <span class="order-id">Numéro de commande : {{ orderId }}</span>
+    </div>
+    <button class="success-btn" routerLink="/">Retour à l'accueil</button>
+  </div>
+} @else {
+  <div class="success-container">
+    <div class="success-icon" style="color:#e74c3c;">
+      <i class="fa-solid fa-circle-xmark"></i>
+    </div>
+    <div class="success-title" style="color:#e74c3c;">Commande annulée</div>
+    <div class="success-message">
+      Votre paiement a été annulé.<br>
+      Aucune commande n'a été enregistrée.
+    </div>
+    <button class="success-btn" routerLink="/">Retour à l'accueil</button>
+  </div>
+}

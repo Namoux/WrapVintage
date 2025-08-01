@@ -113,4 +113,10 @@ export class UserModel {
     async deleteUser(id) {
         await this.connection.execute(`UPDATE user SET deleted_at = NOW(), username = CONCAT('deleted_user_', ?), email = NULL, adresse = NULL, password = NULL WHERE id = ?`, [id, id]);
     }
+
+    async getUserByEmail(email) {
+        const result = await this.connection.execute('SELECT * FROM user WHERE email = ? AND deleted_at IS NULL', [email]);
+        return result;
+    }
+
 }

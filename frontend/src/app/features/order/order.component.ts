@@ -13,7 +13,7 @@ export class OrderComponent implements OnInit {
 
   constructor(private api: ApiService) { }
 
-  cart: CartItem[] = []; // Ajoute cette propriété
+  cart: CartItem[] = [];
   user: User = { id: 0, username: '', password: '', email: '', adresse: '', is_admin: 0 };
   adresseInput = '';
   editAdresse = false;
@@ -47,7 +47,19 @@ export class OrderComponent implements OnInit {
     this.editAdresse = false;
   }
 
-  onPay() {
-
+  async onPay() {
+    // Appelle ton backend pour créer une session Stripe
+    try {
+      const { sessionId } = await this.api.createStripeSession(this.cart, this.user);
+      // On reçoit SessionId du back et du coup redirige vers Stripe Checkout
+      // Initialise Stripe.js avec la clé publique Stripe (clé commençant par pk_)
+      // Stripe.js doit être chargé dans index.html pour que window.Stripe soit disponible
+      const stripe = (window as any).Stripe('pk_test_51RqZlyHzhcSqHsruPjVy9XVXOITrF28BSjyX5fUJ7q2ZQTwUPBjxu9mauXNU3sAY0cdJeKDhkSNcB8sDY7QJdIWQ00pp1r3vsq'); // Remplace par ta clé publique Stripe
+      // Redirige l'utilisateur vers la page de paiement Stripe Checkout avec l'id de session reçu du backend
+      await stripe.redirectToCheckout({ sessionId });
+    } catch (error) {
+      alert('Erreur lors du paiement');
+      console.error(error);
+    }
   }
 }

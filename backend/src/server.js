@@ -2,15 +2,16 @@ import express from "express";
 import cors from "cors";
 import { connection } from "./database.mjs";
 import { errorHandler } from "./middlewares/error.middleware.js";
-import { PORT, HOST } from "./config.js";
+import { PORT, HOST, CLIENT_URL } from "./config.js";
 import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import cartRoutes from "./routes/cart.routes.js";
 import cookieParser from 'cookie-parser';
-
-
+import stripeRoutes from './routes/stripe.routes.js';
+import orderRoutes from './routes/order.routes.js';
+// import helmet from "helmet";
 
 const baseUrl = `${HOST}:${PORT}`; // Utiliser une variable d'environnement pour l'Url
 
@@ -18,11 +19,36 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-    origin: 'http://localhost:4200', // ton frontend Angular
+    origin: `${CLIENT_URL}`, // frontend Angular
     credentials: true                // autorise les cookies
 }));
 app.use(cookieParser());
 app.use(express.static('public')); // Dossier pour les fichiers statiques
+
+// app.use(helmet({
+//   contentSecurityPolicy: {
+//     directives: {
+//       defaultSrc: ["'self'"],
+//       scriptSrc: [
+//         "'self'",
+//         "'unsafe-inline'", // ⚠️ nécessaire pour Angular/Stripe dans ton cas, mais à éviter en prod si possible
+//         "https://js.stripe.com",
+//         "https://m.stripe.network"
+//       ],
+//       frameSrc: [
+//         "https://js.stripe.com",
+//         "https://hooks.stripe.com"
+//       ],
+//       connectSrc: [
+//         "'self'",
+//         "https://api.stripe.com",
+//         "https://m.stripe.network"
+//       ],
+//       styleSrc: ["'self'", "'unsafe-inline'"],
+//       imgSrc: ["'self'", "data:", "https://*.stripe.com"]
+//     }
+//   }
+// }));
 
 // Routes
 app.use("/products", productRoutes(connection, baseUrl));
@@ -30,6 +56,8 @@ app.use("/users", userRoutes(connection));
 app.use("/categories", categoryRoutes(connection));
 app.use("/auth", authRoutes(connection, baseUrl));
 app.use("/cart", cartRoutes(connection, baseUrl));
+app.use("/api/stripe", stripeRoutes(connection, baseUrl));
+app.use('/orders', orderRoutes(connection));
 
 // Handle 404 as default route
 app.use((req, res) => {

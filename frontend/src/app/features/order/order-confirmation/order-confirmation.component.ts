@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../../core/services/api.service';
-import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../core/services/api.service';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-order-confirmation',
+  imports: [RouterModule], 
   templateUrl: './order-confirmation.component.html',
   styleUrls: ['./order-confirmation.component.css']
 })

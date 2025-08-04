@@ -84,21 +84,20 @@
   <!-- Historique de commandes -->
   <div class="order-history">
     <h3>Historique de commandes</h3>
+    @if (orders.length === 0) {
     <p>Aucune commande pour le moment.</p>
-
-    <!-- @if (orders.length === 0) {
-        <p>Aucune commande pour le moment.</p>
     } @else {
-      <ul>
-        @for (let order of orders; track order.id) {
-          <li>
-            <strong>Commande #{{ order.id }}</strong> -
-            {{ order.date | date: 'mediumDate' }} -
-            {{ order.total | currency: 'EUR' }}
-          </li>
-        }
-      </ul>
-    } -->
+    <ul>
+      @for (order of orders; track order.id) {
+      <li>
+        <a [routerLink]="['/commande', order.id]">
+          <span class="order-id">Commande #{{ order.id }}</span>
+          <span class="order-date">{{ order.createdAt | date: 'mediumDate' }}</span>
+        </a>
+      </li>
+      }
+    </ul>
+    }
   </div>
 
   <!-- Suppression de compte -->

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CartItem, EditUser, Product, User, OrderItem } from '../interfaces/models';
+import { CartItem, EditUser, Product, User, Order } from '../interfaces/models';
 import { environment } from '../../../environments/environment.development';
 import { BehaviorSubject } from 'rxjs';
 
@@ -263,6 +263,14 @@ export class ApiService {
     return cart.reduce((sum, item) => sum + item.price * (item.quantity ?? 1), 0);
   }
 
+  public getTotalHT(totalTTC: number): number {
+    return +(totalTTC / 1.2).toFixed(2);
+  }
+
+  public getTVA(totalTTC: number): number {
+    return +(totalTTC - this.getTotalHT(totalTTC)).toFixed(2);
+  }
+
   /**
    * Observable du panier partagé pour synchroniser le panier entre les composants.
    * Utiliser `cart$` pour s'abonner aux changements du panier.
@@ -308,4 +316,19 @@ export class ApiService {
     return this.handleResponse(response);
   }
 
+  public async getAllOrders(userId: number): Promise<Order[]> {
+    const response = await fetch(`${environment.baseURL}/orders/all/${userId}`, {
+      method: 'GET',
+      credentials: 'include'
+    });
+    return this.handleResponse(response);
+  }
+
+  public async getOrderById(orderId: number): Promise<Order> {
+    const response = await fetch(`${environment.baseURL}/orders/${orderId}`, {
+      method: 'GET',
+      credentials: 'include'
+    });
+    return this.handleResponse(response);
+  }
 }

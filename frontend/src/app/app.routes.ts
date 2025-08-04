@@ -8,8 +8,9 @@ import { ProductByIdComponent } from './features/product/product-by-id/product-b
 import { SearchbarComponent } from './layout/searchbar/searchbar.component';
 import { CompteComponent } from './layout/compte/compte.component';
 import { CartComponent } from './features/cart/cart.component';
-import { OrderComponent } from './features/order/order.component';
-import { OrderConfirmationComponent } from './features/order-confirmation/order-confirmation.component';
+import { OrderSummaryComponent } from './features/order/order-summary/order-summary.component';
+import { OrderConfirmationComponent } from './features/order/order-confirmation/order-confirmation.component';
+import { OrderDetailComponent } from './features/order/order-detail/order-detail.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // page d'accueil
@@ -23,7 +24,8 @@ export const routes: Routes = [
   { path: 'searchbar', component: SearchbarComponent }, // barre de recherche
   { path: 'mon-compte', component: CompteComponent }, // Compte
   { path: 'panier', component: CartComponent }, // Panier
-  { path: 'commande', component: OrderComponent }, // Commande 
+  { path: 'commande', component: OrderSummaryComponent }, // Commande recap 
+  { path: 'commande/:orderId', component: OrderDetailComponent }, // Commande detail
   { path: 'success', component: OrderConfirmationComponent }, // Confirmation de paiement réussi
   { path: 'cancel', component: OrderConfirmationComponent } // Annulation de paiement
 ];

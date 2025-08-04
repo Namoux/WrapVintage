@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { CartItem, User } from '../../core/interfaces/models';
-import { ApiService } from '../../core/services/api.service';
+import { CartItem, User } from '../../../core/interfaces/models';
+import { ApiService } from '../../../core/services/api.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-order',
+  selector: 'app-order-summary',
   imports: [FormsModule],
-  templateUrl: './order.component.html',
-  styleUrls: ['./order.component.css']
+  templateUrl: './order-summary.component.html',
+  styleUrls: ['./order-summary.component.css']
 })
-export class OrderComponent implements OnInit {
+export class OrderSummaryComponent implements OnInit {
 
   constructor(private api: ApiService) { }
 
@@ -32,12 +32,20 @@ export class OrderComponent implements OnInit {
 
 
   /**
-* Calcule le prix total du panier.
-* @param cart Tableau des produits du panier
-* @returns {number} Le montant total de tous les produits du panier.
-*/
-  get totalPrice(): number {
+  * Calcule le prix total du panier.
+  * @param cart Tableau des produits du panier
+  * @returns {number} Le montant total de tous les produits du panier.
+  */
+  get totalTTC(): number {
     return this.api.getTotalPrice(this.cart);
+  }
+
+  get totalHT(): number {
+    return this.api.getTotalHT(this.totalTTC);
+  }
+
+  get tva(): number {
+    return this.api.getTVA(this.totalTTC);
   }
 
   async saveAdresse() {

@@ -43,13 +43,13 @@ export interface Order {
   id: number;
   user_id: number;
   createdAt: string;
-  items: OrderItem[]; // Liste des produits enrichis de la commande
+  products: ProductInOrder[]; // Liste des produits enrichis de la commande
 }
 
-export interface OrderItem {
-  product_id: number;
+export interface ProductInOrder {
+  id: number;
   name: string;
   price: number;
-  imageURL: string;
-  quantity: number;
+  order_quantity: number;
+  order_price: number | string;
 }

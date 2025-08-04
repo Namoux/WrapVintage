@@ -9,7 +9,9 @@
 }
 
 /* Titres */
-h2, h3, h4 {
+h2,
+h3,
+h4 {
   color: #D4B369;
   font-weight: bold;
   margin-top: 1.5rem;
@@ -70,6 +72,7 @@ button:active {
   background-color: #4caf50;
   color: white;
 }
+
 .btn-save:hover {
   background-color: #388e3c;
 }
@@ -78,15 +81,18 @@ button:active {
   background-color: #e0e0e0;
   color: #333;
 }
+
 .btn-cancel:hover {
   background-color: #ccc;
 }
 
 /* Nouveau style pour le bouton "Se déconnecter" */
 .btn-logout {
-  background-color: #8C6239; /* brun doux */
+  background-color: #8C6239;
+  /* brun doux */
   color: white;
 }
+
 .btn-logout:hover {
   background-color: #6e4e2f;
 }
@@ -96,6 +102,7 @@ button:active {
   background-color: #f44336;
   color: white;
 }
+
 .btn-delete:hover {
   background-color: #c62828;
 }
@@ -143,6 +150,7 @@ button:active {
     opacity: 0;
     transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -177,6 +185,7 @@ button:active {
   background: #D4B369;
   color: #fff;
 }
+
 .btn-confirm:hover {
   background: #c3a553;
 }
@@ -185,8 +194,71 @@ button:active {
   background: #eee;
   color: #444;
 }
+
 .btn-cancel:hover {
   background: #ddd;
+}
+
+/* Historique de commandes */
+.order-history {
+  margin-top: 2.5rem;
+  background: #fcfaf5;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(212, 179, 105, 0.08);
+  padding: 1.5rem 1rem;
+}
+
+.order-history h3 {
+  color: #8C6239;
+  font-size: 1.25rem;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.5px;
+}
+
+.order-history ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.order-history li {
+  background: #fff;
+  border-radius: 10px;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 1px 6px rgba(212, 179, 105, 0.07);
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  transition: box-shadow 0.2s;
+}
+
+.order-history li:hover {
+  box-shadow: 0 2px 12px rgba(212, 179, 105, 0.18);
+}
+
+.order-history a {
+  text-decoration: none;
+  color: #4caf50;
+  font-weight: 500;
+  font-size: 1.08rem;
+  transition: color 0.2s;
+}
+
+.order-history a:hover {
+  color: #388e3c;
+  text-decoration: underline;
+}
+
+.order-history .order-id {
+  color: #D4B369;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.order-history .order-date {
+  color: #888;
+  font-size: 0.98rem;
+  margin-left: auto;
 }
 
 /* Tablette */
@@ -225,7 +297,9 @@ button:active {
     font-size: 1rem;
   }
 
-  h2, h3, h4 {
+  h2,
+  h3,
+  h4 {
     font-size: 1.4rem;
   }
 }
@@ -253,5 +327,14 @@ button:active {
   .btn-cancel {
     font-size: 0.95rem;
     padding: 0.5rem 1rem;
+  }
+
+  .order-history {
+    padding: 1rem 0.3rem;
+  }
+
+  .order-history li {
+    padding: 0.7rem 0.6rem;
+    font-size: 0.98rem;
   }
 }

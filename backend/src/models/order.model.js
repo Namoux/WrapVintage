@@ -40,4 +40,47 @@ export class OrderModel {
         );
         return result;
     }
+
+    /**
+     * Récupère toutes les commandes passées par un utilisateur.
+     * @param {number} userId - Identifiant de l'utilisateur
+     * @returns {Promise<Array<Object>>} - Liste des commandes
+     */
+    async getAllOrders(userId) {
+        const result = await this.connection.execute(
+            'SELECT * FROM orders WHERE user_id = ? ORDER BY createdAt DESC',
+            [userId]
+        );
+        return result;
+    }
+
+    /**
+     * Récupère une commande par son id (avec ses produits)
+     * @param {number} orderId - Identifiant de la commande
+     * @returns {Promise<Object|null>} - La commande et ses produits
+     */
+    async getOrderById(orderId) {
+        const result = await this.connection.execute(
+            'SELECT * FROM orders WHERE id = ?',
+            [orderId]
+        );
+        const order = result[0];
+
+        const products = await this.connection.execute(
+            `SELECT 
+                p.id,
+                p.name,
+                po.quantity AS order_quantity,
+                po.price AS order_price
+            FROM productOrder po
+            JOIN product p ON p.id = po.fk_product
+            WHERE po.fk_order = ?`,
+            [orderId]
+        );
+        if (!order) return null;
+        order.products =  Array.isArray(products) ? products : [products];
+
+        return order;
+    }
+
 }

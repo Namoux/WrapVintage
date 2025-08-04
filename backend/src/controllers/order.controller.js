@@ -61,3 +61,52 @@ export const getLastOrder = (orderModel) => async (req, res, next) => {
         next(error);
     }
 };
+
+/**
+ * Récupère toutes les commandes passées par un utilisateur.
+ *
+ * @param {OrderModel} orderModel - Instance du modèle OrderModel
+ * @returns {Function} Middleware Express
+ */
+export const getAllOrders = (orderModel) => async (req, res, next) => {
+    try {
+        console.log("Client get all his orders");
+
+        // Récupère l'id utilisateur depuis les paramètres d'URL
+        const userId = req.params.userId;
+
+        // Récupère toutes les commandes de l'utilisateur via le modèle
+        const orders = await orderModel.getAllOrders(userId);
+
+        // Retourne les commandes trouvées
+        res.json(orders);
+    } catch (error) {
+        console.log("Error in get ALL last order");
+        next(error);
+    }
+};
+
+/**
+ * Récupère une commande par son id
+ */
+export const getOrderById = (orderModel) => async (req, res, next) => {
+    try {
+        console.log("Client get order by id");
+
+        // Récupère l'id de la commande depuis les paramètres d'URL
+        const orderId = req.params.orderId;
+
+        // Récupère la commande spécifiée de l'utilisateur via le modèle
+        const order = await orderModel.getOrderById(orderId);
+
+        // Si aucune commande trouvée, retourne une erreur 404
+        if (!order) return res.status(404).json({ error: "Commande non trouvée" });
+
+        console.log("order in controller", order);
+        // Retourne la commande trouvée
+        res.json(order);
+    } catch (error) {
+        console.log("Error in get order by id");
+        next(error);
+    }
+};

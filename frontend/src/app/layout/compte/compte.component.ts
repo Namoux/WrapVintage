@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
-import { EditUser, User } from '../../core/interfaces/models';
-import { NgForm, FormsModule } from '@angular/forms';
+import { EditUser, User, Order } from '../../core/interfaces/models';
+import { FormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-compte',
   standalone: true,
-  imports: [FormsModule],
+  imports: [DatePipe, FormsModule, RouterModule],
   templateUrl: './compte.component.html',
   styleUrls: ['./compte.component.css']
 })
@@ -27,6 +29,7 @@ export class CompteComponent {
  * Les champs sont optionnels grâce à l'interface EditUser (Partial<User>).
  */
   editUser: EditUser = {};
+  orders: Order[] = [];
   editMode = false;
   successMsg = '';
   errorMsg = '';
@@ -34,9 +37,10 @@ export class CompteComponent {
 
   constructor(private api: ApiService, private router: Router) { }
 
+
   async ngOnInit() {
     this.user = await this.api.getMe(); // getMe() doit renvoyer {username, email, address, ...}
-    console.log(this.user);
+    this.orders = await this.api.getAllOrders(this.user.id);
   }
 
   /**

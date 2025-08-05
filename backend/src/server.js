@@ -11,6 +11,7 @@ import cartRoutes from "./routes/cart.routes.js";
 import cookieParser from 'cookie-parser';
 import stripeRoutes from './routes/stripe.routes.js';
 import orderRoutes from './routes/order.routes.js';
+import contactRoutes from './routes/contact.routes.js';
 // import helmet from "helmet";
 
 const baseUrl = `${HOST}:${PORT}`; // Utiliser une variable d'environnement pour l'Url
@@ -58,6 +59,7 @@ app.use("/auth", authRoutes(connection, baseUrl));
 app.use("/cart", cartRoutes(connection, baseUrl));
 app.use("/api/stripe", stripeRoutes(connection, baseUrl));
 app.use('/orders', orderRoutes(connection));
+app.use('/api/contact', contactRoutes(connection));
 
 // Handle 404 as default route
 app.use((req, res) => {

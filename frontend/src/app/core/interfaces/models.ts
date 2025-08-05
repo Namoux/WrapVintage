@@ -1,21 +1,21 @@
 
 export interface Product {
-    id: number,
-    name: string,
-    description: string,
-    price: number,
-    imageURL: string,
-    quantity: number,
-    is_new: number
+  id: number,
+  name: string,
+  description: string,
+  price: number,
+  imageURL: string,
+  quantity: number,
+  is_new: number
 }
 
 export interface User {
-    id: number,
-    username: string,
-    password: string,
-    email: string,
-    adresse: string,
-    is_admin: number
+  id: number,
+  username: string,
+  password: string,
+  email: string,
+  adresse: string,
+  is_admin: number
 }
 
 /**
@@ -52,4 +52,11 @@ export interface ProductInOrder {
   price: number;
   order_quantity: number;
   order_price: number | string;
+}
+
+export interface ContactMessage {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
 }

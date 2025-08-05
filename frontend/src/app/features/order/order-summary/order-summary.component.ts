@@ -11,13 +11,22 @@ import { FormsModule } from '@angular/forms';
 })
 export class OrderSummaryComponent implements OnInit {
 
+  // Injection du service API
   constructor(private api: ApiService) { }
 
+  // Liste des produits du panier
   cart: CartItem[] = [];
+  // Informations de l'utilisateur
   user: User = { id: 0, username: '', password: '', email: '', adresse: '', is_admin: 0 };
+  // Champ d'édition de l'adresse
   adresseInput = '';
+  // Indique si l'adresse est en cours d'édition
   editAdresse = false;
 
+  /**
+   * Hook du cycle de vie Angular appelé à l'initialisation du composant.
+   * Initialise le panier et les infos utilisateur.
+   */
   async ngOnInit() {
     // Souscrit au panier partagé pour mettre à jour la commande en temps réel si le panier change
     this.api.cart$.subscribe(cart => {
@@ -26,7 +35,9 @@ export class OrderSummaryComponent implements OnInit {
     // Charge le panier au démarrage
     const initialCart = await this.api.getCart();
     this.api.updateCart(initialCart);
+    // Récupère les infos utilisateur
     this.user = await this.api.getMe();
+    // Initialise le champ adresse
     this.adresseInput = this.user.adresse || '';
   }
 
@@ -40,14 +51,25 @@ export class OrderSummaryComponent implements OnInit {
     return this.api.getTotalPrice(this.cart);
   }
 
+  /**
+   * Calcule le montant hors taxes (HT) du panier.
+   * @returns {number} Le montant HT
+   */
   get totalHT(): number {
     return this.api.getTotalHT(this.totalTTC);
   }
 
+  /**
+   * Calcule le montant de la TVA du panier.
+   * @returns {number} Le montant de la TVA
+   */
   get tva(): number {
     return this.api.getTVA(this.totalTTC);
   }
 
+  /**
+   * Sauvegarde la nouvelle adresse utilisateur.
+   */
   async saveAdresse() {
     if (!this.adresseInput.trim()) return;
     await this.api.updateUser(this.user.id, { adresse: this.adresseInput });
@@ -55,6 +77,10 @@ export class OrderSummaryComponent implements OnInit {
     this.editAdresse = false;
   }
 
+  /**
+   * Lance le paiement Stripe pour le panier.
+   * Crée une session Stripe côté backend puis redirige l'utilisateur vers Stripe Checkout.
+   */
   async onPay() {
     // Appelle ton backend pour créer une session Stripe
     try {

@@ -1,0 +1,134 @@
+.contact-container {
+    max-width: 500px;
+    margin: 3rem auto;
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(212, 179, 105, 0.12);
+    padding: 2.5rem 2rem;
+    text-align: left;
+}
+
+.contact-container h2 {
+    color: #D4B369;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.contact-info {
+    background: #fcfaf5;
+    border-radius: 10px;
+    padding: 1.2rem 1rem;
+    margin-bottom: 2rem;
+    color: #6d4c23;
+    font-size: 1.08rem;
+    box-shadow: 0 1px 6px rgba(212, 179, 105, 0.07);
+    text-align: center;
+}
+
+.contact-info p {
+    margin: 0;
+    line-height: 1.7;
+}
+
+.contact-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.contact-container label {
+    font-weight: 500;
+    color: #8C6239;
+    margin-bottom: 0.3rem;
+}
+
+.contact-container input,
+.contact-container textarea {
+    border: 1px solid #D4B369;
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    font-size: 1rem;
+    background: #fcfaf5;
+    color: #333;
+    outline: none;
+    /* Supprime le contour bleu par défaut au focus */
+    transition: border-color 0.2s;
+}
+
+.contact-container input:focus,
+.contact-container textarea:focus {
+    border-color: #8C6239;
+}
+
+.contact-container textarea {
+    min-height: 100px;
+    resize: vertical;
+    /* Permet à l'utilisateur d'agrandir le textarea uniquement verticalement */
+}
+
+.contact-container button[type="submit"] {
+    background: #D4B369;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background 0.2s;
+}
+
+.contact-container button[type="submit"]:hover {
+    background: #8C6239;
+}
+
+.success {
+    color: #4caf50;
+    margin-top: 1.2rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.error {
+    color: #e74c3c;
+    margin-top: 1.2rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.success,
+.error {
+    opacity: 1;
+    transition: opacity 0.6s;
+}
+
+.success.hide,
+.error.hide {
+    opacity: 0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+
+    .contact-container {
+        padding: 1.2rem 0.5rem;
+        margin: 1.5rem 0.5rem;
+    }
+
+    .contact-container h2 {
+        font-size: 1.3rem;
+    }
+
+    .contact-container label {
+        text-align: center;
+    }
+
+    .contact-container input,
+    .contact-container textarea {
+        font-size: 0.98rem;
+        padding: 0.6rem 0.7rem;
+    }
+}

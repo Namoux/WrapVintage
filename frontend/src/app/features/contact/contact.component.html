@@ -1,0 +1,30 @@
+<div class="contact-container">
+    <h2>Contactez-nous</h2>
+    <div class="contact-info">
+        <p>
+            Écrire à l'équipe Wrap Vintage<br>
+            Besoin d'informations à propos d'un de nos bijoux ?<br>
+            Envie d'un bracelet sur-mesure ou vous avez une question sur les pierres semi-précieuses ou leurs vertus
+            ?<br>
+            N'hésitez pas à nous écrire, nous répondons dans la journée :)<br><br>
+            Vous pouvez aussi nous contacter directement sur notre messagerie instantanée Facebook, Instagram.
+        </p>
+    </div>
+    <form (ngSubmit)="onSubmit()">
+        <label>Nom :</label>
+        <input [(ngModel)]="name" name="name" required />
+        <label>Email :</label>
+        <input [(ngModel)]="email" name="email" type="email" required />
+        <label>Sujet :</label>
+        <input [(ngModel)]="subject" name="subject" required />
+        <label>Message :</label>
+        <textarea [(ngModel)]="message" name="message" required></textarea>
+        <button type="submit">Envoyer</button>
+    </form>
+    @if (successMsg) {
+    <div class="success" [class.hide]="successHide">{{ successMsg }}</div>
+    }
+    @if (errorMsg) {
+    <div class="error" [class.hide]="errorHide">{{ errorMsg }}</div>
+    }
+</div>

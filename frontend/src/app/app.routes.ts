@@ -11,6 +11,7 @@ import { CartComponent } from './features/cart/cart.component';
 import { OrderSummaryComponent } from './features/order/order-summary/order-summary.component';
 import { OrderConfirmationComponent } from './features/order/order-confirmation/order-confirmation.component';
 import { OrderDetailComponent } from './features/order/order-detail/order-detail.component';
+import { ContactComponent } from './features/contact/contact.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent }, // page d'accueil
@@ -20,6 +21,7 @@ export const routes: Routes = [
   { path: 'livraison', component: DeliveryComponent }, // page livraison
   { path: 'payment-condition', component: PaymentConditionComponent }, // page paiement condition
   { path: 'cgv', component: CGVComponent }, // page CGV
+  { path: 'contact', component: ContactComponent }, // page contact
   { path: 'product/:id', component: ProductByIdComponent }, // page produit detail
   { path: 'searchbar', component: SearchbarComponent }, // barre de recherche
   { path: 'mon-compte', component: CompteComponent }, // Compte

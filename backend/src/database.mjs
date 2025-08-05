@@ -67,7 +67,7 @@ const cart = await connection.execute(`
 `);
 if (cart.warningStatus === 0) console.log("Table cart created");
 
-const productCart = await connection.execute (`
+const productCart = await connection.execute(`
     CREATE TABLE IF NOT EXISTS productCart (
         fk_product INT,
         fk_cart INT,
@@ -79,7 +79,7 @@ const productCart = await connection.execute (`
 `);
 if (productCart.warningStatus === 0) console.log("Table productCart created");
 
-const orders = await connection.execute (`
+const orders = await connection.execute(`
     CREATE TABLE IF NOT EXISTS orders (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,
@@ -89,7 +89,7 @@ const orders = await connection.execute (`
 `);
 if (orders.warningStatus === 0) console.log("Table orders created");
 
-const productOrder = await connection.execute (`
+const productOrder = await connection.execute(`
     CREATE TABLE IF NOT EXISTS productOrder (
         fk_product INT,
         fk_order INT,
@@ -102,3 +102,14 @@ const productOrder = await connection.execute (`
 `);
 if (productOrder.warningStatus === 0) console.log("Table productOrder created");
 
+const contactMessage = await connection.execute(`
+    CREATE TABLE IF NOT EXISTS contactMessage (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100),
+        email VARCHAR(100),
+        subject VARCHAR(200),
+        message TEXT,
+        createdAt DATETIME DEFAULT NOW()
+    )
+`);
+if (contactMessage.warningStatus === 0) console.log("Table contactMessage created");

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CartItem, EditUser, Product, User, Order } from '../interfaces/models';
+import { CartItem, EditUser, Product, User, Order, ContactMessage } from '../interfaces/models';
 import { environment } from '../../../environments/environment.development';
 import { BehaviorSubject } from 'rxjs';
 
@@ -168,9 +168,9 @@ export class ApiService {
   }
 
   /**
- * Récupère le panier d'un utilisateur
- * @returns {Promise<CartItem[]>} - Liste des produits du panier
- */
+   * Récupère le panier d'un utilisateur
+   * @returns {Promise<CartItem[]>} - Liste des produits du panier
+   */
   public async getCart(): Promise<CartItem[]> {
     console.log("getCart service OK");
     const response = await fetch(`${environment.baseURL}/cart/me`, {
@@ -225,10 +225,10 @@ export class ApiService {
   }
 
   /**
- * Récupère le panier local stocké dans le cookie "cart".
- * 
- * @returns {any[]} Tableau des produits du panier local.
- */
+   * Récupère le panier local stocké dans le cookie "cart".
+   * 
+   * @returns {any[]} Tableau des produits du panier local.
+   */
   public getCookieCart(): any[] {
     const match = document.cookie.match(/(?:^|;\s*)cart=([^;]*)/);
     if (!match) return [];
@@ -242,10 +242,10 @@ export class ApiService {
   }
 
   /**
- * Met à jour le panier local dans le cookie "cart".
- * 
- * @param cart Tableau des produits à stocker dans le cookie.
- */
+   * Met à jour le panier local dans le cookie "cart".
+   * 
+   * @param cart Tableau des produits à stocker dans le cookie.
+   */
   public setCookieCart(cart: any[]): void {
     // Sérialise et stocke à nouveau le panier dans le cookie (durée : 7 jours)
     const expires = new Date();
@@ -263,10 +263,20 @@ export class ApiService {
     return cart.reduce((sum, item) => sum + item.price * (item.quantity ?? 1), 0);
   }
 
+  /**
+   * Calcule le montant hors taxes (HT) à partir du total TTC.
+   * @param totalTTC - Montant toutes taxes comprises
+   * @returns {number} Montant hors taxes
+   */
   public getTotalHT(totalTTC: number): number {
     return +(totalTTC / 1.2).toFixed(2);
   }
 
+  /**
+   * Calcule le montant de la TVA (20%) à partir du total TTC.
+   * @param totalTTC - Montant toutes taxes comprises
+   * @returns {number} Montant de la TVA
+   */
   public getTVA(totalTTC: number): number {
     return +(totalTTC - this.getTotalHT(totalTTC)).toFixed(2);
   }
@@ -308,6 +318,11 @@ export class ApiService {
     return this.handleResponse(response); // Utilise la gestion d'erreur centralisée
   }
 
+  /**
+   * Récupère la dernière commande passée par un utilisateur.
+   * @param userId - Identifiant de l'utilisateur
+   * @returns {Promise<any>} La dernière commande trouvée ou null
+   */
   public async getLastOrder(userId: number): Promise<any> {
     const response = await fetch(`${environment.baseURL}/orders/last/${userId}`, {
       method: 'GET',
@@ -316,6 +331,11 @@ export class ApiService {
     return this.handleResponse(response);
   }
 
+  /**
+   * Récupère toutes les commandes passées par un utilisateur.
+   * @param userId - Identifiant de l'utilisateur
+   * @returns {Promise<Order[]>} Liste des commandes
+   */
   public async getAllOrders(userId: number): Promise<Order[]> {
     const response = await fetch(`${environment.baseURL}/orders/all/${userId}`, {
       method: 'GET',
@@ -324,10 +344,29 @@ export class ApiService {
     return this.handleResponse(response);
   }
 
+  /**
+   * Récupère le détail d'une commande par son identifiant.
+   * @param orderId - Identifiant de la commande
+   * @returns {Promise<Order>} La commande trouvée
+   */
   public async getOrderById(orderId: number): Promise<Order> {
     const response = await fetch(`${environment.baseURL}/orders/${orderId}`, {
       method: 'GET',
       credentials: 'include'
+    });
+    return this.handleResponse(response);
+  }
+
+  /**
+   * Envoie un message de contact au serveur.
+   * @param data - Objet contenant le nom, email, sujet et message
+   * @returns {Promise<any>} Réponse du serveur (succès ou erreur)
+   */
+  public async sendContactMessage(data: ContactMessage): Promise<any> {
+    const response = await fetch(`${environment.baseURL}/api/contact`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
     });
     return this.handleResponse(response);
   }

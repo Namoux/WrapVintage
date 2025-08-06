@@ -15,15 +15,18 @@
 }
 
 .left a {
-    display: inline-block;  /* Permet d'appliquer les transformations CSS comme scale() sur un lien <a>, qui est inline par défaut */
+    display: inline-block;
+    /* Permet d'appliquer les transformations CSS comme scale() sur un lien <a>, qui est inline par défaut */
     text-decoration: none;
     cursor: pointer;
     color: black;
-    transition: transform 0.2s ease;    /* Animation douce lors du hover */
+    transition: transform 0.2s ease;
+    /* Animation douce lors du hover */
 }
 
 .left a:hover {
-    transform: scale(1.1);              /* Zoom léger au survol */
+    transform: scale(1.1);
+    /* Zoom léger au survol */
 }
 
 a.active {
@@ -42,11 +45,13 @@ a.active {
 .right i {
     font-size: 40px;
     color: #D4B369;
-    transition: transform 0.2s ease;    /* Animation douce lors du hover */
+    transition: transform 0.2s ease;
+    /* Animation douce lors du hover */
 }
 
 .right i:hover {
-  transform: scale(1.1);              /* Zoom léger au survol */
+    transform: scale(1.1);
+    /* Zoom léger au survol */
 }
 
 .copyright {

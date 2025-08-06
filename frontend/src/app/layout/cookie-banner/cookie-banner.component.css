@@ -1,0 +1,43 @@
+.cookie-banner {
+    position: fixed;
+    /* Fixe la bannière en bas de l'écran */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    /* Prend toute la largeur de la fenêtre */
+    max-width: 100%;
+    box-sizing: border-box;
+    /* Inclut le padding dans la largeur */
+    background: #fffbe7;
+    color: #8C6239;
+    border-top: 1px solid #D4B369;
+    box-shadow: 0 -2px 12px rgba(212, 179, 105, 0.08);
+    padding: 1rem;
+    display: flex;
+    /* Affiche le texte et le bouton sur une ligne */
+    justify-content: space-between;
+    /* Espace entre le texte et le bouton */
+    align-items: center;
+    z-index: 9999;
+    /* Toujours au-dessus du contenu */
+    font-size: 1rem;
+    text-align: justify;
+}
+
+.cookie-banner button {
+    background: #D4B369;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-left: 1.5rem;
+    /* Espace entre le texte et le bouton */
+    transition: background 0.2s;
+}
+
+.cookie-banner button:hover {
+    background: #8C6239;
+}

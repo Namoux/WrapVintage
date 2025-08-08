@@ -124,13 +124,15 @@ export const getAllNewProducts = (productModel) => async (req, res, next) => {
 export const getProductHomme = (productModel) => async (req, res, next) => {
     try {
         console.log("Client gets all men's products");
-
+        
         const limit = parseInt(req.query.limit);
-
+        
         const products = await productModel.getProductHomme(limit);
-
+        
         console.log("All men's products was sent to client");
+   
         return res.status(200).json(products);
+        
     } catch (error) {
         console.log("Error fetching men's products ");
         next(error);

@@ -124,7 +124,7 @@ export class ProductModel {
      * @returns {Promise<Array<Object>>}
      */
     async getProductHomme(limit) {
-        const result = await this.connection.execute('SELECT p.id, p.name, p.description, p.price, p.imageURL, p.quantity, p.is_new FROM product AS p INNER JOIN productCategory AS pc ON p.id = pc.fk_product INNER JOIN category AS c ON c.id = pc.fk_category WHERE c.id = 1 LIMIT ?', [limit]);
+        const result = await this.connection.execute('SELECT p.id, p.name, p.description, p.price, p.imageURL, p.quantity, p.is_new FROM product AS p INNER JOIN productCategory AS pc ON p.id = pc.fk_product INNER JOIN category AS c ON c.id = pc.fk_category WHERE c.id = 1 AND p.is_archived = 0 LIMIT ?', [limit]);
         // console.log("result : ", result);
         return this.addImageUrl(result);
     }
@@ -135,7 +135,7 @@ export class ProductModel {
      * @returns {Promise<Array<Object>>}
      */
     async getProductFemme(limit) {
-        const result = await this.connection.execute('SELECT p.id, p.name, p.description, p.price, p.imageURL, p.quantity, p.is_new FROM product AS p INNER JOIN productCategory AS pc ON p.id = pc.fk_product INNER JOIN category AS c ON c.id = pc.fk_category WHERE c.id = 2 LIMIT ?', [limit]);
+        const result = await this.connection.execute('SELECT p.id, p.name, p.description, p.price, p.imageURL, p.quantity, p.is_new FROM product AS p INNER JOIN productCategory AS pc ON p.id = pc.fk_product INNER JOIN category AS c ON c.id = pc.fk_category WHERE c.id = 2 AND p.is_archived = 0 LIMIT ?', [limit]);
         // console.log("result : ", result);
         return this.addImageUrl(result);
     }

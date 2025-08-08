@@ -11,5 +11,5 @@ COPY . .
 
 EXPOSE 4004
 
-CMD ["sh", "-c", "echo '⏳ Waiting for DB...' && wait-port mariadb:3306 && echo '✅ DB ready' && npm run dev"]
+CMD ["sh", "-c", "echo 'Waiting for DB...' && wait-port mariadb:3306 && echo 'DB ready' && npm run dev"]
 

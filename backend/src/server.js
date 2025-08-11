@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { connection } from "./database.mjs";
 import { errorHandler } from "./middlewares/error.middleware.js";
-import { PORT, HOST, CLIENT_URL } from "./config.js";
+import { PORT, HOST, CLIENT_URL, PUBLIC_BASE_URL } from "./config.js";
 import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
@@ -52,7 +52,7 @@ app.use(express.static('public')); // Dossier pour les fichiers statiques
 // }));
 
 // Routes
-app.use("/products", productRoutes(connection, baseUrl));
+app.use("/products", productRoutes(connection, PUBLIC_BASE_URL));
 app.use("/users", userRoutes(connection));
 app.use("/categories", categoryRoutes(connection));
 app.use("/auth", authRoutes(connection, baseUrl));

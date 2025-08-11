@@ -1,0 +1,57 @@
+services:
+  mariadb:
+    image: yobasystems/alpine-mariadb:armhf
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+  backend:
+    platform: linux/arm/v7
+    build: .
+    restart: always
+    volumes:
+      - .:/app
+      - /app/node_modules   # évite les conflits node_modules entre local et conteneur
+    environment:
+      SECRETKEY: ${SECRETKEY}
+      PORT: ${PORT}
+      HOST: ${HOST}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      NODE_ENV: ${NODE_ENV}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY}
+      CLIENT_URL: ${CLIENT_URL}
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - mariadb
+
+  caddy:
+    image: caddy:2
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+
+volumes:
+  mariadb_data:
+  caddy_data:
+  caddy_config:
+
+    

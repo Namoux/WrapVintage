@@ -43,7 +43,7 @@ export class ApiService {
    */
   public async getManProducts(): Promise<Product[]> {
     // Envoie une requête pour récupérer les produits hommes
-    const response = await fetch(`${environment.baseURL}/products/hommes`)
+    const response = await fetch(`${environment.baseURL}/products/hommes?limit=100`)
     return this.handleResponse(response);
   };
 
@@ -52,7 +52,7 @@ export class ApiService {
    */
   public async getWomanProducts(): Promise<Product[]> {
     // Envoie une requête pour récupérer les produits femmes
-    const response = await fetch(`${environment.baseURL}/products/femmes`)
+    const response = await fetch(`${environment.baseURL}/products/femmes?limit=100`)
     return this.handleResponse(response);
   };
 
@@ -61,7 +61,7 @@ export class ApiService {
    */
   public async getProductsNews(): Promise<Product[]> {
     // Envoie une requête pour récupérer les nouveautés
-    const response = await fetch(`${environment.baseURL}/products/news`);
+    const response = await fetch(`${environment.baseURL}/products/news?limit=100`);
     return this.handleResponse(response);
   };
 

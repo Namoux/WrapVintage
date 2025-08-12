@@ -1,7 +1,16 @@
-services:
+version: "3.8"
+
+networks:
+  internal_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.28.0.0/16
+
+ervices:
   mariadb:
     image: yobasystems/alpine-mariadb:armhf
-    restart: always
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
@@ -11,11 +20,13 @@ services:
       - "${DB_PORT}:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
+    networks:
+      - internal_net
 
   backend:
     platform: linux/arm/v7
     build: .
-    restart: always
+    restart: unless-stopped
     volumes:
       - .:/app
       - /app/node_modules   # évite les conflits node_modules entre local et conteneur
@@ -35,10 +46,12 @@ services:
       - "${PORT}:${PORT}"
     depends_on:
       - mariadb
+    networks:
+      - internal_net
 
   caddy:
     image: caddy:2
-    restart: always
+    restart: unless-stopped
     ports:
       - "80:80"
       - "443:443"
@@ -48,6 +61,8 @@ services:
       - caddy_config:/config
     depends_on:
       - backend
+    networks:
+      - internal_net
 
 volumes:
   mariadb_data:

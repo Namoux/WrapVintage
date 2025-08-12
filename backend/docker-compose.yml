@@ -1,9 +1,9 @@
-networks:
-  internal_net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.28.0.0/16
+# networks:
+#   internal_net:
+#     driver: bridge
+#     ipam:
+#       config:
+#         - subnet: 172.28.0.0/16
 
 services:
   mariadb:
@@ -18,8 +18,8 @@ services:
       - "${DB_PORT}:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
-    networks:
-      - internal_net
+    # networks:
+    #   - internal_net
 
   backend:
     platform: linux/arm/v7
@@ -44,8 +44,8 @@ services:
       - "${PORT}:${PORT}"
     depends_on:
       - mariadb
-    networks:
-      - internal_net
+    # networks:
+    #   - internal_net
 
   caddy:
     image: caddy:2
@@ -59,8 +59,8 @@ services:
       - caddy_config:/config
     depends_on:
       - backend
-    networks:
-      - internal_net
+    # networks:
+    #   - internal_net
 
 volumes:
   mariadb_data:

@@ -4,6 +4,7 @@ import Stripe from "stripe";
 dotenv.config(); // charge le .env dès l'import
 
 export const SECRETKEY = process.env.SECRETKEY;
+export const PUBLIC_BASE_URL = process.env.PUBLIC_BASE_URL;
 export const PORT = process.env.PORT;
 export const HOST = process.env.HOST;
 export const DB_HOST = process.env.DB_HOST;

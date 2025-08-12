@@ -1,3 +1,6 @@
 vwbackend.duckdns.org {
     reverse_proxy backend:4004
 }
+:80 {
+    reverse_proxy backend:4004
+}

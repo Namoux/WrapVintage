@@ -11,6 +11,8 @@ services:
       - "${DB_PORT}:3306"
     volumes:
       - mariadb_data:/var/lib/mysql
+    networks:
+      - internal_net
 
   backend:
     platform: linux/arm/v7
@@ -35,6 +37,8 @@ services:
       - "${PORT}:${PORT}"
     depends_on:
       - mariadb
+    networks:
+      - internal_net
 
   caddy:
     image: caddy:2
@@ -48,10 +52,15 @@ services:
       - caddy_config:/config
     depends_on:
       - backend
+    networks:
+      - internal_net
 
 volumes:
   mariadb_data:
   caddy_data:
   caddy_config:
 
-    
+networks:
+  internal_net:
+    driver: bridge
+    internal: false

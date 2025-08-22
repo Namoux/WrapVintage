@@ -1,0 +1,40 @@
+version: '3.9'
+services:
+  mariadb:
+    image: mariadb:11
+    container_name: mariadb
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - "${DB_PORT}:${DB_PORT}" 
+
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    depends_on:
+      - mariadb
+    ports:
+      - "${PORT}:${PORT}"
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  mariadb_data:

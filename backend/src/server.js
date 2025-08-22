@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { connection } from "./database.mjs";
 import { errorHandler } from "./middlewares/error.middleware.js";
-import { PORT, HOST, CLIENT_URL, PUBLIC_BASE_URL } from "./config.js";
+import { PORT, HOST, CLIENT_URL } from "./config.js";
 import authRoutes from "./routes/auth.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
@@ -12,7 +12,6 @@ import cookieParser from 'cookie-parser';
 import stripeRoutes from './routes/stripe.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import contactRoutes from './routes/contact.routes.js';
-// import helmet from "helmet";
 
 const baseUrl = `${HOST}:${PORT}`; // Utiliser une variable d'environnement pour l'Url
 
@@ -26,33 +25,8 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.static('public')); // Dossier pour les fichiers statiques
 
-// app.use(helmet({
-//   contentSecurityPolicy: {
-//     directives: {
-//       defaultSrc: ["'self'"],
-//       scriptSrc: [
-//         "'self'",
-//         "'unsafe-inline'", // ⚠️ nécessaire pour Angular/Stripe dans ton cas, mais à éviter en prod si possible
-//         "https://js.stripe.com",
-//         "https://m.stripe.network"
-//       ],
-//       frameSrc: [
-//         "https://js.stripe.com",
-//         "https://hooks.stripe.com"
-//       ],
-//       connectSrc: [
-//         "'self'",
-//         "https://api.stripe.com",
-//         "https://m.stripe.network"
-//       ],
-//       styleSrc: ["'self'", "'unsafe-inline'"],
-//       imgSrc: ["'self'", "data:", "https://*.stripe.com"]
-//     }
-//   }
-// }));
-
 // Routes
-app.use("/products", productRoutes(connection, PUBLIC_BASE_URL));
+app.use("/products", productRoutes(connection, baseUrl));
 app.use("/users", userRoutes(connection));
 app.use("/categories", categoryRoutes(connection));
 app.use("/auth", authRoutes(connection, baseUrl));

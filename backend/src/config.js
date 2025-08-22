@@ -1,10 +1,13 @@
 import dotenv from "dotenv";
 import Stripe from "stripe";
 
-dotenv.config(); // charge le .env dès l'import
+// dotenv.config({ path: "../.env" }); // charge le .env dès l'import
+
+// Charge le .env local seulement si NODE_ENV n'est pas production
+dotenv.config({ path: process.env.NODE_ENV !== "production" ? "../.env" : undefined });
+
 
 export const SECRETKEY = process.env.SECRETKEY;
-export const PUBLIC_BASE_URL = process.env.PUBLIC_BASE_URL;
 export const PORT = process.env.PORT;
 export const HOST = process.env.HOST;
 export const DB_HOST = process.env.DB_HOST;

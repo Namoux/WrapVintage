@@ -1,3 +1,9 @@
+
+{
+    acme_ca https://acme-v02.api.letsencrypt.org/directory
+    acme_tls_alpn true
+}
+
 # Adresse du site 
 wrapvintage.duckdns.org {
     encode gzip
@@ -5,12 +11,11 @@ wrapvintage.duckdns.org {
 
     # Redirige toutes les requêtes /api/* vers le backend
     handle_path /api/* {
-        reverse_proxy backend:${PORT}
+        reverse_proxy backend:4004
     }
 
     # Tout le reste → frontend
     handle_path / {
-        reverse_proxy frontend:${PORT_FRONT}
+        reverse_proxy frontend:80
     }
-
 }

@@ -13,7 +13,8 @@ RUN npm install
 COPY . .
 
 # Build Angular en production
-RUN npm run build --configuration production
+RUN npm run build -- --configuration production
+# Le -- transmet --configuration production à ng build
 
 # Étape 2 : Serveur Nginx pour l’Angular build
 FROM nginx:stable-alpine

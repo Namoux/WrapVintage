@@ -13,7 +13,8 @@ import stripeRoutes from './routes/stripe.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import contactRoutes from './routes/contact.routes.js';
 
-const baseUrl = `${HOST}:${PORT}`; // Utiliser une variable d'environnement pour l'Url
+// const baseUrl = `${HOST}:${PORT}`;
+const baseUrl = `${HOST}`; // Utiliser une variable d'environnement pour l'Url
 
 const app = express();
 

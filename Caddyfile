@@ -1,9 +1,4 @@
 
-{
-    acme_ca https://acme-v02.api.letsencrypt.org/directory
-    acme_tls_alpn true
-}
-
 # Adresse du site 
 wrapvintage.duckdns.org {
     encode gzip

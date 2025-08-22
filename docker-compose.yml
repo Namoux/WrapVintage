@@ -25,7 +25,7 @@ services:
     depends_on:
       - mariadb
     expose:
-      - "${PORT}" # exposé uniquement au réseau Docker interne, pas à l’hôte
+      - "4004" # exposé uniquement au réseau Docker interne, pas à l’hôte
 
   frontend:
     build: ./frontend
@@ -34,7 +34,7 @@ services:
     depends_on:
       - backend
     expose:
-      - "${PORT_FRONT}"
+      - "80"
 
   caddy:
     image: caddy:2

@@ -15,7 +15,7 @@ wrapvintage.duckdns.org {
     }
 
     # Tout le reste → frontend
-    handle_path / {
+    handle {
         reverse_proxy frontend:80
     }
 }

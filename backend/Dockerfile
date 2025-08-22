@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 4004
 
 # Commande pour démarrer le backend
-CMD ["node", "server.js"]
+CMD ["node", "src/server.js"]

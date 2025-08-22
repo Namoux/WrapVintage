@@ -36,5 +36,22 @@ services:
     ports:
       - "80:80"
 
+  caddy:
+    image: caddy:2
+    container_name: caddy
+    restart: unless-stopped
+    depends_on:
+      - frontend
+      - backend
+    ports:
+      - "2015:2015"   # port de test HTTP interne (ou 80:80 pour prod)
+      - "443:443"     # HTTPS
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
 volumes:
   mariadb_data:
+  caddy_data:
+  caddy_config:

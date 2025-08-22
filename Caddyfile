@@ -1,0 +1,21 @@
+# Adresse du site 
+wrapvintage.duckdns.org {
+    
+    encode gzip
+
+    # Redirige toutes les requêtes /api/* vers le backend
+    handle_path /api/* {
+        reverse_proxy backend:4004
+    }
+
+    # Tout le reste → frontend
+    handle {
+        reverse_proxy frontend:80
+    }
+
+    # Logs pour debug
+    log {
+        output file /var/log/caddy/access.log
+        format json
+    }
+}

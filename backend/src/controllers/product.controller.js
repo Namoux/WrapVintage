@@ -135,7 +135,7 @@ export const getProductHomme = (productModel) => async (req, res, next) => {
         
     } catch (error) {
         console.log("Error fetching men's products ");
-        next(error);
+        next(error); // L'erreur est transmise à errorHandler
     }
 };
 

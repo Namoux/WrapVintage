@@ -60,7 +60,7 @@ if (productCategory.warningStatus === 0) console.log("Table productCategory crea
 const cart = await connection.execute(`
     CREATE TABLE IF NOT EXISTS cart (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,
+        user_id INT NOT NULL UNIQUE,
         createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
     )

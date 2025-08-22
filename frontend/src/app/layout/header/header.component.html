@@ -11,14 +11,17 @@
     </div>
 
     <div class="right_actions">
-      <a (click)="openLogin()" class="user"><img src="/utilisateur.png" class="icon" alt="Compte" />
+      <!-- <a (click)="openLogin()" class="user"><img src="/utilisateur.png" class="icon" alt="Compte" /> -->
+      <a (click)="openLogin()" class="user"><i class="fa-regular fa-user fa-lg"></i>
         @if (userName) {
         <span class="username-header">{{ userName }}</span>
         }</a>
-      <a (click)="openSearchbar()"><img src="/loupe.png" class="icon" alt="Recherche" /></a>
+      <!-- <a (click)="openSearchbar()"><img src="/loupe.png" class="icon" alt="Recherche" /></a> -->
+      <a (click)="openSearchbar()"><i class="fa-solid fa-magnifying-glass fa-lg"></i></a>
       <div class="cart-icon-wrapper">
         <a (click)="openCart()">
-          <img src="/shopping-bag.png" class="icon" alt="Panier" />
+          <!-- <img src="/shopping-bag.png" class="icon" alt="Panier" /> -->
+          <i class="fa-solid fa-cart-shopping fa-lg"></i>
           @if (cartQuantity > 0) {
           <span class="cart-badge">{{ cartQuantity }}</span>
           }

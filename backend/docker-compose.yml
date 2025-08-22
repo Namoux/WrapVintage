@@ -37,5 +37,3 @@ services:
 
 volumes:
   mariadb_data:
-
-    

@@ -24,8 +24,8 @@ services:
       - ./.env
     depends_on:
       - mariadb
-    ports:
-      - "${PORT}:${PORT}"
+    expose:
+      - "${PORT}" # exposé uniquement au réseau Docker interne, pas à l’hôte
 
   frontend:
     build: ./frontend
@@ -33,8 +33,8 @@ services:
     restart: unless-stopped
     depends_on:
       - backend
-    ports:
-      - "80:80"
+    expose:
+      - "${PORT_FRONT}"
 
   caddy:
     image: caddy:2
@@ -44,8 +44,8 @@ services:
       - frontend
       - backend
     ports:
-      - "2015:2015"   # port de test HTTP interne (ou 80:80 pour prod)
-      - "443:443"     # HTTPS
+      - "80:80"   # port de test HTTP interne (ou 80:80 pour prod)
+      - "443:443"     # HTTPS  caddy:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data

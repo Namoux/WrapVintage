@@ -20,6 +20,7 @@ const app = express();
 
 // route Stripe avant express.json (webhook a besoin du RAW sans intercepteur JSON global)
 app.use("/api/stripe", stripeRoutes(connection, baseUrl));
+app.use('/stripe', stripeRoutes(connection, baseUrl));
 
 app.use(express.json());
 app.use(cors({

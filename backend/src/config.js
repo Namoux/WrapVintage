@@ -8,6 +8,7 @@ dotenv.config({ path: process.env.NODE_ENV !== "production" ? "../.env" : undefi
 
 
 export const SECRETKEY = process.env.SECRETKEY;
+export const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
 export const PORT = process.env.PORT;
 export const HOST = process.env.HOST;
 export const DB_HOST = process.env.DB_HOST;

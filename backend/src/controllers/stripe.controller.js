@@ -1,4 +1,4 @@
-import { CLIENT_URL, stripe } from "../config.js";
+import { CLIENT_URL, stripe, WEBHOOK_SECRET } from "../config.js";
 
 /**
  * Crée une session Stripe Checkout pour le paiement du panier.
@@ -80,7 +80,15 @@ export const stripeWebhook = (orderModel, cartModel, userModel) => async (req, r
 
         // Stripe envoie l'événement webhook dans le corps de la requête (req.body).
         // Ici, on récupère cet événement pour traiter le type d'événement reçu (ex : paiement réussi).
-        const event = req.body;
+        const sig = req.headers['stripe-signature'];
+        let event;
+        try {
+            event = stripe.webhooks.constructEvent(req.body, sig, WEBHOOK_SECRET);
+        } catch (err) {
+            console.error("Invalid Stripe signature:", err.message);
+            return res.status(400).send(`Webhook Error: ${err.message}`);
+        }
+        
         console.log("Stripe event type:", event?.type);
 
         // Vérifie si l'événement Stripe reçu correspond à un paiement réussi (checkout.session.completed)
@@ -92,18 +100,18 @@ export const stripeWebhook = (orderModel, cartModel, userModel) => async (req, r
             const email = session?.customer_details?.email || session?.customer_email || null;
             console.log("Email from session:", email);
             if (!email) return res.status(200).send();
-            
+
             // Utilise le UserModel pour retrouver l'utilisateur
             const users = await userModel.getUserByEmail(email);
-            const user = 
-            Array.isArray(users) && Array.isArray(users[0]) ? users[0][0] :
-            Array.isArray(users) ? users[0] : users;
-            
+            const user =
+                Array.isArray(users) && Array.isArray(users[0]) ? users[0][0] :
+                    Array.isArray(users) ? users[0] : users;
+
             if (!user || !user.id) {
                 console.log("Utilisateur non trouvé pour l'email :", email);
                 return res.status(200).send();
             }
-            
+
             // Récupère les line_items via l'API Stripe
             const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
 

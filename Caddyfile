@@ -5,10 +5,18 @@ wrapvintage.duckdns.org {
     log
 
     # Redirige toutes les requêtes /api/* vers le backend
-    handle_path /api/* {
+    handle /api/* {
         reverse_proxy backend:4004
     }
 
+    handle /vignettes/* {
+        reverse_proxy backend:4004
+    }
+
+    handle /produits/* {
+        reverse_proxy backend:4004
+    }
+    
     # Tout le reste → frontend
     handle {
         reverse_proxy frontend:80

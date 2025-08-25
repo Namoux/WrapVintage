@@ -18,6 +18,9 @@ const baseUrl = `${HOST}`; // Utiliser une variable d'environnement pour l'Url
 
 const app = express();
 
+// route Stripe avant express.json (webhook a besoin du RAW sans intercepteur JSON global)
+app.use("/api/stripe", stripeRoutes(connection, baseUrl));
+
 app.use(express.json());
 app.use(cors({
     origin: `${CLIENT_URL}`, // frontend Angular
@@ -32,7 +35,6 @@ app.use("/users", userRoutes(connection));
 app.use("/categories", categoryRoutes(connection));
 app.use("/auth", authRoutes(connection, baseUrl));
 app.use("/cart", cartRoutes(connection, baseUrl));
-app.use("/api/stripe", stripeRoutes(connection, baseUrl));
 app.use('/orders', orderRoutes(connection));
 app.use('/api/contact', contactRoutes(connection));
 

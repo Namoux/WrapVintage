@@ -192,7 +192,7 @@ export class ProductModel {
     addImageUrl(products) {
         return products.map(product => ({
             ...product,
-            imageURL: `${this.baseUrl}/api/vignettes/${product.imageURL}`
+            imageURL: `${this.baseUrl}/vignettes/${product.imageURL}`
         }));
     }
 
@@ -204,7 +204,7 @@ export class ProductModel {
     addImageUrlHD(products) {
         return products.map(product => ({
             ...product,
-            imageURL: `${this.baseUrl}/api/produits/${product.imageURL}`
+            imageURL: `${this.baseUrl}/produits/${product.imageURL}`
         }));
     }
 }

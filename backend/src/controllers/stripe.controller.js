@@ -17,6 +17,15 @@ export const createCheckoutSession = async (req, res, next) => {
 
         // On reçoit le panier et l'utilsateur du front end
         const { cart, user } = req.body;
+        const authEmail = req.user?.email; // si route protégée par auth middleware
+        const customerEmail = authEmail || user?.email;
+
+        if (!Array.isArray(cart) || cart.length === 0) {
+            return res.status(400).json({ error: "Cart is empty" });
+        }
+        if (!customerEmail) {
+            return res.status(400).json({ error: "Missing customer email" });
+        }
 
         // Transforme chaque produit du panier en un objet Stripe "line_item"
         const line_items = cart.map(item => ({
@@ -39,11 +48,11 @@ export const createCheckoutSession = async (req, res, next) => {
             payment_method_types: ['card'], // Méthodes de paiement acceptées
             mode: 'payment',                // Mode de paiement unique
             line_items,                     // Produits à payer
-            customer_email: user.email,     // Email du client pour Stripe
+            customer_email: customerEmail,     // Email du client pour Stripe
             success_url: `${CLIENT_URL}/success`, // URL de redirection après paiement réussi
             cancel_url: `${CLIENT_URL}/cancel`,   // URL de redirection si paiement annulé
         });
-        
+
         res.json({ sessionId: session.id });
     } catch (error) {
         console.log("Erreur de session Stripe");
@@ -72,25 +81,31 @@ export const stripeWebhook = (orderModel, cartModel, userModel) => async (req, r
         // Stripe envoie l'événement webhook dans le corps de la requête (req.body).
         // Ici, on récupère cet événement pour traiter le type d'événement reçu (ex : paiement réussi).
         const event = req.body;
+        console.log("Stripe event type:", event?.type);
 
         // Vérifie si l'événement Stripe reçu correspond à un paiement réussi (checkout.session.completed)
         if (event.type === 'checkout.session.completed') {
             // Récupère l'objet session Stripe associé à l'événement
             const session = event.data.object;
 
-            // Récupère les line_items via l'API Stripe
-            const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
-
-            // Récupère l'email du client
-            const email = session.customer_email;
-
+            // Email robuste (nouvelle API)
+            const email = session?.customer_details?.email || session?.customer_email || null;
+            console.log("Email from session:", email);
+            if (!email) return res.status(200).send();
+            
             // Utilise le UserModel pour retrouver l'utilisateur
             const users = await userModel.getUserByEmail(email);
-            const user = Array.isArray(users) ? users[0] : users;
+            const user = 
+            Array.isArray(users) && Array.isArray(users[0]) ? users[0][0] :
+            Array.isArray(users) ? users[0] : users;
+            
             if (!user || !user.id) {
                 console.log("Utilisateur non trouvé pour l'email :", email);
                 return res.status(200).send();
             }
+            
+            // Récupère les line_items via l'API Stripe
+            const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
 
             const items = await Promise.all(lineItems.data.map(async item => {
                 // Pour chaque produit du panier Stripe, on récupère l'objet produit Stripe associé

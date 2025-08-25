@@ -13,7 +13,7 @@ const stripeRoutes = (connection, baseUrl) => {
     const userModel = new UserModel(connection);
 
 
-    router.post("/create-checkout-session", createCheckoutSession);
+    router.post("/create-checkout-session", express.json(), createCheckoutSession);
     // Route pour le webhook Stripe (attention : body en raw !)
     router.post("/webhook", express.raw({ type: 'application/json' }), stripeWebhook(orderModel, cartModel, userModel));
 

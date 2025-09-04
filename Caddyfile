@@ -1,16 +1,32 @@
 
 # Adresse du site 
+// wrapvintage.duckdns.org {
+//     encode gzip
+//     log
+
+//     # Redirige toutes les requêtes /api/* vers le backend
+//     handle /api/* {
+//         reverse_proxy backend:4004
+//     }
+    
+//     # Tout le reste → frontend
+//     handle {
+//         reverse_proxy frontend:80
+//     }
+// }
+
+
 wrapvintage.duckdns.org {
     encode gzip
     log
 
-    # Redirige toutes les requêtes /api/* vers le backend
     handle /api/* {
         reverse_proxy backend:4004
     }
-    
-    # Tout le reste → frontend
+
     handle {
         reverse_proxy frontend:80
     }
+
+    # Pas de tls {} pour désactiver HTTPS temporairement
 }

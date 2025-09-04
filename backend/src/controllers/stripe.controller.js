@@ -63,12 +63,15 @@ export const createCheckoutSession = async (req, res, next) => {
 /**
  * Endpoint Stripe Webhook pour traiter les événements de paiement.
  *
- * - Gère l'événement 'checkout.session.completed' envoyé par Stripe après un paiement réussi.
- * - Récupère les informations de la session Stripe et les line_items associés.
- * - Identifie l'utilisateur via son email.
- * - Crée la commande dans la base de données et vide le panier de l'utilisateur.
- * - Répond toujours à Stripe avec un status 200 pour confirmer la réception du webhook.
- *
+ * - Nécessite express.raw({ type: 'application/json' }) sur la route
+ * - Construit l'événement depuis le buffer et vérifie la signature (WEBHOOK_SECRET)
+ * - Sur 'checkout.session.completed':
+ *    * Récupère l'email (customer_details.email ou customer_email)
+ *    * Retrouve l'utilisateur en base
+ *    * Récupère les line items, reconstruit {product_id, name, price, quantity}
+ *    * Crée la commande puis vide le panier
+ * - Répond toujours 200 si traité (même si aucune commande créée)
+ * 
  * @param {OrderModel} orderModel - Modèle pour gérer les commandes.
  * @param {CartModel} cartModel - Modèle pour gérer les paniers.
  * @param {UserModel} userModel - Modèle pour gérer les utilisateurs.
@@ -80,6 +83,7 @@ export const stripeWebhook = (orderModel, cartModel, userModel) => async (req, r
 
         // Stripe envoie l'événement webhook dans le corps de la requête (req.body).
         // Ici, on récupère cet événement pour traiter le type d'événement reçu (ex : paiement réussi).
+        // Vérification de signature + parsing depuis le buffer
         const sig = req.headers['stripe-signature'];
         let event;
         try {
@@ -88,7 +92,7 @@ export const stripeWebhook = (orderModel, cartModel, userModel) => async (req, r
             console.error("Invalid Stripe signature:", err.message);
             return res.status(400).send(`Webhook Error: ${err.message}`);
         }
-        
+
         console.log("Stripe event type:", event?.type);
 
         // Vérifie si l'événement Stripe reçu correspond à un paiement réussi (checkout.session.completed)

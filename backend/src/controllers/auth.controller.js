@@ -50,8 +50,8 @@ export const loginUser = (userModel) => async (req, res, next) => {
         res.cookie('token', token, {
             httpOnly: true,       // pas accessible en JS client
             secure: false,         // en local! 
-            sameSite: 'Strict',   // protection CSRF
-            // secure: true,         // ⚠ nécessite HTTPS (en prod) nécessaire si SameSite=None
+            sameSite: 'Strict',    // protection CSRF
+            // secure: true,       // nécessite HTTPS (en prod) nécessaire si SameSite=None
             // sameSite: 'none',   // protection CSRF
             maxAge: 3600000       // 1 heure en ms
         });

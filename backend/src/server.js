@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import helmet from "helmet";
 import { connection } from "./database.mjs";
 import { errorHandler } from "./middlewares/error.middleware.js";
 import { PORT, HOST, CLIENT_URL } from "./config.js";
@@ -17,6 +18,24 @@ import contactRoutes from './routes/contact.routes.js';
 const baseUrl = `${HOST}`; // Utiliser une variable d'environnement pour l'Url
 
 const app = express();
+
+// Middleware sécurité CSP
+app.use(helmet({
+  contentSecurityPolicy: {
+    useDefaults: true,
+    directives: {
+      "default-src": ["'self'"],
+      "script-src": ["'self'", "https://js.stripe.com"],
+      "style-src": ["'self'", "'unsafe-inline'", "https://cdnjs.cloudflare.com"],
+      "font-src": ["'self'", "https://cdnjs.cloudflare.com"],
+      "img-src": ["'self'", "data:"],
+      "connect-src": ["'self'", "https://api.stripe.com"],
+      "frame-src": ["https://js.stripe.com"],
+      "object-src": ["'none'"],
+      "base-uri": ["'self'"]
+    }
+  }
+}));
 
 // route Stripe avant express.json (webhook a besoin du RAW sans intercepteur JSON global)
 app.use("/api/stripe", stripeRoutes(connection, baseUrl));

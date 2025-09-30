@@ -55,7 +55,7 @@ WrapVintage est un site e-commerce dédié à la vente de **bracelets en perles 
 | **Base de données**| MariaDB           |
 | **Authentification** | JWT (JSON Web Tokens) |
 | **Paiement**       | Stripe            |
-| **Responsive**     | HTML / CSS / Angular Material |
+| **Responsive**     | HTML / CSS |
 
 ---
 
